@@ -1,0 +1,274 @@
+{% load static %}
+{% load widget_tweaks %}
+
+
+<form method="post" 
+      id="modal-form" 
+      action="{% url 'NormMan:shared_component_quick_position_modal'  form.shared_component_UUID_property %} " 
+      class="js-object-update-form" 
+      data-configurations-url="{% url 'NormMan:load_configurations' %}"
+      norm_part_UUID = "{{ form.shared_component_UUID_property }}"
+      shared_component_type = "{{ form.shared_component_type_property }}"
+      novalidate>
+  {% csrf_token %}
+  <div class="modal-dialog modal-xl" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle"><b>Quick positioning manager</b></h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button> 
+      </div>
+      <div class="modal-body">
+        <div class="container">
+          <!-- First row dedicated to process description -->
+          <div class="row justify-content-around">     
+            <!-- Description of the process -->
+            <div class="col-sm-2" style="text-align: right;">
+              <i class="fas fa-info-circle"
+                data-toggle="popover"
+                data-trigger="hover"
+                title="Step 1: Definition of a position"
+                data-content ="Select position for selected object by clicking on allowed elements in CATIA window. Object will be automatically created.">
+              </i>
+            </div>
+            <!-- Description of the process -->
+            <div class="col-sm-2" style="text-align: right;">
+              <i class="fas fa-info-circle"
+                data-toggle="popover"
+                data-trigger="hover"
+                title="Step 2: Select desired configuration"
+                data-content ="Activate and select a parametric configuration for selected element. Selection will be empty if the selected element does not allow parametric modification.">
+              </i>
+            </div>
+            <!-- Description of the process -->
+            <div class="col-sm-2" style="text-align: right;">
+              <i class="fas fa-info-circle"
+                data-toggle="popover"
+                data-trigger="hover"
+                title="Step 3: Put selected component on target"
+                data-content ="Automatically insert a component on predefined position. Parameters will be modified according to a selected ones.">
+              </i>
+            </div>            
+          </div>
+          <!-- Second row dedicated to interactive objects -->
+          <div class="row justify-content-around">
+            <div class="col-sm-4">
+              <!-- Card object -->
+              <div class="row justify-content-around">
+                <div class="card mx-3 my-1" style="width: 9rem; cursor: pointer" >
+                  <div class="d-flex align-items-center">                 
+                    <div class="card-body">
+                      <img class="card-img-top" src="/media/norm_parts/static_files/icons/PNGs/insert.png" style="object-fit: contain;"/>
+                    </div>
+                  </div>
+                  <div class="card-footer p-1 " style="font-size: 12px; height:100%">Create positioning object</div>                                        
+                  <a  class="stretched-link obj_position"
+                      id="obj_position"
+                      object_uid="#"
+                      norm_part_uuid="{{form.shared_component_UUID_property}}"                      
+                      master_id="8b0f270b-1013-4f57-915b-148ce281b4ae"
+                      object_id="3a3f5f79-1f96-4db7-8542-b06b4727de62"
+                      method_id="157fcbfc-12c3-4a55-ae49-17782bbff38d"> </a>
+                </div> 
+              </div>
+            </div>
+            <div class="col-sm-4" id = "configure_row">
+              <!-- Dropdown selector object -->
+              <div class="row justify-content-around" id = "configure_menu">
+                <label for="id_configuration_select"><b>Select Configuration:</b></label>
+                {{ form.configuration_select|add_class:"form-control"}}
+                <span class="text-danger">{{ form.configuration_select.errors|striptags }}</span>
+              </div>
+              <!-- Card object -->
+              <div class="row justify-content-around" id = "action_configure">
+                <div class="card mx-3 my-1" style="width: 9rem; cursor: pointer">
+                  <div class="d-flex align-items-center">                 
+                    <div class="card-body" >                                                
+                      <img class="card-img-top" src="{% static '/website/images/Project_Icon.png' %}" style="object-fit: contain;"/>
+                    </div>
+                  </div>
+                  <div class="card-footer p-1 " style="font-size: 12px; height:100%">Select Configuration</div>                                        
+                  <a  class="stretched-link obj_configure" > </a>                         
+                </div> 
+              </div>  
+            </div>
+            <div class="col-sm-4">
+              <!-- Card object -->
+              <div class="row justify-content-around">
+                <div class="card mx-3 my-1" style="width: 9rem; cursor: pointer" >
+                  <div class="d-flex align-items-center">                 
+                    <div class="card-body" >                                                
+                      <img class="card-img-top" src="/../../../../../../media/norm_parts/static_files/icons/PNGs/insert_data.png" style="object-fit: contain;"/>
+                    </div>
+                  </div>
+                  <div class="card-footer p-1 " style="font-size: 12px; height:100%">Position object</div>
+                  <a  class="stretched-link obj_apply"
+                      id="obj_apply"
+                      object_uid="#"
+                      norm_part_uuid="{{form.shared_component_UUID_property}}"                      
+                      master_id="8b0f270b-1013-4f57-915b-148ce281b4ae"
+                      object_id="3a3f5f79-1f96-4db7-8542-b06b4727de62"
+                      method_id="734e1fb6-6826-4471-88ab-c40f8c8919c2"> 
+                  </a>
+                </div> 
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>
+
+
+<script>
+  $(document).ready(function(){
+    $('[data-toggle="popover"]').popover();
+  });
+
+  document.getElementById("configure_menu").style.display = "none";
+  var object_uid = uuidv4()
+  document.getElementById("obj_apply").setAttribute("object_uid", object_uid)
+  document.getElementById("obj_position").setAttribute("object_uid", object_uid)
+  var categories = document.getElementsByClassName("category_group");
+  var category_id = categories[categories.length - 1].getAttribute('value');
+
+
+  function uuidv4() {
+    return "10000000-1000-4000-8000-100000000000".replace(/[018]/g, c => (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16));
+  }
+
+
+  $("#id_configuration_select").click(function () {
+    if( $('#id_configuration_select').has('option').length == 0 ){   
+      var url = $("#modal-form").attr("data-configurations-url");
+      var norm_part_uuid = $("#modal-form").attr("norm_part_UUID");
+      var shared_component_type = $("#modal-form").attr("shared_component_type");        
+      $.ajax({ 
+        url: url,
+        data: {
+          'trigger_id': "get_configurations",
+          'norm_part_uuid': norm_part_uuid,  
+          'shared_component_type': shared_component_type,                   
+        },
+        success: function (data) {
+          $("#id_configuration_select").html("");
+          $("#id_configuration_select").html(data['html_configuration_list']);
+        }
+      });
+    }
+  });
+
+
+  $("#submit_button").click(function () {
+    dropdown_text = $("#id_configuration_select :selected").text();  
+    var url = $("#modal-form").attr("data-configurations-url");
+    var norm_part_uuid = $("#modal-form").attr("norm_part_UUID");
+    var shared_component_type = $("#modal-form").attr("shared_component_type");
+    var matchedEle = document.querySelectorAll(".modal.fade.show")[0].id;
+    var modalwindow = document.getElementById(matchedEle);
+    $.ajax({
+      url: url,
+      data: {
+        'trigger_id': "send_to_framework",
+        'norm_part_uuid': norm_part_uuid, 
+        'shared_component_type': shared_component_type,
+        'parameters': dropdown_text
+      },
+      success: function (data) {
+        $(modalwindow).modal("hide");
+      }
+    });
+  });  
+
+
+  $(".obj_position").click(function(){
+    categories = document.getElementsByClassName("category_group");
+    category_id = categories[categories.length - 1].getAttribute('value');
+    console.log(category_id)
+    trigger_id = "object_utilisation"
+    method_id = $(this).attr('method_id');
+    master_id = $(this).attr('master_id');
+    object_id = $(this).attr('object_id');
+    if (method_id == "157fcbfc-12c3-4a55-ae49-17782bbff38d"){
+      trigger_id = "object_creation"
+    };
+    const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+    var url = "{% url 'NormMan:MethodSendToFramework' %}";
+    var o_data = { 
+      "command": trigger_id,
+      "trigger_id": object_id, 
+      'method_id': method_id,
+      'master_id': master_id,
+      'session_id': sessionStorage.getItem("session_id"),            
+      'session_type': sessionStorage.getItem("session_type"),
+      'shared_component_uuid' : null,
+      'shared_component_type' : null,
+      'category_id': category_id,
+      'parameters': null      
+    }
+    $.ajax({                       // initialize an AJAX request
+      type:'POST',
+      headers: { 'X-CSRFToken': csrftoken },
+      url: url, //$(this).data('url'), 
+      dataType: 'json',                  
+      data: o_data,
+      success: function (data) {}
+    });
+  });
+
+
+  $(".obj_configure").click(function(){ 
+    document.getElementById("configure_menu").style.display = "block";
+    document.getElementById("action_configure").style.display = "none";
+  });
+
+
+  $(".obj_apply").click(function(){
+    console.log(category_id)
+    var element = document.getElementById("id_configuration_select");
+    if(element.length == 0 || element.selectedIndex == -1){
+      parameters = null
+    } else {
+      parameters = element.options[element.selectedIndex].text;      
+    }
+    // parameters = $("#id_configuration_select :selected").text(); 
+    trigger_id = "object_utilisation"
+    method_id = $(this).attr('method_id');
+    master_id = $(this).attr('master_id');
+    object_id = $(this).attr('object_id');
+    object_uid = $(this).attr('object_uid');
+    shared_component_uuid = $(this).attr('norm_part_uuid');
+
+    const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+    var url = "{% url 'NormMan:norm_part_quick_position' %}";
+    var o_data = { 
+      "command": trigger_id,
+      "trigger_id": object_id, 
+      'method_id': method_id,
+      'master_id': master_id,
+      'object_uid': object_uid,
+      'session_id': sessionStorage.getItem("session_id"),   
+      'session_type': sessionStorage.getItem("session_type"),
+      'shared_component_uuid' : shared_component_uuid,
+      'shared_component_type' : null,      
+      'category_id': category_id,
+      'parameters': parameters,
+      'config': parameters      
+    }
+    $.ajax({                       // initialize an AJAX request
+      type:'POST',
+      headers: { 'X-CSRFToken': csrftoken },
+      url: url, //$(this).data('url'), 
+      dataType: 'json',                  
+      data: o_data,
+      success: function (data) {
+        var matchedEle = document.querySelectorAll(".modal.fade.show")[0].id; //find the div name of the modal
+        var modalwindow = document.getElementById(matchedEle);
+        $(modalwindow).modal("hide");
+      }
+    });
+  });
+
+</script>

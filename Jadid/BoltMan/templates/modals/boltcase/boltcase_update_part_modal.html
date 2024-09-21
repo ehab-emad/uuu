@@ -1,0 +1,46 @@
+
+{% load widget_tweaks %}
+
+  <form method="post" action="{% url 'BoltMan:boltcase_update_part' form.instance.pk %}" class="js-boltcase-update-form" id="boltcaseForm" data-parts-url="{% url 'BoltMan:ajax_load_parts' %}" novalidate>
+  {% csrf_token %}
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLongTitle"><b>Select parts in assembly</b></h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+        </div>
+        <div class="modal-body" >
+          {% include 'modals/modal_template_form.html' %}
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          <button type="submit" class="btn btn-primary">Submit</button>
+        </div>
+      </div>
+    </div>
+</form>
+
+
+  <script>
+    $("#id_vehicle").change(function () {
+      var url = $("#boltcaseForm").attr("data-parts-url");  // get the url of the `load_cities` view
+      var vehicleId = $(this).val();  // get the selected country ID from the HTML input
+
+      $.ajax({                       // initialize an AJAX request
+        url: url,                    // set the url of the request (= localhost:8000/hr/ajax/load-cities/)
+        data: {
+          'vehicle': vehicleId       // add the country id to the GET parameters
+        },
+        success: function (data) {   // `data` is the return of the `load_parts` view function
+          $("#id_part1").html(data); 
+          $("#id_part2").html(data); 
+          $("#id_part3").html(data);  // replace the contents of the city input with the data that came from the server
+        }
+      });
+
+    });
+  </script>
+
+

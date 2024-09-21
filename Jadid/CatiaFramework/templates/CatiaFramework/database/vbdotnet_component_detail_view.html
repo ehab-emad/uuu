@@ -1,0 +1,118 @@
+{% extends 'CatiaFramework/base.html' %}
+
+{% load static %}
+
+{% block Apps %}
+
+
+
+<style>
+    pre.code {
+      white-space: pre-wrap;
+      counter-reset: listing;
+    }
+    
+    pre.code code {
+      counter-increment: listing;
+      display: flex;      /* Use "flex" instead of "flexbox" */
+      justify-content:flex-start;  /* Align content to the right */
+    }
+    
+    pre.code code::before {
+      content: counter(listing) ". ";
+      width: 8em;
+      padding-left: 1em;  /* Adjust padding to create space between number and code */
+      text-align: left;
+    }
+    
+    </style>
+
+
+</style>
+<div class="container-fluid" id="objects-container">
+    <div class="col-md-12">
+        <div class="row">
+            <div class="col-md-10 border-right">
+                <div class="row">
+                    <div class="col-md-12 border-right">
+
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div href="#" class="list-group-item list-group-item-secondary my-1" onclick="toggleSelection(this)">
+                                    <div class="container-fluid" id="objects-container">
+                                        <div class="row"> 
+                                            <div class='col-md-10'>
+                                                <div class="row">                                                 
+                                                    <div class='col-md-8'>
+                                                        <h2>VB.Net Component Details</h2>
+                                                        <h5>Object Keyword: {{dotnet_component.get_type_display}}</h5>
+                                                        <h5>Object Name: {{dotnet_component.name}}</h5>                                                          
+                                                        <h5>Summary : {{dotnet_component.summary}}</h5>
+                                                        <h5>UUID: {{dotnet_component.UUID}}</h5>
+                                                        <input type="text" value={{dotnet_component.UUID}}  id="UUID_text" style="opacity: 0; position: absolute; top: -9999px;"/>    
+                                                        <h5> Component Attributes:
+                                                        {% if dotnet_component.access_modifier == ""  %}
+                                                        No modifiers
+                                                        {% else %}
+                                                        {{dotnet_component.access_modifier}} 
+                                                        {% endif %} </h5> 
+                                                    </div>
+                                                    <div class='col-md-4'>
+                                                        <button id="UUID_text" onclick="copyToClipboard()" class="btn btn-warning btn-lg"  >
+                                                            Copy UUID
+                                                        </button>
+                                                    </div> 
+                                                </div>                                                                                                         
+                                            </div>                      
+                                        </div>   
+                                    </div>                 
+                                </div>                                     
+                                <div class="list-group">
+
+                                    <div href="#" class="list-group-item list-group-item-action my-1" onclick="toggleSelection(this)">
+                                        <div class="row">                
+                                            <div class='col-md-10 w-auto ms-auto'> 
+        
+                                                    <h3> Comment Section:</h3>
+                                                    
+                                                        {% if comment_section == "" %}
+                                                            No modifiers
+                                                        {% else %}      
+                                                                                                     
+                                                                                                                     
+                                                            <pre class="code">    
+                                                                {{comment_section|safe}}         
+                                                            </pre>                                                     
+                                                            {% endif %}   
+                                                    </pre>                                                                                                                           
+                                            </div>
+                                        </div>                
+                                    </div>
+                                    <div href="#" class="list-group-item list-group-item-action my-1" onclick="toggleSelection(this)">
+                                        <div class="row">                
+                                            <div class='col-md-10 '> 
+                               
+
+                                                    <h3> Content:</h3>  
+                                                    <pre class="code">    
+                                                        {{content_section|safe}}          
+                                                    </pre>                                                                                                                                                                 
+                                            </div>
+                                        </div>                
+                                    </div>                                    
+                                </div>                             
+                            </div> 
+                        </div>                
+                    </div>                                    
+                </div>                             
+            </div>
+            <div class="col-md-2">
+                <div class="row">
+                    {% include "website/current_project.html" %}   
+                    {% include "website/current_user.html" %}                 
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock Apps %}

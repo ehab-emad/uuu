@@ -1,0 +1,74 @@
+{% load static %}
+{% if user.is_authenticated %}
+    <div class="card  mx-1 my-3 w-100">
+        <div class="card-body">
+
+            <strong> Current Project </strong>
+            {% if user.projectuser.current_project.logo %}
+                <img class="card-img-top logo" src="{{ user.projectuser.current_project.logo.url }}" alt="Project image not available"> 
+            {% else %}
+                <img class="card-img-top logo" src="{% static '/website/images/Project_Icon.png' %}" alt="Project image not available2">
+            {% endif %}
+        </div>
+        <div class="card-footer">
+
+            {% if user.projectuser.current_project %}
+            <strong>Name:</strong> <br>{{ user.projectuser.current_project.name }}
+            {% endif %}
+            <br>
+
+            {% if user.projectuser.current_project %}
+            <strong>Number:</strong> <br>K.{{ user.projectuser.current_project.network_number }}
+            {% endif %}
+            <br>
+
+            {% if user.projectuser.current_project.owner %}
+            <strong>Owner:</strong> <br>{{ user.projectuser.current_project.owner.username }}
+            {% else %}
+            <strong>User:</strong> <br>Anonymous
+            {% endif %}
+
+        </div>
+        <div class="container-fluid" id="objects-container">
+            <div class="row">
+                {% if user.projectuser.current_project %}
+                    {% if user.projectuser.current_project.owner.username == user.username %}
+                        <button type="button" class="btn btn-warning btn-sm btn-block js-object-update" id="#modal-window-lg" data-url="{% url 'project_update' user.projectuser.current_project.UUID|stringformat:"s" %}">
+                        Edit
+                        </button>
+                        <button type="button" class="btn btn-warning btn-sm btn-block js-object-update "  id="#modal-window-xl" data-url="{% url 'project_update_authorised_users' user.projectuser.current_project.UUID|stringformat:"s" %}">
+                        User Authorisations
+                        </button>
+                    {% else %}
+                        <button type="button" class="btn btn-warning btn-sm btn-block js-object-update" id="#modal-window" data-url="{% url 'project_update' user.projectuser.current_project.UUID|stringformat:"s" %}" disabled>
+                        Edit
+                        </button>
+                        <button type="button" class="btn btn-warning btn-sm btn-block js-object-update "  id="#modal-window-xl" data-url="{% url 'project_update_authorised_users' user.projectuser.current_project.UUID|stringformat:"s" %}" disabled>
+                        User Autorisations
+                        </button>
+                    {% endif %}
+                    {% if 'user-professional' in request.session.groups %}
+                        <button type="button" class="btn btn-warning btn-sm btn-block js-object-update" id="#modal-window" data-url="{% url 'project_user_select_current_project' user.projectuser.UUID|stringformat:"s" %}" >Change Project</button>
+                    {% else %}
+                        <button type="button" class="btn btn-warning btn-sm btn-block disabled" disabled>Change Project</button>
+                    {% endif %}
+                {% else %}
+                    <p>No project selected</p>
+                {% endif %}
+
+            </div>
+        </div>
+    </div>
+{% endif %}
+
+
+<style>
+    .logo {
+        max-width: 100%; /* Image will take up to 100% of its parent width */
+        height: auto; /* This ensures the aspect ratio is maintained */
+        max-height: 200px; /* Set a maximum height to control the image size */
+        display: block; /* Display image as a block element */
+        margin: 0 auto; /* Center the image horizontally */
+        object-fit: contain; /* Ensures the image fits within the set height and width without cropping */
+    }
+</style>

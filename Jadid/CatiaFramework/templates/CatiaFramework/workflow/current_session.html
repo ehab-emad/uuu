@@ -1,0 +1,34 @@
+{% load static %}
+
+
+<div class="card  mx-3 my-3" >
+    <div class="card-body">
+        <strong> #Current session </strong>
+        {% if session.thumbnail %}
+            <img class="card-img-top" src="{{ current_session.logo.url }}" alt="session image not available">
+        {% else %}
+            <img class="card-img-top" src="{% static '/CatiaFramework/icons/workflow_session.png' %}" alt="Session image not available1">
+        {% endif %}
+    </div>
+    <div class="card-footer">
+
+        {% if workflow %}
+        <strong>Workflow Name:</strong> {{ workflow.name }}<br>
+        <strong>Session Owner:</strong> {{ session.owner }}<br>
+        {% endif %}
+    </div>
+    <div class="container-fluid" id="objects-container">
+        <div class="row">
+
+            {% if session.UUID %}            
+            <a type="button" class="btn btn-warning btn-sm btn-block"  href="{% url 'CatiaFramework:print_session_report' uuid_session=session.UUID %}"
+                onclick="return confirm('Do you really want to generate pdf document?');">
+                <i class="fas fa-print-alt"></i> Print Report
+            </a>
+            <button type="button" class="btn btn-danger  btn-sm my-1 js-object-delete btn-block" id="#modal-window" data-url="{% url 'CatiaFramework:workflow_session_reset_modal' uuid_session=session.UUID %}">Reset Session</button> 
+            {% else %}
+            <a type="button" class="btn btn-warning btn-sm btn-block" > Print Report </a>
+            {% endif %}
+        </div>
+    </div>
+</div>

@@ -1,0 +1,11 @@
+{% load widget_tweaks %}
+
+<div class="container-fluid" id="process_selection">
+ 
+    <label for="id_search_field">Search User</label>
+    {{ form.search_field|add_class:"form-control"}}  
+    <button type="button" class="btn-primary mr-auto" id="search_submit">Search</button>
+    <span class="text-danger">{{ form.search_field.errors|striptags }}</span>
+
+
+</div>

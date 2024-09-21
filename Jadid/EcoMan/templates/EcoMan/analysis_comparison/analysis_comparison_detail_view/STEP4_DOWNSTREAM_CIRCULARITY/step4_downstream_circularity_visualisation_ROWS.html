@@ -1,0 +1,208 @@
+{% load static %}
+<div class="container-fluid" >
+    <div class="row m-0 p-0">
+        <div class="col col-md-6  m-0 p-0 border-right" style="overflow: hidden;">
+            <div class="col col-md-12   m-0 p-2 bgSuperHellgrau" >
+                <p><strong>Left Concept</strong></p>
+                <div class="row-no-gutters">
+                    {% if error_message %}
+                    <p><strong>{{ error_message }}</strong></p>
+                    {% endif %}
+
+                    <div id="accordion_lca_part_left">
+                        <div class="card animationoff " style="border:0px;padding-right: 0px;padding-left: 0px;padding-top: 0px; background-color: rgba(240, 240, 240, 1);">
+                            {% for lca_part in lca_parts_left_all %}
+
+                                <div class="card-header commodity {{lca_part.commodity}}" id="headingLeft-{{lca_part.id}}" >
+                                    <div class= "col text-right" style="background-color:rgba(0,80,0,.2);">
+
+                                    </div>
+                                    <h5 class="mb-0">
+                                        <div class="container" >
+                                            <div class="row" >
+                                                <div class="col col-md-7" >
+                                                    <a role="button " data-toggle="collapse" href="#collapse-{{lca_part.id}}" aria-expanded="false" aria-controls="collapse-{{lca_part.id}}">
+                                                        <div class="container ">
+                                                            <div class="row ">
+                                                                <div class="col col-md-2 " style=" ">
+                                                                    <div class="container-fluid p-1 shadow-lg " style = "max-height: 65px; max-width: fit-content; text-align: center; display: block;background-color:{{lca_part.color}};" >
+                                                                    {% if lca_part.part_model.logo %}
+                                                                        <img class="card-img-top" src='{{ lca_part.part_model.logo.url }}' alt="Error: 404" style="max-height: 40px;">
+                                                                    {% else %}
+                                                                        <img class="card-img-top" src="{% static '/website/images/Part_Icon.png' %}" alt="Default" style="max-height: 60px; max-width: 60px;">
+                                                                    {% endif %}
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col col-md-10  d-block m-auto p-1">
+                                                                    <strong> {{lca_part.part_model.name}} ({{lca_part.lca_process_count.LCASTEP4}}){% if lca_part.commodity%}  -Commodity Part{% endif %}</strong>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </a>
+                                                </div>
+                                                <div class="col col-md-5  text-right">
+                                                    <div class="btn-group" role="group" aria-label="Basic example">
+
+
+                                                        <div class="inner">
+                                                            {% if lca_part.circularity_process_model.ispartreused %}
+                                                            <button onclick="location.href='{% url 'EcoMan:lcastep_ispartreused_status' lca_part.id %}'"
+                                                            class="btn btn-primary btn-sm border border-secondary"
+                                                            style ="white-space: nowrap; display: inline-block; height: max">Re-Used: </br>Yes</button>
+                                                            {% else %}
+                                                            <button onclick="location.href='{% url 'EcoMan:lcastep_ispartreused_status' lca_part.id %}'"
+                                                            class="btn btn-light btn-sm border border-secondary"
+                                                            style ="white-space: nowrap; display: inline-block; height: max">Re-Used: </br>No</button>
+                                                            {% endif %}
+                                                        </div>
+                                                        <button type="button"
+                                                            class="btn btn-light btn-sm border border-secondary js-object-update"
+                                                            id="#modal-window"
+                                                            data-toggle="popover"
+                                                            data-trigger="hover"
+                                                            title="ReUse interval:"
+                                                            data-content={{lca_part.circularity_process_model.lifetimeinkm}}
+                                                            data-url="{% url 'EcoMan:circularity_process_update' pk_circularity_process=lca_part.circularity_process_model.id%}">
+                                                            Re-Use: </br>Interval
+                                                        </button>
+                                                        <button type="button"
+                                                            class="btn btn-light btn-sm border border-secondary  js-object-update"
+                                                            id="#modal-window-xl"
+                                                            data-toggle="tooltip"
+                                                            data-placement="top"
+                                                            title="Add LCA Process"
+                                                            data-url="{% url 'EcoMan:lca_part_add_process_instance' lca_part.id 'LCASTEP4' weight_unit %}"
+                                                            style ="white-space: nowrap; display: inline-block; height: max">
+                                                            Add process
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </h5>
+                                </div>
+
+
+                                    <div id="collapse-{{lca_part.id}}" class="collapse"  aria-labelledby="headingRight-{{lca_part.id}}">
+                                        <div class="card-body">
+                                            {% include './step4_downstream_circularity_lca_parts_ROWS.html' %}
+                                        </div>
+                                    </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="col col-md-6  m-0 p-0" style="overflow: hidden;">
+            <div class="col col-md-12   m-0 p-2 bgSuperHellgrau" >
+                <p><strong>Right Concept</strong></p>
+                <div class="row-no-gutters">
+                    {% if error_message %}
+                    <p><strong>{{ error_message }}</strong></p>
+                    {% endif %}
+
+                    <div id="accordion_lca_part_right">
+                        <div class="card animationoff " style="border:0px;padding-right: 0px;padding-left: 0px;padding-top: 0px; background-color: rgba(240, 240, 240, 1)">
+                            {% for lca_part in lca_parts_right_all %}
+                            <div class="card-header commodity {{lca_part.commodity}}" id="headingRight-{{lca_part.id}}" >
+                                <h5 class="mb-0">
+                                    <div class="container" >
+                                        <div class="row" >
+                                            <div class="col col-md-10" >
+                                                <a role="button " data-toggle="collapse" href="#collapse-{{lca_part.id}}" aria-expanded="false" aria-controls="collapse-{{lca_part.id}}">
+                                                    <div class="container ">
+                                                        <div class="row ">
+                                                            {% if not lca_part.commodity%}
+                                                                <div class="col col-md-2 " style=" ">
+                                                                    <div class="container-fluid p-1 shadow-lg " style = "max-height: 65px; max-width: fit-content;  text-align: center; display: block; background-color:{{lca_part.color}};" >
+                                                                    {% if lca_part.part_model.logo %}
+                                                                        <img class="card-img-top" src='{{ lca_part.part_model.logo.url }}' alt="Error: 404" style="max-height: 40px;">
+                                                                    {% else %}
+                                                                        <img class="card-img-top" src="{% static '/website/images/Part_Icon.png' %}" alt="Default" style="max-height: 60px; max-width: 60px;">
+                                                                    {% endif %}
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col col-md-10  d-block m-auto p-1">
+                                                                    <strong> {{lca_part.part_model.name}} ({{lca_part.lca_process_count.LCASTEP4}}){% if lca_part.commodity%}  -Commodity Part{% endif %}</strong>
+                                                                </div>
+                                                            {% endif %}
+                                                        </div>
+                                                    </div>
+                                                </a>
+                                            </div>
+                                            {% if lca_part.commodity %}
+                                            <script>
+                                                //hover for commodity Parts
+                                               $('#headingLeft-{{lca_part.id}}').hover(function(){
+                                                    const div = document.querySelector('#headingRight-{{lca_part.id}}');
+                                                    div.classList.add('hover');
+                                                 }, function(){
+                                                    const div = document.querySelector('#headingRight-{{lca_part.id}}');
+                                                    div.classList.remove('hover');
+                                                 });
+                                                //hover for commodity Parts
+                                                $('#headingRight-{{lca_part.id}}').hover(function(){
+                                                    const div = document.querySelector('#headingLeft-{{lca_part.id}}');
+                                                    div.classList.add('hover');
+                                                 }, function(){
+                                                    const div = document.querySelector('#headingLeft-{{lca_part.id}}');
+                                                    div.classList.remove('hover');
+                                                 });
+
+                                            </script>
+                                            {% endif %}
+                                            <div class="col col-md-2 text-right m-auto d-flex justify-content-center" style="padding-right: 1.6em;">
+                                                <button type="button"
+                                                    class="btn btn-light btn-sm border border-secondary  js-object-update"
+                                                    id="#modal-window-xl"
+                                                    data-toggle="tooltip"
+                                                    data-placement="top"
+                                                    title="Add LCA Process"
+                                                    data-url="{% url 'EcoMan:lca_part_add_process_instance' lca_part.id 'LCASTEP4' weight_unit %}"
+                                                    style ="white-space: nowrap; display: inline-block; height: max">
+                                                    Add process
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </h5>
+                            </div>
+                                <div id="collapse-{{lca_part.id}}" class="collapse"  aria-labelledby="headingLeft-{{lca_part.id}}">
+                                    <div class="card-body">
+                                        {% include './step4_downstream_circularity_lca_parts_ROWS.html' %}
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<script>
+$(document).ready(function(){
+    $('[data-toggle="popover"]').popover();
+});
+
+
+
+
+
+
+</script>
+
+
+
+
+
+
+
+
+
+

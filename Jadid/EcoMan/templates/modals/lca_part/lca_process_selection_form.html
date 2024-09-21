@@ -1,0 +1,33 @@
+{% load widget_tweaks %}
+{% load weight_unit_switch  %}
+<div class="container-fluid" id="process_selection">
+
+    <label for="id_lca_database_choice">LCA Database</label>
+    {{ form.lca_database_choice|add_class:"form-control"}}
+    <span class="text-danger">{{ form.lca_database_choice.errors|striptags }}</span>
+
+    <label for="id_lca_category_choice">LCA Category</label>
+    {{ form.lca_category_choice|add_class:"form-control"}}
+    <span class="text-danger">{{ form.lca_category_choice.errors|striptags }}</span>
+
+    <label for="id_lca_group_choice">Group</label>
+    {{ form.lca_group_choice|add_class:"form-control"}}
+    <span class="text-danger">{{ form.lca_group_choice.errors|striptags }}</span>
+
+    <label for="id_lca_subgroup_choice">Subgroup</label>
+    {{ form.lca_subgroup_choice|add_class:"form-control"}}
+    <span class="text-danger">{{ form.lca_subgroup_choice.errors|striptags }}</span>
+
+    <label for="id_lca_process_choice">Material</label>
+    {{ form.lca_process_choice|add_class:"form-control"}}
+    <span class="text-danger">{{ form.lca_process_choice.errors|striptags }}</span>
+
+    <label for="id_quantity">Quantity </label>
+    {{ form.quantity|add_class:"form-control"}}
+    <span class="text-danger">{{ form.quantity.errors|striptags }}</span>
+
+    {% if form.weight_unit == 'GRAMS' and form.initial.process_unit == 'kg' %}
+    <p class="warning" style="color:red"> Warning: The analysis unit is set to  {% weight_unit form.weight_unit %}, but the process unit is [{{ form.initial.process_unit }}]. Please ensure the units of your inputs match the labels.</p>
+    {% endif %}
+
+</div>

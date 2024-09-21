@@ -1,0 +1,126 @@
+{% load icon_status_filter %}
+{% load static %}
+
+<style>
+
+ .selected_instance{
+    background: rgb(145, 220, 160);
+ }   
+ 
+ 
+ input[type=checkbox]
+{
+
+
+}
+
+.btn.instance-title[ is-active="True"]{
+
+   
+    color: rgb(0, 0, 0); 
+    padding: 0; 
+    text-align: left
+}
+
+.btn.instance-title[ is-active="False"] {
+    color: rgb(141, 141, 141);
+    padding: 0; 
+    text-align: left
+}
+.checkbox-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0;
+}
+
+.checkbox-container input[type="checkbox"] {
+    margin: 0;
+    width: auto; /* Adjust width as needed */
+    height: auto; /* Adjust height as needed */
+      /* Double-sized Checkboxes */
+    -ms-transform: scale(4); /* IE */
+    -moz-transform: scale(4); /* FF */
+    -webkit-transform: scale(4); /* Safari and Chrome */
+    -o-transform: scale(4); /* Opera */
+    transform: scale(4);
+}
+</style>
+
+
+{% for instance in object.instances %}
+
+
+
+<div class="card  animationoff  mx-0 my-2 obj_instance  " is_active = "{{instance.is_active}}" style="width: max; " id="{{instance.UUID}}" UUID_stage="{{ stage.UUID }}" UUID_instance= "{{ instance.UUID }}" UUID_object= "{{ object.UUID }}" >    
+    <div class="card-header  bgSuperHellgrau m-1 p-1" id="heading_{{ instance.UUID }}" style="background: rgb(255, 255, 255)" onclick="update_instance_parameters(this,'{{ instance.UUID }}')">
+        <h5 class="mb-0"> 
+            <div class="row "> 
+                <div class="col-md-1 p-0 d-flex flex-column justify-content-center align-items-center">
+                    <div class="checkbox-container" style="text-align:center;">
+                        {% if instance.is_active %}
+                            <label class="d-flex ">
+                                <input type="checkbox" is_active = "{{instance.is_active}}"  UUID_instance="{{ instance.UUID }}"  class="form-control clickable-instance"  checked onclick="select_active_instance(this,'{{ instance.UUID }}')">
+                            </label>
+                        {% else %}
+                            <label class="d-flex ">
+                                <input type="checkbox" is_active = "{{instance.is_active}}"  UUID_instance="{{ instance.UUID }}" class="form-control clickable-instance"  onclick="select_active_instance(this,'{{ instance.UUID }}')">
+                            </label>
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="col-md-1 p-0">
+
+                    {% with catia_rep=instance.reference_instance.catia_representation%}
+                        {% with wrl_rep=instance.reference_instance.wrl_representation%}
+                            {% if instance.type == "REFERENCE" %}
+                                        
+                                <img src="{% if instance.reference_instance|status_icon %}{{ instance.reference_instance|status_icon }}{% else %}{% static '/CatiaFramework/Status_Icons/Status_Failed_icon.png' %}{% endif %}" style="max-width: 30px;">                                                     
+                                <img class ='instance_subaction' src="{% static '/CatiaFramework/images/CatiaFramework_Catia_File_Representation' %}{% if catia_rep %}.png{% else %}_None.png{% endif %}" style="max-width: 30px;" onclick="execute_object_action(this)"  UUID_action="{{obj_action.UUID}}" UUID_request="8dbd00fb-d7fb-4a93-a8ab-97f069e15588" UUID_object="{{object.UUID}}">
+                                <img class ='instance_subaction' src="{% static '/CatiaFramework/images/CatiaFramework_WRL_File_Representation' %}{% if wrl_rep %}.png{% else %}_None.png{% endif %}" style="max-width: 30px;"  onclick="execute_object_action(this)"  UUID_action="{{obj_action.UUID}}" UUID_request="9b240725-2d51-45e1-aca3-e20f55c6b938" UUID_object="{{object.UUID}}">
+                            {% else %}
+                                <img src="{{ instance|status_icon }}"  style="max-width: 30px;">
+                                <a href="{% url 'CatiaFramework:instance_download_file_internal' instance.UUID %}">
+                                    <img class ='instance_subaction' src="{% static '/CatiaFramework/images/CatiaFramework_Catia_File_Representation' %}{% if instance.catia_representation %}.png{% else %}_None.png{% endif %}" style="max-width: 30px;">
+                                    <img class ='instance_subaction' src="{% static '/CatiaFramework/images/CatiaFramework_WRL_File_Representation' %}{% if instance.wrl_representation %}.png{% else %}_None.png{% endif %}" style="max-width: 30px;">
+                                </a>
+                            {% endif %}
+                        {% endwith %}
+                    {% endwith %}           
+                </div>
+                <div class="col-md-8">
+                    <button class="btn btn-link instance-title btn-block collapsed"  is-active = "{{instance.is_active}}" data-toggle="collapse" data-target="#collapse_{{instance.UUID}}" aria-expanded="true" aria-controls="collapse_{{instance.UUID}}"> 
+                        
+                                Name: <b>{{ instance.name }}</b> 
+                                {% if instance.type == "REFERENCE" %} 
+                                (Instance is a reference)
+                                {% endif %}   
+                                <br>
+                                Description: <b>{{ instance.description }}</b>
+                            
+                    </button>
+                </div>
+                <div class="col-md-2">
+                    <div class="container-fluid p-1 align-self-center" style="display: block; text-align: right">
+                        {% if instance.type == "REFERENCE" %} 
+                            <a href="{% url 'CatiaFramework:workflow_session_redirect_on_instance' instance.UUID %}" target="_blank" class="btn btn-secondary btn-sm ml-auto">Review Origin Session</a>                                                        
+                        {% endif %}  
+                        <!-- <button type="button" id="#modal-window-xl" class="btn btn-primary btn-sm ml-auto js-object-update" data-url="{% url 'CatiaFramework:shared_component_select' object.UUID instance.UUID %}"> Select</button> -->
+                        <button type="button" class="btn btn-warning btn-sm my-1 js-object-update " id="#modal-window"  data-url="{% url 'CatiaFramework:workflow_object_instance_update_modal' instance.UUID %}"> Edit </button> 
+                        <button type="button" class="btn btn-danger  btn-sm my-1 js-object-delete " id="#modal-window" data-url="{% url 'CatiaFramework:workflow_object_instance_delete_modal' instance.UUID %}">Delete</button> 
+                    </div>                                                   
+                </div>
+            </div>                           
+        </h5>                                     
+    </div>  
+    <div id="collapse_{{instance.UUID}}" class="collapse" aria-labelledby="heading_{{instance.UUID}}" data-parent="#accordion_child_{{object.UUID}}">                     
+        <div class="card-body">
+
+            <div class="col-md-3 m-2" id = "parameters_{{instance.UUID}}">  
+ 
+            </div>
+        </div>    
+    </div>   
+</div>         
+{% endfor %}
+

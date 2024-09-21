@@ -1,0 +1,52 @@
+{% extends 'website/base.html' %}
+{% load static %}
+
+{% block AppIcon %}
+    <a class="navbar-brand" href="{% url 'BoltMan:index' %}">
+            <span><img src="{% static 'BoltMan/images/BM.PNG' %}" alt="Logo" style="width:140px;"></span>
+    </a>
+{% endblock AppIcon %}
+
+
+{% block NavItems %}
+
+    <li class="nav-item dropdown active">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Single Assessment
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <a class="dropdown-item js-object-create" id="#modal-window-xl"  href=# data-url="{% url 'BoltMan:single_assessment_create' %}">Start new job</a>
+            <a class="dropdown-item" href="{% url 'BoltMan:continue_assessment_detail_view'%}">Continue your last job</a>
+            <a class="dropdown-item" href="{% url 'BoltMan:assessment_index_view' %}">Select job to continue</a>
+
+        </div>
+    </li>
+    <li class="nav-item dropdown active">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Assessment Manager
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <a class="dropdown-item" href=#>Start new job</a>
+            <a class="dropdown-item" href=#>Continue your last job</a>
+            <a class="dropdown-item" href=#>Select job to continue</a>
+        </div>
+    </li>
+
+    <li class="nav-item dropdown active">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Variables
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+
+            <a class="dropdown-item" href="{% url 'BoltMan:partmaterial_list'%}">Part Material</a>
+            <a class="dropdown-item" href="{% url 'BoltMan:boltmaterial_list'%}">Bolt Material</a>
+            <a class="dropdown-item" href="{% url 'BoltMan:frictionhead_list'%}">Friction On Bolt Head</a>
+            <a class="dropdown-item" href="{% url 'BoltMan:frictionthread_list' %}">Friction on Bolt Thread</a>
+
+        </div>
+    </li>
+    <li class="nav-item active">
+        <a class="nav-link js-object-create" id="#modal-window-xl" href="#" data-url="{% url 'project_create' %}">Add new project </a>
+      </li>
+{% endblock NavItems %}
+

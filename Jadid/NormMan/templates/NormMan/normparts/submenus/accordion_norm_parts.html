@@ -1,0 +1,43 @@
+<div class="card playground" id="cardZero" 
+  data-toggle="tooltip" 
+  data-placement="top" 
+  title="Collector of normalized parts">
+    <div class="panel panel-default">
+      <div class="panel-body">
+        <div class="card-header" id="headingZero" style="padding: 0; margin: 0">
+          <h5 class="mb-0">
+            <button id="btnZero"
+                    style="color: black;
+                           padding: 0"
+                    class="btn btn-link btn-block"
+                    data-toggle="collapse"
+                    data-target="#collapseZero"
+                    aria-expanded="true"
+                    aria-controls="collapseZero">
+              <div class="col-md-12">
+                <div class="row">
+                  <div class="col-md-12   bgEDAGGrau">
+                    <div class="d-flex text-left">
+                      <div>
+                        <h5 id="norm_parts_hits">Norm Parts ({{ parts| length }})</h5>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </button>
+          </h5>
+        </div>
+        <div id="collapseZero"
+             class="collapse"
+             aria-labelledby="headingZero"
+             data-parent="#accordion">
+          <div class="card-body " id="norm_parts">
+            <div class="panel panel-default overflow-auto" style="max-height: 750px">
+              <div class="panel-body ">{% include '../list_shared_components/shared_component_parts.html' %}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+</div>

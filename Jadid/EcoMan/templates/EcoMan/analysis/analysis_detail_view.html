@@ -1,0 +1,640 @@
+{% extends 'EcoMan/base.html' %}
+
+{% load static %}
+{% load weight_unit_switch  %}
+{% block Apps %}
+
+<style>
+    .bgEDAGBraun{
+        background-color: rgb(184, 172, 165);
+    }
+    .bgEDAGBeige{
+        background-color: rgb(216, 207, 201);
+    }
+    .bgEDAGGrau{
+        background-color: rgb(208, 216, 223);
+    }
+    .bgEDAGHellgrau{
+        background-color: rgb(228, 229, 230);
+    }
+
+    .bgSuperHellgrau{
+        background-color: rgb(240, 240, 240);
+    }
+    .bgDebianRed{
+        background-color: #D71946;
+    }
+
+    
+
+    #accordion_lca_part_left  .card-header.commodity.False:hover,
+    #accordion_lca_part_right  .card-header.commodity.False:hover{
+        transform: scale(1.01);
+        box-shadow: none;
+        box-shadow: 0 5px 5px rgba(0,0,0,.7), 0 0 5px rgba(50,50,0,.7);     
+        background-color: rgba(0,0,0,.03);
+    }
+    #accordion_lca_part_left  .card-header.commodity.True:hover,
+    #accordion_lca_part_left  .card-header.commodity.True.hover,
+    #accordion_lca_part_right  .card-header.commodity.True:hover,
+    #accordion_lca_part_right  .card-header.commodity.True.hover{
+        transform: scale(1.01);
+        box-shadow: none;
+        box-shadow: 0 5px 5px rgba(0,0,0,.7), 0 0 5px rgba(50,50,0,.7);     
+        background-color: rgba(0,50,0,.03);
+    }
+
+
+    #accordion_lca_part_left  .card-header a,
+    #accordion_lca_part_right .card-header a{
+        color: black;
+        font-size:1rem;
+        text-decoration:none !important;
+    }
+
+    #accordion_lca_part_left  .card-header.commodity.False,
+    #accordion_lca_part_right .card-header.commodity.False {
+        background-color: rgba(0,0,0,.12);
+        margin-top: 10px;
+        box-shadow: 0 3px 3px rgba(0,0,0,.08), 0 0 3px rgba(50,50,0,.05);  
+        border-radius: 5px;  
+        padding-left:3px;
+        padding-right:3px;        
+        height: 70px  
+    }
+
+    #accordion_lca_part_left .card-header.commodity.True {
+        background-color: rgba(0,0,0,.22);
+        margin-top: 10px;
+        margin-right: -30px;
+        box-shadow: 0 3px 3px rgba(0,0,0,.08), 0 0 3px rgba(50,50,0,.05);  
+        border-radius: 5px;  
+        padding-left:3px;
+        padding-right:3px;  
+        height: 70px                
+    }
+
+
+    #accordion_lca_part_right .card-header.commodity.True {
+        background-color: rgba(0,0,0,.22);
+        margin-top: 10px;
+        margin-left: -30px;
+        box-shadow: 0 3px 3px rgba(0,0,0,.08), 0 0 3px rgba(50,50,0,.05);  
+        border-radius: 5px;  
+        padding-left:3px;
+        padding-right:3px;   
+        height: 70px               
+    }
+
+
+    #accordion_lca_part_left .col,
+    #accordion_lca_part_right .col{
+        padding-left:0px;
+        padding-right:0px;
+        margin-left:0px;
+        margin-right:0px;
+        text-align:left;
+        }
+
+    div.card.playground {
+        border-radius: 7px;
+        box-shadow: 0 3px 3px rgba(0,0,0,.08), 0 0 3px rgba(50,50,0,.05);
+        padding-right: 0px;
+        padding-left: 0px;
+        padding-top: 0px; 
+        margin-top: 10px;
+        background-color: rgba(240, 240, 240, 1)
+    }
+   
+    div.card.playground:hover{
+        transform: none !important;
+        transition: none !important;
+        box-shadow: 0 5px 5px rgba(0,0,0,.7), 0 0 5px rgba(50,50,0,.7);     
+        padding-right: 0px;
+        padding-left: 0px;
+        padding-top: 0px; 
+        margin-top: 10px;   
+    }
+</style>
+
+
+    <div class="container-fluid" id="objects-container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="row">
+                    <div class="col-md-10 border-right">
+                        <div class="row" style=" margin-bottom:30px;">
+                            <div class="col-md-12 border-right bgEDAGGrau" >
+                                <div class="text-center">
+                                    <h5> {{ object.name }} - Concept Weight: {% weight_conversion analysis.weight  analysis.analysis_settings.weight_units analysis.analysis_settings.weight_decimal_points %}
+                                    </h5>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-12" >
+                                <div class="row">
+                                    <div id="accordion" class="container-fluid">      
+                                        <div class="row">             
+                                            <div class="col-md-12 border-bottom" style="margin-top:10px">    
+                                                <h5> <b> Product structure  </b></h5>                                                                                              
+                                            </div>                                    
+                                        </div>                                            
+ 
+
+                                        {#Step:1  Parts------------------------------------------------------------------------------------------------------------ #}
+                                        <div class="card playground" id="cardOne">
+                                            <div class="panel panel-default">
+                                                <div class="panel-body">
+                                                    <div class="card-header" id="headingOne" style="padding: 0; margin: 0" >
+                                                        <h5 class="mb-0">
+                                                            <button id="btnOne" style="color: black; padding: 0; " class="btn btn-link btn-block"  data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne" >
+                                                                <div class="col-md-12">
+                                                                    <div class="row">
+                                                                        <div class="col-md-6   bgEDAGGrau">
+                                                                            <div class="d-flex text-left">
+                                                                                <div>
+                                                                                    <h5>Product structure  </h5>
+                                                                                </div>                                    
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="col-md-6   bgEDAGGrau">
+                                                                            <div class="d-flex justify-content-end">
+                                                                                <span><img src="{% static 'website/images/QLCA_Parts_Icon.png' %}" style="max-height:50px; justify-content: right;"></span>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </button>
+                                                        </h5>
+                                                    </div>
+                                                    <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordion">
+                                                        <div class="card-body p-1" >
+                                                            <div class="panel panel-default">
+                                                                <div class="panel-body" >
+                                                                    {% include './analysis_detail_view/parts.html' %}
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="row" style="margin-top:15px">             
+                                            <div class="col-md-12 border-bottom" >    
+                                                <h5> <b> LCA Processes </b></h5>                                                                                              
+                                            </div>                                    
+                                        </div> 
+                                        {#Step:2  Upstream (Cradle to gate)------------------------------------------------------------------------------------------------------------ #}
+                                        <div class="card playground" id="cardTwo" >
+                                            <div class="panel panel-default">
+                                                <div class="panel-body">
+                                                    <div class="card-header" id="headingTwo"  style="padding: 0; margin: 0">
+                                                        <h5 class="mb-0">
+                                                            <button id="btnTwo" style="color: black; padding: 0;" class="btn btn-link btn-block" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo" >
+                                                                <div class="col-md-12">
+                                                                    <div class="row">
+                                                                        <div class="col-md-6 bgEDAGGrau" >
+                                                                            <div class="d-flex text-left">
+                                                                                    <div>
+                                                                                        <h5>Upstream (Cradle to gate) </h5>
+                                                                                    </div>
+                                                                                </div>
+                                                                        </div>
+                                                                        <div class="col-md-6   bgEDAGGrau">
+                                                                            <div class="d-flex justify-content-end">
+                                                                                <span><img src="{% static 'website/images/QLCA_Phase_1_Icon.png' %}" style="max-height:50px; justify-content: right;"></span>
+
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </button>
+                                                        </h5>
+                                                    </div>
+                                                    <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
+                                                        <div class="card-body">
+                                                            <div class="panel panel-default">
+                                                                <div class="panel-body" >
+                                                                    {% include './analysis_detail_view/STEP1_UPSTREAM/step1_upstream_visualisation_ROWS.html' %}
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        {#Step:3  Core (Manufacturing to customer delivery)------------------------------------------------------------------------------------------------------------ #}
+                                        <div class="card playground" id="cardThree" >
+                                            <div class="panel panel-default">
+                                                <div class="panel-body">
+                                                    <div class="card-header" id="headingThree"  style="padding: 0; margin: 0">
+                                                        <h5 class="mb-0">
+                                                            <button id="btnThree" style="color: black; padding: 0;" class="btn btn-link btn-block" data-toggle="collapse" data-target="#collapseThree" aria-expanded="true" aria-controls="collapseThree">
+                                                                <div class="col-md-12">
+                                                                    <div class="row">
+                                                                        <div class="col-md-6 bgEDAGGrau">
+                                                                            <div class="d-flex text-left align-content-center">
+                                                                                    <div>
+                                                                                        <h5>Core (Manufacturing and Customer Delivery) </h5>
+                                                                                    </div>
+                                                                                </div>
+                                                                        </div>
+                                                                        <div class="col-md-6   bgEDAGGrau">
+                                                                            <div class="d-flex justify-content-end">
+                                                                                <span><img src="{% static 'website/images/QLCA_Phase_2_Icon.png' %}" style="max-height:50px; justify-content: right;"></span>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </button>
+                                                        </h5>
+                                                    </div>
+                                                    <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordion">
+                                                        <div class="card-body">
+                                                            <div class="panel panel-default">
+                                                                <div class="panel-body">
+                                                                    {% include './analysis_detail_view/STEP2_CORE/step2_core_visualisation_ROWS.html' %}
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        {#Step:4 Downstream (Lifetime to Grave)--------------------------------------------------------------------------------- #}
+                                        <div class="card playground" id="cardFour" >
+                                            <div class="panel panel-default">
+                                                <div class="panel-body">
+                                                    <div class="card-header" id="headingFour"  style="padding: 0; margin: 0">
+                                                        <h5 class="mb-0">
+                                                            <button id="btnFour" style="color: black; padding: 0;" class="btn btn-link btn-block" data-toggle="collapse" data-target="#collapseFour" aria-expanded="true" aria-controls="collapseFour">
+                                                                <div class="col-md-12">
+                                                                    <div class="row">
+                                                                        <div class="col-md-6 bgEDAGGrau">
+                                                                            <div class="d-flex text-left">
+                                                                                    <div>
+                                                                                        <h5>Downstream (Lifetime to Grave)  </h5>
+                                                                                    </div>
+                                                                                </div>
+                                                                        </div>
+                                                                        <div class="col-md-6   bgEDAGGrau">
+                                                                            <div class="d-flex justify-content-end">
+                                                                                <span><img src="{% static 'website/images/QLCA_Phase_3_Icon.png' %}" style="max-height:50px; justify-content: right;"></span>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </button>
+                                                        </h5>
+                                                    </div>
+                                                    <div id="collapseFour" class="collapse" aria-labelledby="headingFour" data-parent="#accordion">
+                                                        <div class="card-body">
+                                                            <div class="panel panel-default">
+                                                                <div class="panel-body">
+                                                                        {% include './analysis_detail_view/STEP3_DOWNSTREAM/step3_downstream_visualisation_ROWS.html' %}
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        {#Step:0  Automotive Use Phase Source------------------------------------------------------------------------------------------------------------ #}
+                                        <div class="card playground" id="cardFive">
+                                            <div class="panel panel-default">
+                                                <div class="panel-body">
+                                                    <div class="card-header" id="headingFive" style="padding: 0; margin: 0" >
+                                                        <h5 class="mb-0">
+                                                            <button id="btnFive" style="color: black; padding: 0; " class="btn btn-link btn-block"  data-toggle="collapse" data-target="#collapseFive" aria-expanded="true" aria-controls="collapseFive">
+                                                                <div class="col-md-12">
+                                                                    <div class="row">
+                                                                        <div class="col-md-6   bgEDAGGrau">
+                                                                            <div class="d-flex text-left">
+                                                                                <div>
+                                                                                    <h5>Automotive Use Phase </h5>
+                                                                                </div>                                    
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="col-md-6   bgEDAGGrau">
+                                                                            <div class="d-flex justify-content-end">
+                                                                                <span><img src="{% static 'website/images/QLCA_EnergySorces_Icon.png' %}" style="max-height:50px; justify-content: right;"></span>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </button>
+                                                        </h5>
+                                                    </div>
+                                                    <div id="collapseFive" class="collapse" aria-labelledby="headingFive" data-parent="#accordion">
+                                                        <div class="card-body  " >
+                                                            <div class="panel panel-default">
+                                                                <div class="panel-body " >
+                                                                    {% include './analysis_detail_view/vehicleenegysources.html' %}
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+
+                                        {#Step:5 Circularity (Lifetime to Grave)--------------------------------------------------------------------------------- #}
+                                        <div class="card playground" id="cardSix">
+                                            <div class="panel panel-default">
+                                                <div class="panel-body">
+                                                    <div class="card-header" id="headingSix"  style="padding: 0; margin: 0">
+                                                        <h5 class="mb-0">
+                                                            <button id="btnSix" style="color: black; padding: 0;" class="btn btn-link btn-block" data-toggle="collapse" data-target="#collapseSix" aria-expanded="true" aria-controls="collapseSix">
+                                                                <div class="col-md-12">
+                                                                    <div class="row">
+                                                                        <div class="col-md-6 bgEDAGGrau">
+                                                                            <div class="d-flex text-left">
+                                                                                    <div>
+                                                                                        <h5>Maintenance  </h5>
+                                                                                    </div>
+                                                                                </div>
+                                                                        </div>
+                                                                        <div class="col-md-6   bgEDAGGrau">
+                                                                            <div class="d-flex justify-content-end">
+                                                                                <span><img src="{% static 'website/images/QLCA_MaintenanceCO2_Icon.png' %}" style="max-height:50px; justify-content: right;"></span>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </button>
+                                                        </h5>
+                                                    </div>
+                                                    <div id="collapseSix" class="collapse" aria-labelledby="headingSix" data-parent="#accordion">
+                                                        <div class="card-body">
+                                                            <div class="panel panel-default">
+                                                                <div class="panel-body">
+                                                                        {% include './analysis_detail_view/STEP4_DOWNSTREAM_CIRCULARITY/step4_downstream_circularity_visualisation_ROWS.html' %}
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="row" style="margin-top:15px">             
+                                            <div class="col-md-12 border-bottom" >    
+                                                <h5> <b> Results </b></h5>                                                                                              
+                                            </div>                                    
+                                        </div>                                 
+                                        {#Step:5 Weight Summary------------------------------------------------------------------------------------------------------------ #}
+                                        <div class="card playground" id="cardSeven">
+                                            <div class="panel panel-default">
+                                                <div class="panel-body">
+                                                    <div class="card-header" id="headingSeven"  style="padding: 0; margin: 0">
+                                                        <h5 class="mb-0">
+
+                                                            <button id="btnSeven" style="color: black; padding: 0;" class="btn btn-link btn-block" data-toggle="collapse" data-target="#collapseSeven" aria-expanded="true" aria-controls="collapseSeven">
+                                                                <div class="col-md-12">
+                                                                    <div class="row">
+                                                                        <div class="col-md-6 bgEDAGGrau">
+                                                                            <div class="d-flex text-left">
+                                                                                    <div>
+                                                                                        <h5>Weight Summary </h5>
+                                                                                    </div>
+                                                                                </div>
+                                                                        </div>
+                                                                        <div class="col-md-6   bgEDAGGrau">
+                                                                            <div class="d-flex justify-content-end">
+                                                                                <span><img src="{% static 'website/images/QLCA_Weight_Icon.png' %}" style="max-height:50px; justify-content: right;"></span>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </button>
+                                                        </h5>
+                                                    </div>
+                                                    <div id="collapseSeven" class="collapse" aria-labelledby="headingSeven" data-parent="#accordion">
+                                                        <div class="card-body">
+                                                            <div class="panel panel-default">
+                                                                <div class="panel-body">
+                                                                    {% include './analysis_detail_view/weightsummary.html' %}
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        {#Step:6 CO2 FOOTPRINT------------------------------------------------------------------------------------------------------------ #}
+                                        <div class="card playground" id="cardEight" >
+                                            <div class="panel panel-default">
+                                                <div class="panel-body">
+                                                    <div class="card-header" id="headingEight"  style="padding: 0; margin: 0">
+                                                        <h5 class="mb-0">
+                                                            <button id="btnEight" style="color: black; padding: 0;" class="btn btn-link btn-block" data-toggle="collapse" data-target="#collapseEight" aria-expanded="true" aria-controls="collapseEight">
+                                                                <div class="col-md-12">
+                                                                    <div class="row">
+                                                                        <div class="col-md-6 bgEDAGGrau">
+                                                                            <div class="d-flex text-left">
+                                                                                    <div>
+                                                                                        <h5>Emissions Summary - {{ analysis_left.primary_property}} </h5>
+                                                                                    </div>
+                                                                                </div>
+                                                                        </div>
+                                                                        <div class="col-md-6   bgEDAGGrau">
+                                                                            <div class="d-flex justify-content-end">
+                                                                                <span><img src="{% static 'website/images/QLCA_ManufacturingCO2_Icon.png' %}" style="max-height:50px; justify-content: right;"></span>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </button>
+                                                        </h5>
+                                                    </div>
+                                                    <div id="collapseEight" class="collapse" aria-labelledby="headingEight" data-parent="#accordion">
+                                                        <div class="card-body">
+                                                            <div class="panel panel-default">
+                                                                <div class="panel-body">
+                                                                    {% include './analysis_detail_view/emmision_manufacturing.html' %}
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        {#Step:7 Emissions Utilisation - CO2 eq.------------------------------------------------------------------------------------------------------------ #}
+                                        <div class="card playground" id="cardNine">
+                                            <div class="panel panel-default">
+                                                <div class="panel-body">
+                                                    <div class="card-header" id="headingNine"  style="padding: 0; margin: 0">
+                                                        <h5 class="mb-0">
+                                                            <button id="btnNine" style="color: black; padding: 0;" class="btn btn-link btn-block" data-toggle="collapse" data-target="#collapseNine" aria-expanded="true" aria-controls="collapseNine">
+                                                                <div class="col-md-12">
+                                                                    <div class="row">
+                                                                        <div class="col-md-6 bgEDAGGrau">
+                                                                            <div class="d-flex text-left">
+                                                                                    <div>
+                                                                                    <h5>Emissions Automotive Use Phase  (Currently only available in the A-B Comparison and Analysis comparison modes)</h5>
+                                                                                    </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="col-md-6   bgEDAGGrau">
+                                                                            <div class="d-flex justify-content-end">
+                                                                                <span><img src="{% static 'website/images/QLCA_EmmisionsAutomotiveUsePhase_Icon.png' %}" style="max-height:50px; justify-content: right;"></span>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </button>
+                                                        </h5>
+                                                    </div>
+                                                    <div id="collapseNine" class="collapse" aria-labelledby="headingNine" data-parent="#accordion">
+                                                        <div class="card-body">
+                                                            <div class="panel panel-default">
+                                                                <div class="panel-body">
+                                                                    {% include './analysis_detail_view/emmision_utilisation.html' %}
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-2">
+                            <div class="row">
+                                {% include "website/current_analysis.html" %}
+                                {% include "website/idemat_licence_badge.html" %}
+                                {%if analysis_left.analysis_settings.is_automotive%} 
+                                    {% include "website/current_vehicle.html" %} 
+                                {%endif%}
+                            </div>
+                        </div>
+                    </div> 
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+<script type="text/javascript">
+    var collapses = ['collapseOne','collapseTwo','collapseThree','collapseFour','collapseFive','collapseSix','collapseSeven','collapseEight', 'collapseNine'];
+    $(document).ready(function () {
+        var last = sessionStorage.getItem('accordion');
+
+        if (last != "null") {
+            for (var obj in collapses) {
+                $(obj.id).removeClass('show');
+            }
+            $('#' + last).addClass('show');
+        }
+        else {
+            var collapses = document.querySelectorAll('[id^="collapse"]');
+                for (var obj in collapses) {
+                    $(obj.id).removeClass('show');
+                }
+
+        }
+
+        //When there are no parts all tabs should be deactivated
+        if ("{{ lca_parts_left_all_list|length }}" == '0') {
+
+            let buttons = ['btnTwo','btnThree','btnFour','btnFive','btnSix','btnSeven','btnEight','btnNine'];
+            let collapses = ['collapseTwo','collapseThree','collapseFour','collapseFive','collapseSix','collapseSeven','collapseEight', 'collapseNine'];
+            
+            buttons.forEach(btn => $('#'+btn)[0].disabled = true);
+            collapses.forEach(collapse => $('#'+collapse).removeClass('show'));  
+            
+
+        }
+
+        if ("{{ current_analysis.analysis_settings.include_utilisation|safe }}" == "False") {
+            document.getElementById("cardFive").style.display = "none"; 
+            document.getElementById("cardSix").style.display = "none";     
+            document.getElementById("cardNine").style.display = "none";        
+            } 
+        else
+            {
+            document.getElementById("cardZero").style.display = "visible";     
+            document.getElementById("cardEight").style.display = "visible";    
+            document.getElementById("cardNine").style.display = "visible";         
+            }
+
+        if ("{{ current_analysis.analysis_settings.include_upstream|safe }}" == "False") {
+            document.getElementById("cardTwo").style.display = "none";        
+            } 
+        else
+            {
+            document.getElementById("cardTwo").style.display = "visible";           
+            }
+
+        if ("{{ current_analysis.analysis_settings.include_core|safe }}" == "False") {
+            document.getElementById("cardThree").style.display = "none";        
+            } 
+        else
+            {
+            document.getElementById("cardThree").style.display = "visible";           
+            }
+
+        if ("{{ current_analysis.analysis_settings.include_downstream|safe }}" == "False") {
+            document.getElementById("cardFour").style.display = "none";        
+            } 
+        else
+            {
+            document.getElementById("cardFour").style.display = "visible";           
+            }
+
+        if ("{{ current_analysis.analysis_settings.include_circularity|safe }}" == "False") {
+            document.getElementById("cardFive").style.display = "none";        
+            } 
+        else
+            {
+            document.getElementById("cardFive").style.display = "visible";           
+            }
+
+
+        if ("{{ current_analysis.analysis_settings.utilisation_instance_model.all.count|safe }}" == '0') {
+
+            $('#btnEight')[0].disabled = true;  
+            $('#collapseEight').removeClass('show');             
+        }       
+    });
+
+
+    $(document).on('shown.bs.collapse', function() {
+        var id = arguments[0].target.id;
+        if (collapses.includes(id)) {
+            setSessionStorage(id, 'shown');
+        }
+      })
+      $(document).on('hidden.bs.collapse', function() {
+        var id = arguments[0].target.id;
+        if (collapses.includes(id)) {        
+            setSessionStorage(id, 'hidden');
+        }
+      })
+
+
+      function setSessionStorage(collapse_name, collapse_status) {
+        var collapse_elem = document.getElementById(collapse_name)
+
+        if (collapse_status == "shown") {
+            sessionStorage.setItem('accordion', collapse_name );          
+        }
+        else {
+            sessionStorage.setItem('accordion',"null" );
+        } 
+      } 
+</script>
+
+
+
+
+{% endblock Apps %}

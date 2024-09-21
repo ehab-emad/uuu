@@ -1,0 +1,61 @@
+{% extends 'website/base.html' %}
+
+
+{% block details %}
+<div class="container-fluid boltcases-container">    
+        <div class="row-no-gutters">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+
+                        {% if error_message %}
+                            <p><strong>{{ error_message }}</strong></p>
+                        {% endif %}
+
+                        <table class="table table-hover">
+                            <thead>
+                            <tr>
+                                <th>ID:</th>
+                                <th>Name:</th>
+                                <th>Owner:</th>    
+                                <th>Creation date:</th>    
+                                <th>Last changed:</th>  
+                                <th>Part 1:</th> 
+                                <th>Part 2:</th>
+                                <th>Part 3:</th>                                                           
+                                <th>Status</th>                                
+                                <th>Action</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for result in boltcase%}
+
+                                <tr>
+                                    <td>{{ result.id }}</td>
+                                    <td>{{ result.name }}</td>
+                                    <td>{{ result.created_at }}</td>
+                                    <td>{{ result.updated_at }}</td>         
+                                    <td>{{ result.user }}</td>          
+                                    <td>{{ result.part1 }}</td>  
+                                    <td>{{ result.part2 }}</td>  
+                                    <td>{{ result.part3 }}</td> 
+                                    <td>{{ result.status }}</td>                                                                                                                                                                                                          
+                                    <td>
+                                        <button type="button" 
+                                            class="btn btn-primary btn-sm js-boltmaterial-update " 
+                                            data-url="{% url 'BoltMan:part_update' result.id %}">
+                                            Usage
+                                        </button>
+                                    <a href="{% url 'BoltMan:boltcase_resultview' result.id %}" class="btn btn-info btn-sm " role="button" aria-pressed="true">Results protocol</a>                                               
+                                    <a href="{% url 'BoltMan:boltcase-detailview' result.id %}" class="btn btn-warning btn-sm " role="button" aria-pressed="true">Edit</a>
+                                    <a href="#" class="btn btn-danger btn-sm " role="button" aria-pressed="true">Delete</a>       
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>                 
+        </div>
+
+{% endblock %}                   

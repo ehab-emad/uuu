@@ -1,0 +1,52 @@
+{% extends 'BoltMan/base.html' %}
+{% load static %}
+
+{% block Apps %}
+
+<style>
+
+
+    .bg {
+        /* The image used */
+        background-image: url(/../../static/BoltMan/images/Multiple_Screws_Big.png); 
+        /* Full height */
+        height: 100%; 
+        
+        /* Center and scale the image nicely */
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: cover;
+        }
+</style>
+
+<div class="w-100 bg" style="background-color: #eee; height: 100vh;  overflow: auto;">
+    <div class="h-100 " style="max-width: 100%;">
+            <!-- Background image -->
+                <div class="mask" style="background-color: rgba(0, 0, 0, 0.3); transform: translate(0, 80%);">
+                    <div class="d-flex justify-content-center align-items-center h-100">
+                        <div class="text-white">
+                            <center>
+                                <h1 class="mb-3">EDAG Bolt Case Assessment Tool</h1>
+                                <h5 class="mb-4">
+                                    Assess your Bolt cases 
+                                </h5>
+                            
+                            <a class="btn btn-outline-light btn-lg m-2" href="{% url 'BoltMan:continue_assessment_detail_view'%}"
+                                role="button">Continue your last job</a>
+        
+                            <a class="btn btn-outline-light btn-lg m-2" href="{% url 'BoltMan:assessment_index_view' %}"
+                                role="button">Select job to continue</a>
+        
+                            <button type="button" class="btn btn-outline-light btn-lg m-2 js-object-create" id="#modal-window" data-url="{% url 'BoltMan:single_assessment_create' %}">
+                                Start new job
+                            </button>
+        
+
+                        </div>
+                    </center>
+                    </div>
+                </div>
+    </div>
+  </div>
+
+{% endblock Apps %}

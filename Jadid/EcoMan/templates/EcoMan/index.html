@@ -1,0 +1,181 @@
+{% extends 'EcoMan/base.html' %}
+{% load static %}
+
+{% block Apps %}
+
+
+
+<style>
+    .card-img-top {
+        width: 100%;
+        height: 10vw;
+        object-fit: contain;
+    }
+</style>
+<div class="container-fluid  overflow-hidden">
+    <div class="row">
+        <div class="col-md-10 border-right">
+            <div class="row">
+                <div class="card  mx-1 my-3" style="width: 12rem;" >
+                    <img class="card-img-top" src="{% static 'EcoMan/images/QLCA_Single_Concept.png' %}" alt="Card image cap">
+                    <div class="card-body d-flex flex-column">
+                        <h5 class="card-title">Single Concept Analysis</h5>
+                        <p class="card-text">Perform an analysis for a single concept</p>
+                        <div class="container-fluid" style="margin-top: auto;">
+                            <div class="row">
+                                <a href="{% url 'EcoMan:qlca_analysis_welcome_screen' %}" class="btn btn-warning btn-lg btn-block" role="button" aria-disabled="true">Start</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card  mx-1 my-3" style="width: 12rem;">
+                    <img class="card-img-top" src="{% static 'EcoMan/images/QLCA_Two_Concept.png' %}" alt="Card image cap">
+                    <div class="card-body d-flex flex-column">
+                        <h5 class="card-title">A-B Concept Analysis</h5>
+                        <p class="card-text">Perform an A-B comparative analysis for two concepts </p>
+                        <div class="container-fluid" style="margin-top: auto;">
+                            <div class="row">
+                                <a href="{% url 'EcoMan:qlca_welcome_screen'%}" class="btn btn-warning btn-lg btn-block " role="button" aria-disabled="true">Start</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card  mx-1 my-3" style="width: 12rem; ">
+                    <img class="card-img-top" src="{% static 'EcoMan/images/QLCA_Comparison.png' %}" alt="Card image cap">
+                    <div class="card-body d-flex flex-column">
+                        <h5 class="card-title">Analyses Comparison</h5>
+                        <p class="card-text">Compare any two existing analyses within the project </p>
+                        <div class="container-fluid" style="margin-top: auto;">
+                            <div class="row">
+                                
+                                <a href="{% url 'EcoMan:qlca_compare'%}" class="btn btn-warning btn-lg btn-block " role="button" aria-disabled="true">Start</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card  mx-1 my-3" style="width: 12rem;">
+                    <img class="card-img-top" src="{% static 'EcoMan/images/LCA_Database_Idemat.png' %}" alt="Card image cap">
+                    <div class="card-body d-flex flex-column">
+                        <h5 class="card-title">LCA Database:<br> Open access</h5>
+                        <p class="card-text">Review contents of Open Source Databases like Idemat </p>
+                        <div class="container-fluid" style="margin-top: auto;">
+                            <div class="row">
+                                <a href="{% url 'EcoMan:open_database_index_view'%}" class="btn btn-warning btn-lg btn-block " role="button" aria-disabled="true">Start</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card  mx-1 my-3" style="width: 12rem;">
+                    <img class="card-img-top" src="{% static 'EcoMan/images/LCA_Database_EDAG.png' %}" alt="Card image cap">
+                    <div class="card-body d-flex flex-column">
+                        <h5 class="card-title">LCA Database:<br> Organisation</h5>
+                        <p class="card-text">Review contents of databases released within your organisation </p>
+                        <div class="container-fluid" style="margin-top: auto;">
+                            <div class="row">
+                                <a href="{% url 'EcoMan:edag_database_index_view'%}" class="btn btn-warning btn-lg btn-block " role="button" aria-disabled="true">Start</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card  mx-1 my-3" style="width: 12rem;">
+                    <img class="card-img-top" src="{% static 'EcoMan/images/LCA_Database_Project.png' %}" alt="Card image cap">
+                    <div class="card-body d-flex flex-column">
+                        <h5 class="card-title">LCA Database:<br> Project Database</h5>
+                        <p class="card-text">Review contents of the project related databases </p>
+                        <div class="container-fluid" style="margin-top: auto;">
+                            <div class="row">
+                                <a href="{% url 'EcoMan:project_database_index_view'%}" class="btn btn-warning btn-lg btn-block " role="button" aria-disabled="true">Start</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+            <div class="col-md-2">
+                {% include "website/current_project.html" %}
+                {% include "website/idemat_licence_badge.html"%}
+            </div>
+    </div>
+</div>
+
+<script type="module">
+    import {ExpirationChecker} from "{% static 'js/expiration_checker.js' %}";
+    const expirationTime = {{ expiration_timestamp }}; // Expire after 5 seconds
+    const djangoUrl = 'website:expired_login'; // Replace with your Django URL
+    const checker = new ExpirationChecker(expirationTime, djangoUrl); // Starts the expiration checker
+</script>
+
+
+<style>
+    /* The Modal (background) */
+    .modal-dialog{
+      margin:auto;
+      position: relative;  
+    }
+    .modalinfo {
+      display: none; /* Hidden by default */
+      position: fixed; /* Stay in place */
+      z-index: 1; /* Sit on top */
+      padding-top: 100px; /* Location of the box */
+      left: 0;
+      top: 0;
+      width: 100%; /* Full width */
+      height: 100%; /* Full height */
+      overflow: auto; /* Enable scroll if needed */
+      background-color: rgb(0,0,0); /* Fallback color */
+      background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+    }
+
+    /* Modal Content */
+    .modalinfo-content {
+      background-color: #fefefe;
+      margin: auto;
+      padding: 20px;
+      border: 1px solid #888;
+      width: 20%;
+    }
+
+    /* The Close Button */
+    .close {
+      color: #aaaaaa;
+      float: right;
+      font-size: 28px;
+      font-weight: bold;
+    }
+
+    .close:hover,
+    .close:focus {
+      color: #000;
+      text-decoration: none;
+      cursor: pointer;
+    }
+</style>
+
+
+
+  <script type="text/javascript">
+        // Get the modal
+        var modal = document.getElementById("myModalEco");
+
+        // Get the button that opens the modal
+        var btn20 = document.getElementById("myBtn20");
+        // Get the <span> element that closes the modal
+        var span = document.getElementsByClassName("close")[0];
+
+
+        // When the user clicks on the button, open the modal
+        btn20.onclick = function() {
+          modal.style.display = "block";
+        }
+
+        // When the user clicks anywhere outside of the modal, close it
+        window.onclick = function(event) {
+          if (event.target == modal) {
+            modal.style.display = "none";
+          }
+        } 
+</script>
+
+{% endblock Apps %}

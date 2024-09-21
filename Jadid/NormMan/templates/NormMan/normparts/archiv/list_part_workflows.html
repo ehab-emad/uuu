@@ -1,0 +1,221 @@
+{% load static %}
+<style type="text/css">
+
+    .stlviewer {
+        width: 100%;
+        height: 100%;
+        
+        background: #00005F; /* Old browsers */
+        background: -moz-linear-gradient(top,  #00005F 0%, #9797BE 100%); /* FF3.6-15 */
+        background: -webkit-linear-gradient(top,  #00005F 0%,#9797BE 100%); /* Chrome10-25,Safari5.1-6 */
+        background: linear-gradient(to bottom,  #00005F 0%,#9797BE 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+        filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#00005F', endColorstr='#9797BE',GradientType=0 ); /* IE6-9 */
+        overflow: hidden;
+      }
+</style>
+<div class="container-fluid ">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="row-no-gutters">
+        {% if error_message %}
+          <p>
+            <strong>{{ error_message }}</strong>
+          </p>
+        {% endif %}
+        <div class="table-responsive w-100 d-block d-md-table">
+          <table class="table table-hover ">
+            <thead>
+              <tr>
+                <th>Preview:</th>
+                <th>Meta:</th>
+                <th>Physical</th>
+                <th>Parameters:</th>
+                <th>Supplier:</th>
+                <th>EDAG Notes:</th>
+                <th>Actions:</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% if workflows %}
+                {% for object in workflows %}
+                  <tr>
+                    <td>
+                      {% if object.thumbnail %}
+                        <img class="card-img-top"
+                             id="thumbnail_{{ object.UUID }}"
+                             src='{{ object.thumbnail.url }}'
+                             alt="Error: 404"
+                             style="width: 15rem;
+                                    height: 100%">
+                      {% else %}
+                        <img class="card-img-top"
+                             id="thumbnail_{{ object.UUID }}"
+                             src="{% static '/website/images/Part_Icon.png' %}"
+                             alt="Default"
+                             style="width: 15rem;
+                                    height: 100%">
+                      {% endif %}
+                      <div class="stlviewer"
+                           id='stlviewer_{{ object.UUID }}'
+                           style="display: none;
+                                  position: relative;
+                                  width: 15rem;
+                                  height: 100%"
+                           data-src="{{ object.stl_thumbnail.url }}"></div>
+                    </td>
+                    <td rowspan="2">
+                      <b> Name: </b> {{ object.name }}
+                      <br>
+                      <b> Name DE:</b> {{ object.name_de }}
+                      <br>
+                      <b> UUID:</b>
+                      <br>
+                      {{ object.UUID }}
+                      <br>
+                      <b> Owner:</b> {{ object.owner }}
+                      <br>
+                      <b> Created:</b> {{ object.created_at }}
+                      <br>
+                      <b> Updated:</b> {{ object.updated_at }}
+                      <br>
+                      <b> Downloads: </b>{{ object.file_catia_part_counter }}
+                    </td>
+                    <td rowspan="2">
+                      <b> Material: </b>   {{ object.material }}
+                      <br>
+                      <b> Weight: </b>  {{ object.weight|floatformat:3 }}
+                      <br>
+                      <b> Density: </b> {{ object.density }}
+                      <br>
+                      <td rowspan="2">{{ object.parameters }}</td>
+                      <td rowspan="2">
+                        <b> Supplier Name: </b>  {{ object.supplier_name }}
+                        <br>
+                        <b> Supplier Number: </b>  {{ object.supplier_part_number }}
+                        <br>
+                        <b> Reference OEM Name: </b>   {{ object.oem_reference_name }}
+                        <br>
+                        <b> Reference OEM Number: </b>   {{ object.oem_reference_part_number }}
+                      </td>
+                      <td rowspan="2">{{ object.notes }}</td>
+                      <td rowspan="2">
+                        <button type="button"
+                                class="btn btn-primary btn-block btn-sm js-boltmaterial-update "
+                                data-url>Details</button>
+                        <br>
+                        <a href="{% url 'NormMan:NormPartDownloadView' uuid=object.UUID %}"
+                           class="btn btn-block btn-success btn-sm "
+                           role="button"
+                           aria-pressed="true">Download .CATPart</a>
+                        <br>
+                        {% if object.parameters %}
+                          {% comment %} <button type="button" id="{{ object.UUID }}" onclick = "CopyText(this.id,{{ object.parameters }})" class="btn btn-block btn-info btn-sm">Send To CAD </button>  {% endcomment %}
+                          <button type="button"
+                                  id="#modal-window-xl"
+                                  class="btn btn-warning btn-sm js-object-update "
+                                  data-url="{% url 'NormMan:shared_component_quick_position_modal' object.UUID %}">Send to CAD</button>
+                          {% comment %} <button type="button" id="{{ object.UUID }}" onclick = "CopyText(this.id,{{ object.parameters }})" class="btn btn-block btn-info btn-sm">Send To CAD </button>            {% endcomment %}
+                        {% else %}
+                          <button type="button"
+                                  id="{{ object.UUID }}"
+                                  onclick="CopyText(this.id, {'default' : true })"
+                                  class="btn btn-block btn-info btn-sm">Send To CAD</button>
+                        {% endif %}
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <style>
+                                        .button-box {
+                                            display: grid;
+                                            grid-template-columns: 55px 55px 55px ;
+                                            grid-template-rows: 55px ;
+                                            gap: 20px 20px;
+                                            width: 100%%; 
+                                            justify-content: center;
+                                        }
+                                        
+                                        .button-box :first-child {
+                                            align-self: stretch;
+
+                                        }                            
+                        </style>
+                        <div class="button-box ">
+                          <button onclick="set_preview_technical_drawing('{{ object.UUID }}')"
+                                  class="btn btn-light "
+                                  id="set_preview_technical_drawing_{{ object.UUID }}"
+                                  aria-pressed="true"
+                                  data-toggle="tooltip"
+                                  data-placement="top"
+                                  title="Remove"
+                                  style="padding: 0px;
+                                         height: 55px;
+                                         width: 55px"
+                                  disabled>
+                            <img src="{% static '/website/images/Preview_Technical_Drawing.png' %}"
+                                 width="55"
+                                 style="margin-left: auto;
+                                        margin-right: auto;
+                                        display: block">
+                          </button>
+                          <button onclick="set_preview_3D_visualisation('{{ object.UUID }}')"
+                                  class="btn btn-light"
+                                  id="set_preview_3D_visualisation_{{ object.UUID }}"
+                                  aria-pressed="true"
+                                  data-toggle="tooltip"
+                                  data-placement="top"
+                                  title="Remove"
+                                  style="padding: 0px;
+                                         height: 55px;
+                                         width: 55px">
+                            <img src="{% static '/website/images/Preview_3D_Visualisation.png' %}"
+                                 width="55"
+                                 style="margin-left: auto;
+                                        margin-right: auto;
+                                        display: block">
+                          </button>
+                          <button onclick="set_preview_picture_screenshot('{{ object.UUID }}')"
+                                  class="btn btn-light active"
+                                  id="set_preview_picture_screenshot_{{ object.UUID }}"
+                                  aria-pressed="true"
+                                  data-toggle="tooltip"
+                                  data-placement="top"
+                                  title="Remove"
+                                  style="padding: 0px;
+                                         height: 55px;
+                                         width: 55px">
+                            <img src="{% static '/website/images/Preview_Picture_Screenshot.png' %}"
+                                 width="55"
+                                 style="margin-left: auto;
+                                        margin-right: auto;
+                                        display: block">
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                  {% endfor %}
+                {% else %}
+                  <tr>
+                    <th>Table is empty</th>
+                  </tr>
+                {% endif %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script type="text/javascript">
+    function CopyText(clicked_id, object_parameter) {
+      var json_data = object_parameter
+      
+      var json_output = {};
+      json_output["UUID"] = clicked_id;
+      json_output = Object.assign({}, json_output, object_parameter);
+
+      navigator.clipboard.writeText(JSON.stringify(json_output));
+
+      alert("Check Your CAD System. \nRequested file: " + `${clicked_id}`);
+    }
+  </script>

@@ -1,0 +1,709 @@
+{% extends 'NormMan/base.html' %}
+{% load static %}
+
+{% block Cards %}
+
+
+
+
+<style type="text/css">
+    div.card.playground {
+        border-radius: 7px;
+        box-shadow: 0 3px 3px rgba(0,0,0,.08), 0 0 3px rgba(50,50,0,.05);
+        padding-right: 0px;
+        padding-left: 0px;
+        padding-top: 0px;
+        margin-top: 10px;
+        background-color: rgba(240, 240, 240, 1)
+    }
+
+    div.card.playground:hover{
+        transform: none !important;
+        transition: none !important;
+        box-shadow: 0 5px 5px rgba(0,0,0,.7), 0 0 5px rgba(50,50,0,.7);
+        padding-right: 0px;
+        padding-left: 0px;
+        padding-top: 0px;
+        margin-top: 10px;
+    }
+    .stlviewer {
+        width: 100%;
+        height: 100%;
+        
+        background: #fcfcfc; /* Old browsers */
+
+        filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#00005F', endColorstr='#9797BE',GradientType=0 ); /* IE6-9 */
+        overflow: hidden;
+      }
+      .progress-bar-container {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.8);
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+
+    #progress-bar {
+        width: 30%;
+        margin-top: 0.5%;
+        height: 6%;
+    }
+    .bgEDAGBraun{
+        background-color: rgb(184, 172, 165);
+    }
+    .bgEDAGBeige{
+        background-color: rgb(216, 207, 201);
+    }
+    .bgEDAGGrau{
+        background-color: rgb(208, 216, 223);
+    }
+    .bgEDAGHellgrau{
+        background-color: rgb(228, 229, 230);
+    }
+
+    .bgSuperHellgrau{
+        background-color: rgb(240, 240, 240);
+    }
+    .bgDebianRed{
+        background-color: #D71946;
+    }
+</style>
+
+
+
+
+<div class="container-fluid ">  
+    <div class="row">
+        <div class="col-md-4">
+            <div class="progress-bar-container">
+                <label for="progress-bar">Loading...</label>
+                <progress id="progress-bar" value="0" max="100"></progress>
+            </div>
+
+
+            <div class="stlviewer" id = 'stlviewer_EDAG_LightCocoon' style="display: block; position: relative; width: 100%; height: auto;   ; " data-src='stl_file_list'> </div>
+            <button onclick="ThreeExportToJSON()">Export JSON</button>
+            <div id="jstree_vehicle_components">    </div>
+        </div>
+
+        <div class="col-md-8" >
+            <div id="accordion" class="container-fluid">
+                {#Step:0  Vehicle Components------------------------------------------------------------------------------------------------------------ #}
+                <div class="card playground" id="cardZero">
+                    <div class="panel panel-default">
+                        <div class="panel-body">
+                            <div class="card-header" id="headingZero" style="padding: 0; margin: 0" >
+                                <h5 class="mb-0">
+                                    <button id="btnZero" style="color: black; padding: 0; " class="btn btn-link btn-block"  data-toggle="collapse" data-target="#collapseZero" aria-expanded="true" aria-controls="collapseZero">
+                                        <div class="col-md-12">
+                                            <div class="row">
+                                                <div class="col-md-12   bgEDAGGrau">
+                                                    <div class="d-flex text-left">
+                                                        <div >
+                                                            <h5 id="vehicle_comonents_hits">1: Vehicle Components; hits: {{vehicle_components| length}}</h5>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </button>
+                                </h5>
+                            </div>
+                            <div id="collapseZero" class="collapse" aria-labelledby="headingZero" data-parent="#accordion">
+                                <div class="card-body " id="vehicle_components" >
+                                    <div class="panel panel-default">
+                                        <div class="panel-body " >
+                                            {% include './list_shared_components/list_part_vehicle_components.html' %}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {#Step:1  Vehicle Sections------------------------------------------------------------------------------------------------------------ #}
+                <div class="card playground" id="cardOne">
+                    <div class="panel panel-default">
+                        <div class="panel-body">
+                            <div class="card-header" id="headingOne" style="padding: 0; margin: 0" >
+                                <h5 class="mb-0">
+                                    <button id="btnOne" style="color: black; padding: 0; " class="btn btn-link btn-block"  data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                        <div class="col-md-12">
+                                            <div class="row">
+                                                <div class="col-md-12   bgEDAGGrau">
+                                                    <div class="d-flex text-left">
+                                                        <div>
+                                                            <h5>   3: Vehicle Sections; hits: {{vehicle_sections| length}}</h5>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </button>
+                                </h5>
+                            </div>
+                            <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordion">
+                                <div class="card-body  " >
+                                    <div class="panel panel-default">
+                                        <div class="panel-body " >
+                                            {% include './list_shared_components/list_part_sections.html' %}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>     
+                {#Step:2  Workflows------------------------------------------------------------------------------------------------------------ #}
+                <div class="card playground" id="cardTwo">
+                    <div class="panel panel-default">
+                        <div class="panel-body">
+                            <div class="card-header" id="headingTwo" style="padding: 0; margin: 0" >
+                                <h5 class="mb-0">
+                                    <button id="btnTwo" style="color: black; padding: 0; " class="btn btn-link btn-block"  data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
+                                        <div class="col-md-12">
+                                            <div class="row">
+                                                <div class="col-md-12   bgEDAGGrau">
+                                                    <div class="d-flex text-left">
+                                                        <div>
+                                                            <h5>   2: Workflows; hits: {{workflows| length}} </h5>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </button>
+                                </h5>
+                            </div>
+                            <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
+                                <div class="card-body  " >
+                                    <div class="panel panel-default">
+                                        <div class="panel-body " >
+                                            {% include './list_shared_components/list_part_workflows.html' %}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {#Step:3  Tools------------------------------------------------------------------------------------------------------------ #}
+                <div class="card playground" id="cardThree">
+                    <div class="panel panel-default">
+                        <div class="panel-body">
+                            <div class="card-header" id="headingThree" style="padding: 0; margin: 0" >
+                                <h5 class="mb-0">
+                                    <button id="btnOne" style="color: black; padding: 0; " class="btn btn-link btn-block"  data-toggle="collapse" data-target="#collapseThree" aria-expanded="true" aria-controls="collapseThree">
+                                        <div class="col-md-12">
+                                            <div class="row">
+                                                <div class="col-md-12   bgEDAGGrau">
+                                                    <div class="d-flex text-left">
+                                                        <div>
+                                                            <h5>   4: Tools; hits: {{vehicle_sections| length}} </h5>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </button>
+                                </h5>
+                            </div>
+                            <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordion">
+                                <div class="card-body  " >
+                                    <div class="panel panel-default">
+                                        <div class="panel-body " >
+                                            {% include './list_shared_components/list_part_tools.html' %}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script src="{% static 'js/part_visualiser/three.js/examples/js/postprocessing/EffectComposer.js' %}"></script> 
+<script src="{% static 'js\part_visualiser\three.js\examples\js\objects\Sky.js' %}"></script>   
+<script src="{% static 'js\part_visualiser\three.js\build\three.module.js' %}"></script>  
+<script src="{% static 'js/part_visualiser/three.js/examples/js/shaders/CopyShader.js' %}"></script>  
+<script src="{% static 'js/part_visualiser/three.js/examples/js/postprocessing/RenderPass.js' %}"></script>  
+<script src="{% static 'js/part_visualiser/three.js/examples/js/postprocessing/ShaderPass.js' %}"></script>  
+<script src="{% static 'js\part_visualiser\three.js\examples\js\postprocessing\OutlinePass.js' %}"></script>  
+
+
+<script type=text/javascript> 
+    document.addEventListener("DOMContentLoaded", () => {
+        animate(document.getElementById('stlviewer_EDAG_LightCocoon'));
+      });
+
+        function animate(e) {
+            var canvas, canvass, raycaster,  camera, render, mousePosition, loader, mesh, front_rim, rear_rim    
+            var selectedObjects = [];
+            var highlightedObjects = [];         
+            var outlinePass;
+            var myObjects = new THREE.Object3D();
+            const originalMaterials = {};
+            // Necessary for camera/plane rotation
+            var degree = Math.PI/180;
+            // Setup
+            canvass = e;
+            canvas_id = 'canvas_' + e.id
+            canvas = document.getElementById(canvas_id)
+            if (canvas !=  null){
+                return;
+            };
+            var clock = new THREE.Clock();
+            var scene = new THREE.Scene();
+            camera = new THREE.PerspectiveCamera(75, 1, 0.6, 100000);
+            renderer = new THREE.WebGLRenderer({ antialias: true,  alpha: true  });
+            rayCaster = new THREE.Raycaster();
+            mousePosition = new THREE.Vector2();
+
+            //renderer.setSize(16 * 35, 16 * 35);
+            renderer.setSize($(canvass).width(), $(canvass).width());
+            renderer.autoClear = false;
+            renderer.setClearColor(0x000000, 0.0);
+            renderer.setPixelRatio( window.devicePixelRatio *2 );
+            renderer.useLegacyLights = true;
+            renderer.toneMapping = THREE.ACESFilmicToneMapping;     
+            renderer.toneMappingExposure = 0.2;      
+            renderer.domElement.id = 'canvas_' + e.id;
+
+
+            compose = new THREE.EffectComposer(renderer);
+            renderPass = new THREE.RenderPass(scene, camera);          
+            canvasPosition = canvass.getBoundingClientRect();
+            outlinePass_selected = new THREE.OutlinePass(new THREE.Vector2(canvasPosition.width,canvasPosition.height),scene,camera);
+            outlinePass_selected.renderToScreen = true;
+            outlinePass_selected.selectedObjects = highlightedObjects;
+            outlinePass_highlighted = new THREE.OutlinePass(new THREE.Vector2(canvasPosition.width,canvasPosition.height),scene,camera);
+            outlinePass_highlighted.renderToScreen = true;
+            outlinePass_highlighted.selectedObjects = selectedObjects;   
+            compose.addPass(renderPass);
+            compose.addPass(outlinePass_selected);
+            compose.addPass(outlinePass_highlighted);
+
+            var params_magenta = {
+                edgeStrength: 3.0,
+                edgeGlow: 1,
+                edgeThickness: 1.0,
+                pulsePeriod: 0,
+                usePatternTexture: false
+            };
+
+            outlinePass_selected.edgeStrength = params_magenta.edgeStrength;
+            outlinePass_selected.edgeGlow = params_magenta.edgeGlow;
+            outlinePass_selected.visibleEdgeColor.set(0xffffff);
+            outlinePass_selected.hiddenEdgeColor.set(0xff00ff);
+
+            var params_orange = {
+                edgeStrength: 3.0,
+                edgeGlow: 1,
+                edgeThickness: 1.0,
+                pulsePeriod: 3,
+                usePatternTexture: false
+            };
+
+            outlinePass_highlighted.edgeStrength = params_orange.edgeStrength;
+            outlinePass_highlighted.edgeGlow = params_orange.edgeGlow;
+            outlinePass_highlighted.visibleEdgeColor.set(0xffbc40);
+            outlinePass_highlighted.hiddenEdgeColor.set(0xffa500);
+
+
+
+            // Resize after viewport-size-change
+            window.addEventListener("resize", function () {
+                canvasPosition = canvass.getBoundingClientRect();
+                var width = canvasPosition.width;
+                var height = width;//canvasPosition.height;
+                renderer.setSize(width, height);
+                camera.aspect = width / height;
+                camera.updateProjectionMatrix();
+            });
+
+            // ASCII file - STL Import
+
+            const loadingManager = new THREE.LoadingManager();
+            //source for stl 
+            data_src = canvass.getAttribute("data-src")
+            const progressBar = document.getElementById('progress-bar');
+            const progressBarContainer = document.querySelector('.progress-bar-container');
+
+            total = 20;
+            loaded = 0;
+            loadingManager.onLoad = function() {
+                progressBarContainer.style.display = 'none';
+                canvass.appendChild(renderer.domElement);
+            }
+            loadingManager.onProgress= function() {
+                loaded= loaded +1;
+                document.getElementById('progress-bar').value = Math.round((loaded / total) * 100);
+            }
+            loader = new THREE.STLLoader(loadingManager);
+
+            const promise_array =[]
+            const models = []
+            if(data_src.includes("stl_file_list")){
+                    const stl_file_list = {{stl_file_list|safe}}
+
+
+                    function loadSTL(path, manager , name) {
+                        return new Promise((resolve, reject)=>{
+                        const loader = new THREE.STLLoader(manager);
+                        loader.load(
+                            path, 
+                            // Pass the argument of the onComplete callback to resolve
+                            (stl) => { 
+                                material = new THREE.MeshLambertMaterial(   stl_file_list[name] );
+                                material.side = THREE.DoubleSide;
+                                var mesh = new THREE.Mesh( stl, material );                        
+                                mesh.name = name;
+                                mesh.castShadow = true;
+                                mesh.receiveShadow = true;  
+                                originalMaterials[mesh.name] = mesh.material                             
+                                resolve(mesh); },
+                            // Pass null for onProgress, because ES2015 Promises
+                            // do not natively report progress.
+                            null,
+                            // Pass the argument of the onError callback to reject
+                            (err) => { reject(err); }
+                        );
+                        });
+                    }
+                    progressBarContainer.style.display = 'none';
+                    canvass.appendChild(renderer.domElement);  
+
+                    function prepare_geometry(geom_array){                      
+                        scene.add( ...geom_array)
+                        front_rim = scene.children.find(obj => {
+                            return obj.name === 'EDAG_Light_Cocoon_FRONT_RIM'
+                          })
+                          
+                        rear_rim =front_rim.clone(false)
+                        rear_rim.name = 'EDAG_Light_Cocoon_REAR_RIM'
+                        rear_rim.translateX(2469.987)//X Rear 2469.987 
+                        scene.add( rear_rim );                        
+                    }
+                    for (const key in stl_file_list) {
+                        promise_array.push(loadSTL('/static/Edag_Light_Cocoon/' +  key + '.stl',  THREE.DefaultLoadingManager, key).then())
+                    }             
+                    // Notice the spread operator in the push
+                    Promise.all(promise_array).then( (stls) => prepare_geometry(stls )  
+               
+                    );
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+				// ground
+                var planeGround = new THREE.PlaneGeometry( 1000000, 1000000, 150, 150 );
+                planeGround.translate( 2000.0, 0.0, -360 ); 
+				const meshGround = new THREE.Mesh( planeGround, new THREE.MeshPhongMaterial( { color: 0xFFFFFF} ) );
+                meshGround.receiveShadow = true;
+                meshGround.castShadow = true;
+				//scene.add( meshGround );
+
+				const grid = new THREE.GridHelper( 200000, 20, 0x000000, 0x000000 );
+                grid.name = "Grid_Helper"
+                grid.rotation.x = - Math.PI / 2;
+				grid.material.opacity = 0.7;
+				grid.material.transparent = true;
+				scene.add( grid );
+                }
+
+            // Camera positioning
+            camera.position.set(-1000,-2000,2000);
+            camera.lookAt(1000,0,500);
+            camera.up.set(0,0,1)
+            // Adding controls
+            controls = new THREE.OrbitControls(camera, renderer.domElement);
+            controls.target.set(1000,0,500);
+            controls.maxPolarAngle = Math.PI / 2;
+            controls.update();
+
+
+            // Ambient light (necessary for Phong/Lambert-materials, not for Basic)
+            var ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
+            ambientLight.castShadow = true;
+            scene.fog = new THREE.Fog( 0xa0a0a0, 5000, 20000 );
+            hemilight = new THREE.HemisphereLight( 'white', 'darkslategrey', 1 );
+            hemilight.castShadow = true;
+            scene.add(hemilight);
+            scene.add(ambientLight);
+
+            const dirLight = new THREE.DirectionalLight( 0xefc070, 5 );
+            dirLight.position.set( 0, 200, 10000 );
+            dirLight.castShadow = true;
+            dirLight.shadow.camera.top = 180;
+            dirLight.shadow.camera.bottom = - 100;
+            dirLight.shadow.camera.left = - 120;
+            dirLight.shadow.camera.right = 120;
+            scene.add( dirLight );
+
+
+
+
+
+            var sky = new THREE.Sky()
+            sky.scale.setScalar(100000)
+
+            scene.add(sky)
+            sun = new THREE.Vector3();
+            var uniforms = sky.material.uniforms;
+            uniforms[ "turbidity" ].value = 10
+            uniforms[ "rayleigh" ].value = 2
+            uniforms[ "mieCoefficient" ].value = .005
+            uniforms[ "mieDirectionalG" ].value = .9
+            uniforms[ "luminance" ].value = 1        
+            const phi = ( 90 - 40 )*3.14/180;
+            const theta = ( 70 )*3.14/180;
+
+            sun.setFromSphericalCoords( 1, phi, theta );
+
+            uniforms[ 'sunPosition' ].value.copy( sun );
+
+            renderer.toneMappingExposure = 0.5;   
+
+
+            var startTime, endTime;
+            function start() {
+                startTime = new Date();
+            };
+            start();
+
+            function end() {
+                endTime = new Date();
+                var timeDiff = endTime - startTime; //in ms
+
+                var ms = Math.round(timeDiff);
+                return ms
+                }    
+            // Draw scene
+            abs_rotation = 0
+
+            
+            var render = function () {
+                // it is a spherical movement with fix Z coordinate,
+                // but camera has to rotate along Z axis so as the focus point 
+                // is always in the middle
+
+                const t = end()/500;
+
+                max_angle = 3.14
+                rot_increment = Math.sin(t / 4)* 3.14 
+                abs_rotation = abs_rotation + rot_increment
+                //sconsole.log(abs_rotation)
+                max_angle = 3.14               
+
+                if(rear_rim && front_rim){
+
+                    rear_rim.rotation.x = 0
+                    rear_rim.rotation.y = 3.14 * Math.sin(t / 4)
+                    rear_rim.rotation.z = 0
+
+                    front_rim.rotation.x = 0
+                    front_rim.rotation.y = 3.14 * Math.sin(t / 4)
+                    front_rim.rotation.z = 0
+                }
+
+
+
+                scene.getObjectByName('Grid_Helper', true).translateX(-Math.cos(t /4 ) * 3.14 * 2.27815792)
+
+    
+            };
+
+
+
+
+            // Run game loop (render,repeat)
+            var GameLoop = function () {
+                var delta = clock.getDelta();
+                requestAnimationFrame(GameLoop);
+                //renderer.render(scene, camera);
+                render();
+                compose.render(delta);
+                controls.update(delta);
+            };
+
+            var clicked_pos_x, clicked_pos_y 
+            canvass.addEventListener('mousedown', function(event) {
+                event.preventDefault();
+                canvasPosition = canvass.getBoundingClientRect();
+                clicked_pos_x = ((event.clientX - canvasPosition.left) / canvasPosition.width) * 2 - 1;
+                clicked_pos_y = -((event.clientY - canvasPosition.top) / canvasPosition.height) * 2 + 1;
+                rayCaster.setFromCamera(mousePosition, camera);
+                var stlobjecttocheck = scene.children
+                var intersects = rayCaster.intersectObjects(stlobjecttocheck, true);               
+                if (intersects.length == 0) {
+                    for ( obj of myObjects.children) {
+                        // for all mesh objects in scene
+                        if(obj.type === 'Mesh'){
+                            obj.material = null;
+                            obj.material = originalMaterials[obj.name]
+                        }
+                    };                   
+                    highlightedObjects.pop(0);
+                }
+            });
+
+            // Listen for mouse moves
+            canvass.addEventListener('mouseup', function(event) {
+
+                event.preventDefault();
+                canvasPosition = canvass.getBoundingClientRect();
+                mousePosition.x = ((event.clientX - canvasPosition.left) / canvasPosition.width) * 2 - 1;
+                mousePosition.y = -((event.clientY - canvasPosition.top) / canvasPosition.height) * 2 + 1;
+
+                if (Math.abs(clicked_pos_x- mousePosition.x) >0.05) {console.log(Math.abs(clicked_pos_x- mousePosition.x));  return; } 
+                if (Math.abs(clicked_pos_y- mousePosition.y) >0.05) {console.log(Math.abs(clicked_pos_y- mousePosition.y)); return; } 
+
+                console.log("X:" + mousePosition.x);        
+                console.log("Y:" + mousePosition.y);               
+                rayCaster.setFromCamera(mousePosition, camera);
+                var stlobjecttocheck = scene.children
+                var intersects = rayCaster.intersectObjects(stlobjecttocheck, true);
+                if (intersects.length > 0) {
+               
+                            selectedObjects.pop(0);
+                            selectedObjects.push(intersects[0].object);
+
+
+                            //ajax
+                            var url = "{% url 'NormMan:load_content' %}";  // get the url of the `load_idemat_processs` view
+            
+                            var object_name = intersects[0].object.name
+                            var lca_part_source = $("#id_lca_part_source").val();
+                            $.ajax({                       // initialize an AJAX request
+                            url: url,                    // set the url of the request (= localhost:8000/hr/ajax/load_idemat_processs/)
+                                data: {
+                                'trigger_id': "search_submit",      // trigger id help to identify which action was trigerred in modal window
+                                'object_name': object_name,
+                            },
+                                success: function (data) {   // `data` is the return of the `load_parts` view function
+                                $("#vehicle_components").html(data.html_list_vehicle_components);
+                                $("#vehicle_comonents_hits").html() ;
+                                $("#vehicle_comonents_hits").html('1: Vehicle Components; hits: ' + data.vehicle_components_hits) ;
+                                $("#workflows").html(data.html_list_workflows);
+                                $("#tools").html(data.html_tools);                               
+                                $("#vehicle_sections").html(data.html_vehicle_sections);
+
+
+                                $('#jstree_vehicle_components').jstree(true).core.data = data.json_tree;
+                                $('#jstree_vehicle_components').jstree(true).redraw();
+
+                                }
+                            });
+
+                     
+          
+                    }
+                    else{
+                        selectedObjects.pop(0);
+                    }
+
+
+
+            });
+            canvass.addEventListener('mousemove', function(event) {
+                event.preventDefault();
+                canvasPosition = canvass.getBoundingClientRect();
+                mousePosition.x = ((event.clientX - canvasPosition.left) / canvasPosition.width) * 2 - 1;
+                mousePosition.y = -((event.clientY - canvasPosition.top) / canvasPosition.height) * 2 + 1;
+                rayCaster.setFromCamera(mousePosition, camera);
+                var stlobjecttocheck = scene.children
+                var intersects = rayCaster.intersectObjects(stlobjecttocheck, true);
+
+                    if(intersects.length > 0 ) {
+
+                            highlightedObjects.pop(0); 
+                    };
+                    if(intersects.length == 0 ) {
+
+                        highlightedObjects.pop(0); 
+                };
+                
+                if (intersects.length > 0) {
+                    if(intersects[0].object !=selectedObjects[0]){
+                        highlightedObjects.push(intersects[0].object);
+                    }
+                    
+                }
+
+            });
+
+            GameLoop();
+        
+        } ;
+
+        // Run game loop (render,repeat)
+        var ThreeExportToJSON = function () {
+            var jsondata = scene.toJSON();
+            delete jsondata.geometries;
+
+            const a = document.createElement("a");
+            const file = new Blob([JSON.stringify(jsondata, null, 4)], { type: "application/json" });
+            a.href = URL.createObjectURL(file);
+            a.download = "meta_scene_EDAG_Light_Cocoon.json";
+            a.click();
+        };
+  
+    
+</script>
+
+<script type="text/javascript">
+    function CopyText(clicked_id, object_parameter) {
+
+
+        
+        var json_data = object_parameter
+        
+        var json_output = {};
+        json_output["UUID"] = clicked_id;
+        json_output = Object.assign({}, json_output, object_parameter);
+
+
+        navigator.clipboard.writeText(JSON.stringify(json_output));
+
+        alert("Check Your CAD System. \nRequested file: " + `${clicked_id}`);
+      }
+
+      $(function () { 
+        
+        $('#jstree_vehicle_components').jstree(
+            {
+                'core': {
+                    "themes": {
+                        "variant": "large"
+                    },
+                  'data': {{json_tree|safe}},
+                  //'dataType' : 'json'
+                },
+                "plugins": ["wholerow", "search", "unique"]
+            }
+         );
+
+        $('#jstree_vehicle_components').on("changed.jstree_vehicle_components", function (e, data) {
+        console.log(data.selected);
+        });
+
+
+        $('button').on('click', function () {
+            $('#jstree_vehicle_components').jstree(true).select_node('child_node_1');
+            $('#jstree_vehicle_components').jstree('select_node', 'child_node_1');
+            $.jstree.reference('#jstree_vehicle_components').select_node('child_node_1');
+          });
+        });
+
+</script>
+{% endblock Cards%}                   

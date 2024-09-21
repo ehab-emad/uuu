@@ -1,0 +1,123 @@
+<div class="container-fluid" id="fricitons-container">
+
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h5 class="align-middle">
+                                Friction model on bolt head:
+                            </h5>
+                        </div>    
+                    </div>
+                </div>
+            </div>
+
+
+
+
+    <div class="row-no-gutters">
+
+        <div class="col-md-12">
+            <div class="table-responsive">      
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th>Id:</th>
+                        <th>Owner:</th>  
+                        <th>Material 1:</th>  
+                        <th>Material 2:</th>  
+                        <th>Coating:</th>
+                        <th>Surface:</th>
+                        <th>Colour:</th>
+                        <th>Lubrication:</th>
+                        <th>Avarage friction:</th>
+                        <th>Minimum friction:</th>
+                        <th>Maximum friction:</th>
+                        <th>Source:</th>       
+                        <th>Info:</th>       
+                        <th>Action:</th>                                                                                     
+                    </tr>
+                    </thead>
+                    <tbody>                                                                           
+                        <tr>
+
+
+
+                            {% if bolt_case.friction_head %} 
+                                <td>{{ bolt_case.friction_head.id }}</td>
+                                <td>{{ bolt_case.friction_head.name }}</td>
+                                <td>{{ bolt_case.friction_head.mat_1_name }}</td>
+                                <td>{{ bolt_case.friction_head.mat_2_name }}</td>
+                                <td>{{ bolt_case.friction_head.coating }}</td>
+                                <td>{{ bolt_case.friction_head.colour }}</td>
+                                <td>{{ bolt_case.friction_head.lubrication }}</td>
+                                <td>{{ bolt_case.friction_head.friction_av }}</td>
+                                <td>{{ bolt_case.friction_head.friction_min }}</td>
+                                <td>{{ bolt_case.friction_head.friction_max }}</td>
+                                <td>{{ bolt_case.friction_head.source }}</td>  
+
+
+                                <td>
+                                
+                                    <div class="btn-group d-flex" role="group" aria-label="...">
+                                            <button type="button" class="btn btn-primary btn-sm js-boltmaterial-update " data-url="#">Usage</button>                              
+                                    </div>
+                                </td>
+                                <td>
+                                <div class="btn-group d-flex" role="group" aria-label="...">                            
+                                        <button type="button" class="btn btn-warning btn-sm js-part-update " data-url="#">Edit</button>
+                                </div>
+                                </td>                            
+                            {% else %}
+
+                                <td></td>  
+                                <td></td>
+                                <td></td>
+                                <td></td>      
+                                <td></td>
+                                <td></td>  
+                                <td></td>
+                                <td></td>                                                        
+                                <td></td>
+                                <td></td>                                                 
+                                <td></td>                            
+                                <td></td>                           
+                                <td>
+                                <div class="btn-group d-flex" role="group" aria-label="...">
+                                        <button type="button" class="btn btn-primary btn-sm" data-url="#" disabled>Usage</button>                              
+                                </div>
+                                </td>
+                                <td>
+                                <div class="btn-group d-flex" role="group" aria-label="...">                            
+                                        <button type="button" class="btn btn-warning btn-sm" data-url="#" disabled>Edit</button>
+                                </div>
+                                </td>                       
+
+                            {% endif %}
+                        </tr>
+                        <tr>
+                                <td></td>  
+                                <td></td>
+                                <td></td>
+                                <td></td>   
+                                <td></td>
+                                <td></td>
+                                <td></td>                             
+                                <td></td>  
+                                <td></td>
+                                <td></td>     
+                                <td></td>
+                                <td></td>                                        
+                                <td></td>                                                                                                                                   
+                        <td>
+                        <div class="btn-group d-flex" role="group" aria-label="....">
+                        <button type="button" class="btn btn-danger btn-sm js-boltcase-update " data-url="{% url 'BoltMan:boltcase_select_frictionhead' bolt_case.id %}"> Select </button>
+                        </div>
+                        </td>
+                        </tr>
+                    </tbody>
+              </table>
+        </div>                
+        </div> 
+    </div>                   
+</div>

@@ -1,0 +1,40 @@
+<div class="card playground" id="cardThree">
+    <div class="panel panel-default">
+      <div class="panel-body">
+        <div class="card-header" id="headingThree" style="padding: 0; margin: 0">
+          <h5 class="mb-0">
+            <button id="btnThree"
+                    style="color: black;
+                           padding: 0"
+                    class="btn btn-link btn-block"
+                    data-toggle="collapse"
+                    data-target="#collapseThree"
+                    aria-expanded="true"
+                    aria-controls="collapseThree">
+              <div class="col-md-12">
+                <div class="row">
+                  <div class="col-md-12   bgEDAGGrau">
+                    <div class="d-flex text-left">
+                      <div>
+                        <h5 id="workflows_hits">4: Workflows; hits: {{ workflows| length }}</h5>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </button>
+          </h5>
+        </div>
+        <div id="collapseThree"
+             class="collapse"
+             aria-labelledby="headingThree"
+             data-parent="#accordion">
+          <div class="card-body " id="workflows">
+            <div class="panel panel-default overflow-auto" style="max-height: 750px">
+              <div class="panel-body ">{% include '../list_shared_components/shared_component_workflows.html' %}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>

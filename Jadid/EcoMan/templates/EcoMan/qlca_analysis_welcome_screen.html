@@ -1,0 +1,65 @@
+{% extends 'EcoMan/base.html' %}
+{% load static %}
+
+{% block Apps %}
+
+<style>
+
+
+    .bg {
+        /* The image used */
+        background-image: url(/../../static/EcoMan/images/EcoMan_Welcome_Screen.jpg);
+        /* Full height */
+        height: 100%; 
+        
+        /* Center and scale the image nicely */
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: cover;
+        }
+</style>
+<div class="container-fluid" id="objects-container">
+    <div class="row">
+        <div class="col-md-10">
+            <div class="row">
+                    <div class="w-100 bg" style="background-color: #eee; height: 100vh;  overflow: auto;">
+                        <div class="h-100 " style="max-width: 100%;">
+                                <!-- Background image -->
+                                <div class="mask" style="background-color: rgba(0, 0, 0, 0.3); transform: translate(0, 80%);">
+                                    <div class="d-flex justify-content-center align-items-center h-100">
+                                        <div class="text-white">
+                                            <center>
+                                                <h1 class="mb-3">EDAG Quick Life Cycle Assessment Tool</h1>
+                                                <h5 class="mb-4">
+                                                    Visualise the environmental impact based on your design decisions
+                                                </h5>
+                                            
+                                            <a class="btn btn-outline-light btn-lg m-2" href="{% url 'EcoMan:continue_analysis_detail_view'%}"
+                                                role="button">Continue your last job</a>
+                        
+                                            <a class="btn btn-outline-light btn-lg m-2" href="{% url 'EcoMan:analysis_index_view' %}"
+                                                role="button">Select job to continue</a>
+                        
+                                            <button type="button" class="btn btn-outline-light btn-lg m-2 js-object-create" id="#modal-window-xl" data-url="{% url 'EcoMan:analysis_create_and_edit' %}">
+                                                Start new job
+                                            </button>
+                        
+                                            <a class="btn btn-outline-light btn-lg m-2" href="{% url 'EcoMan:qlca_documentation_download' %}"
+                                               role="button" rel="nofollow" target="_blank">Tutorial</a>
+                                            </center>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+            </div>
+        </div>    
+        <div class="col-md-2">
+            <div class="row">
+                {% include "website/current_project.html" %}
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock Apps %}

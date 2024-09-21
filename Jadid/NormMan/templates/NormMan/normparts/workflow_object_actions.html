@@ -1,0 +1,124 @@
+{% load static %}
+{% load filters%}
+
+<div class="card animationoff my-1">
+    <div class="card-body " >                    
+        <h3>Object Actions:</h3>
+        <div class="row">          
+            {% if object_details %}
+            {% for key, value in object_details.methods.items %}
+            <div class="card mx-3 my-1" style="width: 7rem; cursor: pointer" >
+                <div class="d-flex align-items-center">                 
+                    <div class="card-body" >           
+                        <img class="card-img-top" src="{{value.gui.icon}}" style="height:50px;  object-fit: contain;"/>
+                    </div>
+                </div>
+                <div class="card-footer p-1 " style="font-size: 12px; height:100%">
+                    {{ value.gui.text }}                         
+                </div>
+                 <a  class="stretched-link action" 
+                        id = "action"
+                        creates_object = "{{value.result_object|validate_uuid}}"
+                        method_id="{{value.id}}" 
+                        master_id="{{master_id}}" 
+                        object_type ="{{object_details.gui.type}}" 
+                        object_id ="{{object_details.id}}"
+                        description="{{value.gui.description}}"
+                        hint="{{value.gui.hint}}">  </a>
+            </div>
+            {% endfor %}   
+
+            {% else %}
+                No actions
+            {% endif %}
+
+        </div>   
+    </div>
+</div> 
+
+
+<script type="text/javascript">
+    $('.toast').toast()
+
+    $('.action').click(function(data){
+        console.log($('#toaster').find("#toast_zero")[0].hidden); 
+        console.log($('#toaster').find("#toast_one")[0].hidden); 
+
+        var currentdate = new Date(); 
+        var datetime = currentdate.getHours() + ":"  + currentdate.getMinutes() + ":" + currentdate.getSeconds();
+        if($('#toaster').find("#toast_zero")[0].className.includes("show")){
+            console.log('I am shown');  
+            if($('#toaster').find("#toast_one")[0].className.includes("show")){
+                console.log('I am shown as well'); 
+                // use the first one - overwrite                
+                $('#toaster').find("#toast_zero").find('#time_stamp')[0].innerHTML = datetime;
+                $('#toaster').find("#toast_zero").find('#content_text')[0].innerHTML = "Description: " 
+                                                                + $(this).attr('description') + ' <br>'
+                                                                + "Hint: "
+                                                                + $(this).attr('hint');
+                $('#toaster').find("#toast_zero").toast('show');
+            } else {
+                console.log('I am hidden and can be shown')    
+                // use the second one
+                $('#toaster').find("#toast_one").find('#time_stamp')[0].innerHTML = datetime;
+                $('#toaster').find("#toast_one").find('#content_text')[0].innerHTML = "Description: " 
+                                                                + $(this).attr('description') + ' <br>'
+                                                                + "Hint: "
+                                                                + $(this).attr('hint');
+                $('#toaster').find("#toast_one").toast('show');
+            }
+
+        } else {
+            console.log('I am hidden and can be shown')
+            console.log($('#toaster').find("#toast_zero"))
+            console.log($('#toaster').find("#toast_zero").find('#time_stamp')[0])
+            console.log($('#toaster').find("#toast_zero").find('#time_stamp')[0].innerHTML)
+            // just write to first one
+            $('#toaster').find("#toast_zero").find('#time_stamp')[0].innerHTML = datetime;
+            $('#toaster').find("#toast_zero").find('#content_text')[0].innerHTML = "Description: " 
+                                                                + $(this).attr('description') + ' <br>'
+                                                                + "Hint: "
+                                                                + $(this).attr('hint');
+            $('#toaster').find("#toast_zero").toast('show');
+        }
+
+
+        
+        // console.log($('#toaster'))
+        // $('#toaster').toast('show');  
+        // $('.toast').toast('show');
+        trigger_id = "standart_action";
+        method_id = $(this).attr('method_id');
+        master_id = $(this).attr('master_id');
+        object_id = $(this).attr('object_id');
+        if ($(this).attr('creates_object') == 'True'){trigger_id = "object_creation"}
+        console.log($(this).attr('creates_object') == 'True')        
+        console.log(trigger_id)
+        const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+        var url = "{% url 'NormMan:MethodSendToFramework' %}";
+        var o_data = { 
+            "command": trigger_id,
+            "trigger_id": object_id, 
+            'method_id': method_id,
+            'master_id': master_id,
+            'session_id': sessionStorage.getItem("session_id"),            
+            'session_type': sessionStorage.getItem("session_type"),
+            'shared_component_uuid' : null,
+            'shared_component_type' : null,
+            'parameters': null  
+            }
+        $.ajax({                       // initialize an AJAX request
+        type:'POST',
+        headers: { 'X-CSRFToken': csrftoken },
+        url: url, //$(this).data('url'), 
+        dataType: 'json',                  
+        data: o_data,
+    
+            success: function (data) {   // `data` is the return of the `load_parts` view function   
+        } }
+        );
+
+    });
+
+
+</script> 

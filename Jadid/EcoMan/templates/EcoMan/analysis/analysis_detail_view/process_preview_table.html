@@ -1,0 +1,43 @@
+{% load weight_unit_switch  %}
+<div class="row">
+    <div class="col-md-12">
+        <div href="#" class="list-group-item list-group-item-secondary my-1" onclick="toggleSelection(this)">
+            <div class="container-fluid" id="objects-container">
+                <div class="row"> 
+                    <div class='col-md-12'>
+                        <h3> Process Information: </h3>
+                        <div class="row"> 
+                            <div class='col-md-4'>
+                                <b>Process Quantity:</b> <br>
+                                <b>Material Usage Ratio :</b> <br>
+                                <b>Required Process Quantity:</b> 
+                            </div>    
+                            <div class='col-md-2'>
+                                {% if object.process_model.unit == 'kg' %} 
+                                    {% weight_conversion object.process_quantity  weight_unit weight_decimals %} 
+                                {% else %}
+                                    {{object.process_quantity|floatformat:weight_decimals}}[{{object.process_model.unit}}]
+                                {% endif %}<br>
+                                {{object.process_meq}} [%]<br>
+                                {% if object.process_model.unit == 'kg' %} 
+                                    {% weight_conversion object.process_total_quantity  weight_unit weight_decimals %} 
+                                {% else %}
+                                    {{object.process_total_quantity|floatformat:weight_decimals }}[{{object.process_model.unit }}]
+                                {% endif %}
+                            </div>  
+                            <div class='col-md-6'>
+                                 Process output quantity<br>
+                                 % of output required as input due to losses<br>
+                                 Process input requirement (Output x Material Usage Rate)
+                            </div>                                                            
+                            
+                        </div>   
+                            <b>Notes:</b> {{object.notes}}   <br> 
+                            <b>Source:</b> {{object.process_model.source}} <br> 
+                            <b>Source Database:</b> {{object.process_model.database_model.name}}, accessibility: {{object.process_model.database_model.accessibility}}, owner: {{object.process_model.database_model.owner}}               
+                    </div>                      
+                </div>   
+            </div>                              
+        </div> 
+    </div> 
+</div> 

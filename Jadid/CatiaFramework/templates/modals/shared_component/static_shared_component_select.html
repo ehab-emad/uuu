@@ -1,0 +1,86 @@
+{% load static %}
+{% load widget_tweaks %}
+{% load action_extractor %}
+{% csrf_token %}
+
+<form method="post" id="modal-form"
+      class="js-object-update-form" 
+      command = "no_command"
+      workflow_uuid = "{{form.workflow_uuid}}"
+      session_uuid = "{{form.session_uuid}}"
+      action_uuid = "{{form.action_uuid}}"
+      request_uuid = "{{form.request_uuid}}"
+      object_uuid = "{{form.object_uuid}}"
+      editor_mode = "{{form.editor_mode}}"
+      action = "{% url 'CatiaFramework:static_shared_component_select' %} "        
+      propagate-url = "{% url 'CatiaFramework:static_shared_component_propagate' %} "        
+      novalidate >  
+    <div class="modal-dialog modal-xl" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLongTitle"><b>Select Configuration for Instance ({{instance_id}}) of Object ({{object_id}})</b></h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button> 
+        
+          <div class="container-fluid">
+            <div id="category-container-modal">
+              {% include 'modals/shared_component/static_shared_component_group_cards.html' %}
+            </div>
+          </div> 
+
+        </div>
+        <div class="modal-body">                              
+		      <div class="col-md-12">          
+            <div class="row">
+              {% if error_message %}
+              <p><strong>{{ error_message }}</strong></p>
+              {% endif %}
+              <div class="container-fluid overflow-auto" style="max-height: 850px;">
+                <div id="normparts-container-modal">
+                  {% include 'modals/shared_component/static_shared_component_table.html' %}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+</form>
+
+
+<script type=text/javascript>
+  function nested_modal(uuid) {
+    const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+    var element = document.getElementById(uuid);    
+    if(element.length == 0 || element.selectedIndex == -1){
+      dropdown_text = null
+    } else {
+      dropdown_text = element.options[element.selectedIndex].value;
+    }      
+    var matchedEle = document.querySelectorAll(".modal.fade.show")[0].id; //find the div name of the modal
+    var modalwindow = document.getElementById(matchedEle);
+    var url = $("#modal-form").attr("propagate-url");   
+    debugger;    
+    $.ajax({   
+      type:'POST',   
+      headers: { 'X-CSRFToken': csrftoken },        
+      url: url,          
+      data: {
+        "UUID_workflow": $("#modal-form").attr("workflow_uuid"),
+        "UUID_session": $("#modal-form").attr("session_uuid"),
+        "UUID_action": $("#modal-form").attr("action_uuid"),
+        "UUID_request": $("#modal-form").attr("request_uuid"),
+        "UUID_object": $("#modal-form").attr("object_uuid"),
+        "UUID_component": uuid,
+        "editor_mode": $("#modal-form").attr("editor_mode"),        
+        "config": dropdown_text
+      },
+      success: function (data) {
+        debugger;
+        $(modalwindow).modal("hide");
+        $("#thumbnail_" + object_id).html(data["image"])
+      }
+    });
+  };
+</script>

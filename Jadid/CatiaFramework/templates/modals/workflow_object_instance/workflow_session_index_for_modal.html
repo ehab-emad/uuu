@@ -1,0 +1,56 @@
+{% load static %}
+<div class="row">     
+    <div class="col-md-12">
+
+        <div class="list-group">
+            {% if sessions %}
+                {% for object in sessions %}
+                <div href="#" class="list-group-item list-group-item-action my-1">
+                    <div class="row">                
+                        <div class='col-md-9 w-auto ms-auto'> 
+                            <div class="row">                                            
+                                <div class='col-md-3 w-auto ms-auto'>                  
+                                    Session name: <br><strong>
+                                    {%if object.name %}
+                                        {{ object.name }}
+                                    {%else%}
+                                        Anonymous
+                                    {%endif%}
+                                    </strong><br> 
+                                </div>
+                                <div class='col-md-2 w-auto ms-auto'>                 
+                                    Owner: <br>{{ object.owner.nickname }} <br>  
+                                </div>  
+                                <div class='col-md-4 w-auto ms-auto'>  
+                                    Created: {{ object.created_at }}    <br>             
+                                    Updated: {{ object.updated_at }}
+                                </div>    
+                            </div>                                                                                                                                     
+                        </div>
+                        <div class='col-md-3 w-auto ms-auto'>
+                            <div class="btn-group" role="group" aria-label=" " style="display: block; text-align: right">
+                                <button type="button" class="btn btn-warning btn-sm my-1" selection_UUID = "{{object.UUID}}" trigger= "session_selected" id="item_selection" onclick="on_item_selection(this)"   >Select</button>
+                            </div>
+                        </div>
+                    </div>                
+                </div>
+                {% endfor %}
+            {% else%}
+            <h1> Please Select a Workflow</h1>
+            {% endif %}
+        </div>
+    </div>
+</div>
+</div>
+
+<script type="importmap">
+    {
+        "imports": {
+            "three": "{% static 'js/part_visualiser/three.js/build/three.module.min.js' %}",
+            "three/addons/": "{% static 'js/part_visualiser/three.js/examples/' %}"
+        }
+    }
+</script>
+
+
+

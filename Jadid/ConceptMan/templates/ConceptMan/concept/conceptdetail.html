@@ -1,0 +1,68 @@
+{% extends 'ConceptMan/base.html' %}
+{% block Apps %}
+
+<div class="container-fluid">
+	<div class="row">
+		<div class="col-md-12">
+			<div class="row">
+				<div class="col-md-10">
+					<div class="row">
+						<div class="col-md-12">
+<!-- Tabs-->
+{% ifequal objects.query.base_table 'ConceptMan_part'     %}
+                            <ul class="nav nav-tabs" >
+                                <li class="nav-item">
+                                    <a class="nav-link active" aria-current="page" href="{% url 'ConceptMan:conceptdetail_part' concept.id %}">Parts</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{% url 'ConceptMan:conceptdetail_engineering_material' concept.id %}">Materials</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{% url 'ConceptMan:conceptdetail_bolt_case' concept.id %}">Bolt Cases</a>
+                                </li>
+                            </ul>
+{% endifequal %}
+{% ifequal objects.query.base_table 'MatMan_engineering_material'     %}
+                            <ul class="nav nav-tabs" >
+                                <li class="nav-item">
+                                    <a class="nav-link " aria-current="page" href="{% url 'ConceptMan:conceptdetail_part' concept.id %}">Parts</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link active" href="{% url 'ConceptMan:conceptdetail_engineering_material' concept.id %}">Materials</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{% url 'ConceptMan:conceptdetail_bolt_case' concept.id %}">Bolt Cases</a>
+                                </li>
+                            </ul>
+{% endifequal %}
+{% ifequal objects.query.base_table 'ConceptMan_boltcase'     %} 
+                            <ul class="nav nav-tabs" >
+                                <li class="nav-item">
+                                    <a class="nav-link " aria-current="page" href="{% url 'ConceptMan:conceptdetail_part' concept.id %}">Parts</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{% url 'ConceptMan:conceptdetail_engineering_material' concept.id %}">Materials</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link active" href="{% url 'ConceptMan:conceptdetail_bolt_case' concept.id %}">Bolt Cases</a>
+                                </li>
+                            </ul>
+{% endifequal %} 
+						</div>
+					</div>
+                    {% block details %}
+                    {% endblock %}
+				</div>
+                <div class="col-md-2">
+                    <div class="row">
+                            {% include "website/current_project.html" %}
+                            {% include "website/current_concept.html" %}
+                    </div>
+                </div>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+{% endblock Apps%}

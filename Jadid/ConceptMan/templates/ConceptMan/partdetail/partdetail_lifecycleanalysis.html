@@ -1,0 +1,91 @@
+<div class="container-fluid ">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="row-no-gutters">
+                {% if error_message %}
+                <p><strong>{{ error_message }}</strong></p>
+                {% endif %}
+            <div class="table-responsive w-100 d-block d-md-table">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>Property:</th>
+                            <th>Value:</th>
+                            <th>Unit:</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                            {% if object %}
+                            <tr>
+                                <td>GWP - Global Warming Potentian:</td>
+                                <td>{{ object.matgwp }}</td>
+                                <td>[kg CO² Equivalent]</td>
+                            </tr>
+                            <tr>
+                                <td>CED:</td>
+                                <td>{{ object.ced }}</td>
+                                <td>[MJ]</td>
+                            </tr>
+                            <tr>
+                                <td>ReCIPe 2016 Endpoint:</td>
+                                <td>{{ object.matrecipe_endp }}</td>
+                                <td>[pt]</td>
+                            </tr>
+                            <tr>
+                                <td>ReCIPe 2016 Human Health:</td>
+                                <td>{{ object.matrecipe_hh }}</td>
+                                <td>[DALY - Disability Adjusted Life Year]</td>
+                            </tr>
+                            <tr>
+                                <td>RecIPe 2016 Eco Toxicity:</td>
+                                <td>{{ object.matrecipe_ecotox }}</td>
+                                <td>[Species.year - Local Secies loss per year]</td>
+                            </tr>
+                            <tr>
+                                <td>ReCIPe 2016  Resources:</td>
+                                <td>{{ object.matrecipe_reso }}</td>
+                                <td>[USDa]</td>
+                            </tr>
+
+                        {% endif %}
+                    </tbody>
+                </table>
+
+                                        
+                <div>
+                        <canvas id="doughnut-chart"></canvas>
+                </div>
+                <button type="button" class="btn btn-warning btn-sm js-lifecycleanalysis-update " data-url=#> Edit </button>
+            </div>
+            </div>
+        </div>
+    </div>
+</div> 
+
+
+ <script type="text/javascript">
+
+    var config = {
+      type: 'doughnut',
+      data: {
+        datasets: [{
+          data: {{ data|safe }},
+          backgroundColor: ["#3e95cd", "#8e5ea2","#3cba9f","#e8c3b9","#c45850"],
+          label: 'Weight distribution'
+        }],
+        labels: {{ labels|safe }}
+      },
+      options: {
+        title: {
+            display: true,
+            text: 'Weight distribution [g]'
+        }
+      }
+    };
+
+    window.onload = function() {
+      var ctx = document.getElementById('doughnut-chart').getContext('2d');
+      window.myPie = new Chart(ctx, config);
+    };
+
+  </script>                 

@@ -1,0 +1,5 @@
+<option value="0">--------</option>
+{% for group in group_model %}
+<option value="{{ group.pk }}">{{ group.name }} </option>
+{% endfor %}
+

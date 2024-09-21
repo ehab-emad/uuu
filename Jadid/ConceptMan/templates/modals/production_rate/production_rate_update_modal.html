@@ -1,0 +1,47 @@
+{% load static %}
+{% load widget_tweaks %}
+<form method="post" id="#modal-window-xl" action="{% url 'production_rate_update' form.instance.pk %}" class="js-object-update-form">
+    {% csrf_token %}
+
+    <div class="modal-dialog modal-xl" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle"><b>Update Production Rate</b></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                {% include 'modals/production_rate/modal_template_form.html' %}
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="fas fa-ban"></i> Cancel</button>
+                <button type="submit" class="btn btn-warning" ><i class="fas fa-database"></i> Update Process</button>
+            </div>
+        </div>
+    </div>
+</form>
+
+    <script>
+        var static_url = "{% get_static_prefix %}";
+        var media_url = "{% get_media_prefix %}";
+        var approximation_model_field = $("#id_approximation_model");
+        var approximation_model_image = $(".image img");
+
+        function refreshApproximationModel_Picture() {
+            if (approximation_model_field.val() == "FLAT") {
+                approximation_model_image.attr('src', static_url + 'ConceptMan/images/Approximation_Model_Flat.png');
+            }
+            if (approximation_model_field.val() == "LINEAR") {
+                approximation_model_image.attr('src', static_url + 'ConceptMan/images/Approximation_Model_Linear.png');
+            }
+            if (approximation_model_field.val() == "QUADRATIC") {
+                approximation_model_image.attr('src', static_url + 'ConceptMan/images/Approximation_Model_Quadratic.png');
+            }
+        }
+        refreshApproximationModel_Picture();
+
+        $(document).ready(refreshApproximationModel_Picture)
+        $("#id_approximation_model").on("change", refreshApproximationModel_Picture);
+    </script>
+

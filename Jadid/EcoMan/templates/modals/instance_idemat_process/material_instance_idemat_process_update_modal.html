@@ -1,0 +1,59 @@
+{% load widget_tweaks %}
+{% load form_tags %}
+{% load weight_unit_switch  %}
+<form method="post" id="#modal-window-xl" action="{% url 'EcoMan:material_process_instance_update' form.instance.pk weight_unit weight_decimals%}" class="js-object-update-form">
+    {% csrf_token %}
+        <div class="modal-content">
+            <div class="modal-header bg-warning text-white">
+                <h5 class="modal-title" id="exampleModalLongTitle"><b>Update Material</b></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+		        <div class="col-md-12">
+	                <div class="row">
+                		<div class="col-md-6">
+                            <h3> LCA Process Model:</h3>
+                            {% render_field form.id %}
+                            {% render_field form.process_name %}
+                            {% render_field form.process_unit %}
+
+                            {% if form.weight_unit == 'GRAMS' and form.initial.process_unit == 'kg' %}
+                                <p class="warning" style="color:red"> Warning: The analysis unit is set to  {% weight_unit form.weight_unit %}, but the process unit is [{{ form.initial.process_unit }}]. Please ensure the units of your inputs match the labels.</p>
+                            {% endif %}
+                        </div>
+                		<div class="col-md-6">
+                            <div class="container-fluid">
+                            {% include './part_info_process_update.html' %}
+                            {% render_field form.is_active %}  
+                         </div>                               
+                        </div>
+                    </div>
+                </div>
+		        <div class="col-md-12">
+                    <h3> My Material:</h3>
+                    <div class="col-md-6">
+                        <div class="container-fluid">
+                                {% render_field form.name %}
+                                {% render_field form.process_quantity %}
+                                {% render_field form.meq %}
+                                {% render_field form.notes %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <a class="btn btn-danger mr-auto " href="{% url 'EcoMan:instance_idemat_process_delete'  form.instance.pk %}"
+                onclick="return confirm('Do you really want to delete the process?');">
+                <i class="fas fa-trash-alt"></i> Delete
+            </a>
+            <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="fas fa-ban"></i> Cancel</button>
+            <button type="submit" class="btn btn-warning" ><i class="fas fa-database"></i> Update Process</button>
+        </div>
+</form>
+
+
+
+

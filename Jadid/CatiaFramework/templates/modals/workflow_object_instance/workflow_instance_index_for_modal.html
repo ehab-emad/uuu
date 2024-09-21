@@ -1,0 +1,51 @@
+<div class="row">     
+    <div class="col-md-12">
+        <div class="list-group">
+            {% if session %}
+            {% for object in session %}
+            <div href="#" class="list-group-item  my-1">
+                <div class="row">                
+                    <div class='col-md-11 w-auto ms-auto'> 
+                        <div class="row">                                            
+                            <div class='col-md-12 w-auto ms-auto'>                  
+                                Stage: <strong> {{ object.name}} </strong>
+                                    
+                                
+                            </div>  
+
+                            {% for obj in object.objects %}
+                                {% for inst in obj.instances %}
+                                <div href="#" class="list-group-item list-group-item-action my-1">
+                                    <div class="row">                
+                                        <div class='col-md-10 mr-auto mr-1'> 
+                                            <div class="row">                                            
+                                                <div class='col-md-4 w-auto ms-auto'>                  
+                                                    Instance: <strong> {{ inst.name}} </strong>
+                                                </div>  
+                                                <div class='col-md-8 w-auto ms-auto'>                  
+                                                    Description: <strong> {{ inst.description}} </strong>
+                                                </div>  
+                                            </div>                                                                                                                                     
+                                        </div>
+                                        <div class='col-md-1 w-auto ms-auto'>
+                                            <div class="btn-group" role="group" aria-label=" " style="display: block; text-align: right">
+                                                <button type="button" class="btn btn-warning btn-sm my-1" selection_UUID = "{{inst.UUID}}" trigger= "instance_selected" id="item_selection" onclick="on_item_selection(this)"   >Select</button>
+                                            </div>
+                                        </div>
+                                    </div>                
+                                </div>
+                                {% endfor %}
+                            {% endfor %}
+                        </div>                                                                                                                                     
+                    </div>
+                </div>                
+            </div>
+            {% endfor %}
+            {% else%}
+            <h1> Please Select a Session</h1>
+            {% endif %}
+        </div>
+    </div>
+</div>     
+
+    

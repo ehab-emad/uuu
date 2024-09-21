@@ -1,0 +1,87 @@
+{% extends 'MatMan/base.html' %}
+{% load static %}
+
+{% block Cards %}
+
+<div class="container-fluid ">
+    <div class="row">
+        <div class="col-md-10 border-right">
+            <div class="row">
+                <div class="card  mx-3 my-3" style="width: 12rem;">
+                    <img class="card-img-top" src="{% static 'MatMan/images/Metals_Ico.png' %}" alt="Card image cap">
+                    <div class="card-body d-flex flex-column">
+                        <h5 class="card-title">Metals</h5>
+                        <p class="card-text">Ferrous or Non Ferrous</p>
+                        <div class="container-fluid" style="margin-top: auto;">
+                            <div class="row">
+                                <a href="{% url 'MatMan:index_metals'%}" class="btn btn-warning btn-lg btn-block" role="button" aria-disabled="true">View</a>
+                                <a href="#" class="btn btn-info btn-lg btn-block" role="button" aria-disabled="true">Info</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card  mx-3 my-3" style="width: 12rem;">
+                    <img class="card-img-top" src="{% static 'MatMan/images/Plastics_Ico.png' %}" alt="Card image cap">
+                    <div class="card-body d-flex flex-column">
+                        <h5 class="card-title">Plastics</h5>
+                        <p class="card-text">Thermosets or ThermoPlastics</p>
+                        <div class="container-fluid" style="margin-top: auto;">
+                            <div class="row">
+                                <a href="{% url 'MatMan:list_plastic'%}" class="btn btn-warning btn-lg btn-block " role="button" aria-disabled="true">View</a>
+                                <a href="#" class="btn btn-info btn-lg btn-block" role="button" aria-disabled="true">Info</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card  mx-3 my-3" style="width: 12rem;">
+                    <img class="card-img-top" src="{% static 'MatMan/images/Ceramics_Ico.png' %}" alt="Card image cap">
+                    <div class="card-body d-flex flex-column">
+                        <h5 class="card-title">Ceramics</h5>
+                        <p class="card-text">Neither metallic nor organic </p>
+                        <div class="container-fluid" style="margin-top: auto;">
+                            <div class="row">
+                                <a href="{% url 'MatMan:list_ceramic'%}" class="btn btn-warning btn-lg btn-block " role="button" aria-disabled="true">View</a>
+                                <a href="#" class="btn btn-info btn-lg btn-block" role="button" aria-disabled="true">Info</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card  mx-3 my-3" style="width: 12rem;">
+                    <img class="card-img-top" src="{% static 'MatMan/images/Composites_Ico.png' %}" alt="Card image cap">
+                    <div class="card-body d-flex flex-column">
+                        <h5 class="card-title">Composites</h5>
+                        <p class="card-text">Made of two or more principal materials </p>
+                        <div class="container-fluid" style="margin-top: auto;">
+                            <div class="row">
+                                <a href="{% url 'MatMan:list_composite'%}" class="btn btn-warning btn-lg btn-block " role="button" aria-disabled="true">View</a>
+                                <a href="#" class="btn btn-info btn-lg btn-block" role="button" aria-disabled="true">Info</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <<div class="card  mx-3 my-3" style="width: 12rem;">
+                    <img class="card-img-top" src="{% static 'MatMan/images/Special_Ico.png' %}" alt="Card image cap">
+                    <div class="card-body d-flex flex-column">
+                        <h5 class="card-title">Special</h5>
+                        <p class="card-text">Bio Based, inteligent or of very specific application </p>
+                        <div class="container-fluid" style="margin-top: auto;">
+                            <div class="row">
+                                <a href="{% url 'MatMan:list_special'%}" class="btn btn-warning btn-lg btn-block " role="button" aria-disabled="true">View</a>
+                                <a href="#" class="btn btn-info btn-lg btn-block" role="button" aria-disabled="true">Info</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+
+    </div>
+</div>
+
+{% endblock Cards %}

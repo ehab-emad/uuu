@@ -1,0 +1,121 @@
+{
+    "lca_property": {
+        "carbon_footprint": {
+            "name": "carbon_footprint",
+            "verbose_name": "GWP (Global Warming Potential) [kg C02eq)",
+            "owner": null,
+            "note": "The Global Warming Potential in CO2 equivalent; this property was created automatically and should be reviewed",
+            "source": "Note",
+            "unit": "kg C02eq",
+            "prop_type": "CORE"
+        },
+        "ced_total": {
+            "name": "ced_total",
+            "verbose_name": "Ced-Total (embedded energy in MJ)",
+            "owner": null,
+            "note": "Cumulative Energy Demand; The sum of the primary energy demand associated with the life cycle of a product; this property was created automatically and should be reviewed",
+            "source": "Note",
+            "unit": "MJ",
+            "prop_type": "CORE"
+        },
+        "environmental_footprint": {
+            "name": "environmental_footprint",
+            "verbose_name": "Environmental Footprint (points)",
+            "owner": null,
+            "note": "this property was created automatically and should be reviewed",
+            "source": "Note",
+            "unit": "pts",
+            "prop_type": "CORE"
+        },
+        "ec_total": {
+            "name": "ec_total",
+            "verbose_name": "Eco-Costs Total [EUR]",
+            "owner": null,
+            "note": "this property was created automatically and should be reviewed",
+            "source": "Note",
+            "unit": "EUR",
+            "prop_type": "CORE"
+        },
+        "ec_of_human_health": {
+            "name": "ec_of_human_health",
+            "verbose_name": "Eco-Costs of Human Health [EUR]",
+            "owner": null,
+            "note": "The external cost of the human health effects; this property was created automatically and should be reviewed",
+            "source": "Note",
+            "unit": "pts",
+            "prop_type": "CORE"
+        },
+        "ec_exo_toxicity": {
+            "name": "ec_exo_toxicity",
+            "verbose_name": "Eco-Costs of Exo-Toxicity [EUR]",
+            "owner": null,
+            "note": "The external cost of the  effects on local eco systems; this property was created automatically and should be reviewed",
+            "source": "Note",
+            "unit": "EUR",
+            "prop_type": "CORE"
+        },
+        "ec_resource": {
+            "name": "ec_resource",
+            "verbose_name": "Eco-Costs of Resource Scarity [EUR]",
+            "owner": null,
+            "note": "The external cost of increased difficulty of resource extraction; this property was created automatically and should be reviewed",
+            "source": "Note",
+            "unit": "EUR",
+            "prop_type": "CORE"
+        },
+        "ec_carbon": {
+            "name": "ec_carbon",
+            "verbose_name": "Eco-Costs of Carbon Footprint [EUR]",
+            "owner": null,
+            "note": "The external cost of climate change; this property was created automatically and should be reviewed",
+            "source": "Note",
+            "unit": "EUR",
+            "prop_type": "CORE"
+        },
+        "recipe2016_endpoint": {
+            "name": "recipe2016_endpoint",
+            "verbose_name": "Recipe2016 Endpoint [-]",
+            "owner": null,
+            "note": "this property was created automatically and should be reviewed",
+            "source": "Note",
+            "unit": "-",
+            "prop_type": "CORE"
+        },
+        "recipe_human_health": {
+            "name": "recipe_human_health",
+            "verbose_name": "Recipe Human Healt ['DALY'] (disability adjusted life years)",
+            "owner": null,
+            "note": "The effect on human health in DALY, Disability Adjusted Life Years; this property was created automatically and should be reviewed",
+            "source": "Note",
+            "unit": "DALY",
+            "prop_type": "CORE"
+        },
+        "recipe_eco_toxicity": {
+            "name": "recipe_eco_toxicity",
+            "verbose_name": "Recipe Eco Toxicity ['species/year'] (species/year)",
+            "owner": null,
+            "note": "The local species loss measured in species per year; this property was created automatically and should be reviewed",
+            "source": "Note",
+            "unit": "species/year",
+            "prop_type": "CORE"
+        },
+        "recipe_resources": {
+            "name": "recipe_resources",
+            "verbose_name": "Recipe Resources ['usd2013'] (US $ 2013)",
+            "owner": null,
+            "note": "Damage to resource availability in US$; this property was created automatically and should be reviewed",
+            "source": "Note",
+            "unit": "$",
+            "prop_type": "CORE"
+        },
+        "engineering_cost": {
+            "name": "engineering_cost",
+            "verbose_name": "Engineering cost [EUR]",
+            "owner": null,
+            "note": "Engineering cost of process for given quantity",
+            "source": "Note",
+            "unit": "$",
+            "prop_type": "CORE"
+        }
+    }
+}

@@ -1,0 +1,55 @@
+{% load static %}
+
+
+<div class="card  mx-1 my-3 w-100">
+    <div class="card-body">
+        <strong> #Current LCA Database </strong>
+
+        {% if database.logo %}
+            <img class="card-img-top" src="{{ database.logo.url }}" alt="Database image not available" > 
+        {% else %}
+            <img class="card-img-top" src="{% static 'EcoMan/images/LCA_Database_Idemat.png' %}" alt="Database image not available">
+        {% endif %}
+
+    </div>
+    <div class="card-footer">
+
+        {% if database %}
+        <strong>ID:</strong> <br>{{ database.id }}<br>
+        <strong>Name:</strong> <br>{{ database.name }}<br>
+        <strong>Owner:</strong> <br>{{ database.owner }}<br>
+        <strong>Accessibility:</strong> <br>{{ database.accessibility}}<br>
+        <strong>Info:</strong> <br>{{ database.note }}<br>
+        {% endif %}
+
+    </div>
+   <div class="container-fluid" id="objects-container">
+        <div class="row">
+
+        {% if is_staff == True %}
+
+            <button type="button" class="btn btn-warning btn-sm btn-block js-object-update" id="#modal-window" data-url="{% url 'EcoMan:lca_db_update' database.id %}" >
+                        Edit Header Data
+            </button>
+            {% if is_add_new_process_allowed == True %}
+            <button type="button" class="btn btn-warning btn-sm btn-block js-object-create" id="#modal-window-xl" data-url="{% url 'EcoMan:lca_process_create' database.id %}" >
+                        Add New Process
+            {% else %}
+            <button type="button" class="btn btn-warning btn-sm btn-block disabled" disabled>
+                Add New Process
+            {% endif %}
+            </button>
+            <button type="button" class="btn btn-warning btn-sm btn-block js-object-update" id="#modal-window" data-url="{% url 'EcoMan:lca_db_import_excel' database.id %}" disabled>
+                        Append Processes from Template
+            </button>
+            <a href="{% url 'EcoMan:lca_db_export_excel' database.id %}" class="btn btn-warning btn-sm btn-block" role="button" aria-disabled="true">Export Processes to Excel</a>
+            
+        {% endif %}
+        {% if database.accessibility == 'OPEN'%}
+            <a href="{% url 'EcoMan:lca_db_export_excel' database.id %}" class="btn btn-warning btn-sm btn-block" role="button" aria-disabled="true">Export Processes to Excel</a>
+        {% endif %}
+        </div>
+    </div>
+</div>
+
+

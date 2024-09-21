@@ -1,0 +1,43 @@
+{% load static %}
+
+
+<div class="card  mx-1 my-3 w-100">
+    <div class="card-body">
+        <strong> #Current Analysis </strong>
+        {% if current_analysis.logo %}
+            <img class="card-img-top" src="{{ current_analysis.logo.url }}" alt="Analysis image not available">
+        {% else %}
+            <img class="card-img-top" src="{% static '/website/images/Playground_Icon.png' %}" alt="Vehicle image not available1">
+        {% endif %}
+    </div>
+    <div class="card-footer">
+
+        {% if current_analysis %}
+        <strong>Name:</strong> {{ current_analysis.name }}<br>
+        <strong>Owner:</strong> {{ current_analysis.owner }}<br>
+        <strong>Is Public:</strong> {{ current_analysis.analysis_settings.is_public }}<br>
+        {% endif %}
+
+    </div>
+    <div class="container-fluid" id="objects-container">
+        <div class="row">
+
+            <button type="button" class="btn btn-warning btn-sm btn-block js-object-update" id="#modal-window-xl" data-url="{% url 'EcoMan:analysis_comparison_update' current_analysis_comparison_id %}">
+                Edit
+            </button>
+            <button type="button" class="btn btn-warning btn-sm btn-block js-object-update" id="#modal-window" data-url="{% url 'EcoMan:analysis_comparison_report_update' current_analysis_comparison_id %}">
+                Report options
+            </button>
+            <a type="button" class="btn btn-warning btn-sm btn-block"  href="{% url 'EcoMan:lca_comparison_print_reportlab' pk=current_analysis_comparison_id %}"
+                onclick="return confirm('Do you really want to generate pdf document?');">
+                <i class="fas fa-print-alt"></i> Print Report
+            </a>
+
+            <a  type="button" class="btn btn-warning btn-sm btn-block" href="{% url 'EcoMan:analysis_comparison_to_json' pk_analysis_comparison=analysis_comparison.id %}" >Export JSON File </a>
+            <button type="button" class="btn btn-warning btn-sm btn-block js-object-update" id="#modal-window-xl" data-url="{% url 'EcoMan:json_import_analysis_comparison_append' pk_analysis_comparison=analysis_comparison.id %}">
+                Import JSON File
+            </button>
+
+        </div>
+    </div>
+</div>

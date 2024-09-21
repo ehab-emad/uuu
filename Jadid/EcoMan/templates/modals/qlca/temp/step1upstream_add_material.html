@@ -1,0 +1,330 @@
+{% load widget_tweaks %}
+
+  <form method="post" action="{% url 'EcoMan:step1upstream_add_material' form.instance.pk %}" 
+                        data-parameter1="add_material" 
+                        data-parameter2={{ form.instance.pk}}
+                        class="js-object-update-form" 
+                        id="modal-form" 
+
+                        data-process-url="{% url 'EcoMan:load_lca_database_processes' %}"
+                        novalidate>
+  {% csrf_token %}
+    <div class="modal-dialog modal-xl" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+
+              <h5 class="modal-title" id="exampleModalLongTitle"><b>Add Material Model</b></h5>
+
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button> 
+
+
+
+
+        </div>
+        <div class="modal-body" >
+		<div class="col-md-12">
+	        <div class="row">
+                		<div class="col-md-4">
+                            {% include 'modals/qlca/lca_process_selection_form.html' %} 
+                        </div>
+                		<div class="col-md-8">
+
+                                <div class="container-fluid">
+                                    <form type="get" action="." style="margin: 20px">
+                                        <input id="search_box" type="text" name="search_box" placeholder="Search...">
+                                        <button type="button" class="btn-secondary mr-auto" id="search_submit">Search</button>
+                                    </form>
+
+                                <div class="container-fluid" id="process_preview">
+                                    {% include 'modals/qlca/lca_process_preview_modal_content.html' %} 
+                                </div>
+                                                                    </div>
+                        </div>
+            </div>
+        </div>
+        </div>
+        <div class="modal-footer">
+        <div class="d-flex justify-content-between w-100">
+            <p class="text-md-left font-weight-bold font-italic"><i class="fa-solid fa-circle-info"></i>    Custom materials can be added in LCA Database Section  <br /> 
+            (LCA Database > Review Current Project Database > Add New Process)</p>
+        </div>
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type ="button" class = "btn btn-warning mr-auto" id="reset_modal" >Reset</button>
+          <button type="submit" id="submit_button" class="btn btn-success">Submit</button>
+        </div>
+      </div>
+    </div>
+
+
+  <script>
+     $(function() {
+          $('#reset_modal').click(function() {
+                var url = $("#modal-form").attr("data-process-url");  // get the url of the `load_idemat_processs` view
+              var databaseId = 0;
+              var groupId = 0;
+              var subgroupId = 0;
+              var processId = 0;  // get the selected process group ID from the HTML input
+                var quantity = $("#id_quantity").val();
+                var process_type = $('.js-object-update-form').data().parameter1
+                var lca_step_id = $('.js-object-update-form').data().parameter2
+                var form = $('.js-object-update-form')
+                var search_text = $("#search_box").val();
+                $.ajax({                       // initialize an AJAX request
+                url: url,                    // set the url of the request (= localhost:8000/hr/ajax/load_idemat_processs/)
+                    data: {
+                    'trigger_id': "reset_modal",      // trigger id help to identify which action was trigerred in modal window
+                    'process_type': process_type,
+                    'lca_step_id': lca_step_id,
+
+                    'database_id': databaseId,
+                    'group_id': groupId,
+                    'subgroup_id': subgroupId,
+                    'process_id': processId,
+
+                    'quantity': quantity,
+
+                    'search_text': search_text,
+                },
+                    success: function (data) {   // `data` is the return of the `load_parts` view function
+                        $("#id_lca_database_choice").html("");
+                        $("#id_lca_database_choice").html(data.lca_databases); // update preview window for selected item
+                        $("#id_lca_subgroup_choice").html("");
+                        $("#id_lca_subgroup_choice").html(data.lca_subgroups);  // replace the contents of the process group input with the data that came from the server
+                        $("#id_lca_group_choice").html("");
+                        $("#id_lca_group_choice").html(data.lca_groups);  // replace the contents of the process group input with the data that came from the server
+                        $("#id_lca_process_choice").html("");
+                        $("#id_lca_process_choice").html(data.lca_processes);  // replace the contents of the process group input with the data that came from the server
+                        $("#process_preview").html(data.html_process_preview);  // replace the contents of the process preview
+
+                    if (parseInt($("#id_lca_database_choice").val()) ===0) {
+                        $('#id_lca_group_choice').attr("disabled", true);
+                        $('#id_lca_subgroup_choice').attr("disabled", true);
+                        $('#id_lca_process_choice').attr("disabled", true);
+                        }
+                    }
+                });
+          });
+        });
+      $("#id_lca_database_choice").change(function () {
+
+        var url = $("#modal-form").attr("data-process-url");  // get the url of the `load_idemat_materials` view
+
+        var databaseId = $(this).val();
+        var groupId = 0;
+        var subgroupId = 0;
+        var processId = 0;  // get the selected process group ID from the HTML input
+        var quantity = $("#id_quantity").val();
+        var process_type = $('.js-object-update-form').data().parameter1;
+        var lca_step_id = $('.js-object-update-form').data().parameter2;
+        var form = $('.js-object-update-form');
+        var search_text = $("#search_box").val();
+
+        var data_prep = {
+            'trigger_id': this.id,      // trigger id help to identify which action was trigerred in modal window
+            'process_type': process_type,
+            'lca_step_id': lca_step_id,
+
+            'database_id': databaseId,
+            'group_id': groupId,
+            'subgroup_id': subgroupId,
+            'process_id': processId,
+
+            'quantity': quantity,
+
+            'search_text': search_text,
+            };
+
+
+        $.ajax({                                                      // initialize an AJAX request
+        url: url,                                                   // set the url of the request (= localhost:8000/hr/ajax/load_idemat_materials/)
+            data: data_prep,
+
+            success: function (data) {   // `data` is the return of the `load_parts` view function
+                $("#id_lca_group_choice").html("");
+                $("#id_lca_group_choice").html(data.lca_groups);  // replace the contents of the process group input with the data that came from the server
+
+
+
+                if (parseInt($("#id_lca_database_choice").val()) !== 0) {
+                    $('#id_lca_group_choice').attr("disabled", false);
+                }
+                if (parseInt($("#id_lca_database_choice").val()) ===0) {
+                    $('#id_lca_group_choice').attr("disabled", true);
+                    $('#id_lca_subgroup_choice').attr("disabled", true);
+                    $('#id_lca_process_choice').attr("disabled", true);
+                    }
+                }
+
+    });
+
+      });
+
+
+      $("#id_lca_group_choice").change(function () {
+
+        var url = $("#modal-form").attr("data-process-url");  // get the url of the `load_idemat_materials` view
+
+        var databaseId = $("#id_lca_database_choice").val();
+        var groupId = $(this).val();
+        var subgroupId = 0;
+        var processId = 0;  // get the selected process group ID from the HTML input
+        var quantity = $("#id_quantity").val();
+        var process_type = $('.js-object-update-form').data().parameter1;
+        var lca_step_id = $('.js-object-update-form').data().parameter2;
+        var form = $('.js-object-update-form');
+        var search_text = $("#search_box").val();
+
+        var data_prep = {
+            'trigger_id': this.id,      // trigger id help to identify which action was trigerred in modal window
+            'process_type': process_type,
+            'lca_step_id': lca_step_id,
+
+            'database_id': databaseId,
+            'group_id': groupId,
+            'subgroup_id': subgroupId,
+            'process_id': processId,
+
+            'quantity': quantity,
+
+            'search_text': search_text,
+            };
+
+
+        $.ajax({                                                      // initialize an AJAX request
+        url: url,                                                   // set the url of the request (= localhost:8000/hr/ajax/load_idemat_materials/)
+            data: data_prep,
+
+            success: function (data) {   // `data` is the return of the `load_parts` view function
+                $("#id_lca_subgroup_choice").html("");
+                $("#id_lca_subgroup_choice").html(data.lca_subgroups);  // replace the contents of the process group input with the data that came from the server
+
+                if (parseInt($("#id_lca_group_choice").val()) !== 0) {
+                    $('#id_lca_subgroup_choice').attr("disabled", false);
+                }
+                if (parseInt($("#id_lca_group_choice").val()) ===0) {
+                    $('#id_lca_subgroup_choice').attr("disabled", true);
+                    $('#id_lca_process_choice').attr("disabled", true);
+                    }
+                }
+
+    });
+
+      });
+     $("#id_lca_subgroup_choice").change(function () {
+
+        var url = $("#modal-form").attr("data-process-url");  // get the url of the `load_idemat_materials` view
+
+        var databaseId = $("#id_lca_database_choice").val();
+        var groupId = $("#id_lca_group_choice").val()
+        var subgroupId =  $(this).val();
+        var processId = 0;  // get the selected process group ID from the HTML input
+        var quantity = $("#id_quantity").val();
+        var process_type = $('.js-object-update-form').data().parameter1;
+        var lca_step_id = $('.js-object-update-form').data().parameter2;
+        var form = $('.js-object-update-form');
+        var search_text = $("#search_box").val();
+
+        var data_prep = {
+            'trigger_id': this.id,      // trigger id help to identify which action was trigerred in modal window
+            'process_type': process_type,
+            'lca_step_id': lca_step_id,
+
+            'database_id': databaseId,
+            'group_id': groupId,
+            'subgroup_id': subgroupId,
+            'process_id': processId,
+
+            'quantity': quantity,
+
+            'search_text': search_text,
+            };
+
+
+        $.ajax({                                                      // initialize an AJAX request
+        url: url,                                                   // set the url of the request (= localhost:8000/hr/ajax/load_idemat_materials/)
+            data: data_prep,
+
+            success: function (data) {   // `data` is the return of the `load_parts` view function
+                $("#id_lca_process_choice").html("");
+                $("#id_lca_process_choice").html(data.lca_processes);  // replace the contents of the process group input with the data that came from the server
+
+                if (parseInt($("#id_lca_subgroup_choice").val()) !== 0) {
+                    $('#id_lca_process_choice').attr("disabled", false);
+                }
+                if (parseInt($("#id_lca_subgroup_choice").val()) ===0) {
+                    $('#id_lca_process_choice').attr("disabled", true);
+                    }
+                }
+
+    });
+
+     });
+
+   $("#id_lca_process_choice").change(function () {
+      var url = $("#modal-form").attr("data-process-url");  // get the url of the `load_idemat_processs` view
+        var databaseId = $("#id_lca_database_choice").val();
+        var groupId = $("#id_lca_group_choice").val()
+        var subgroupId =  $("#id_lca_subgroup_choice").val()
+        var processId = $(this).val();
+        var quantity = $("#id_quantity").val();
+        var process_type = $('.js-object-update-form').data().parameter1;
+        var lca_step_id = $('.js-object-update-form').data().parameter2;
+        var form = $('.js-object-update-form');
+        var search_text = $("#search_box").val();
+        var data_prep = {
+            'trigger_id': this.id,      // trigger id help to identify which action was trigerred in modal window
+            'process_type': process_type,
+            'lca_step_id': lca_step_id,
+
+            'database_id': databaseId,
+            'group_id': groupId,
+            'subgroup_id': subgroupId,
+            'process_id': processId,
+
+            'quantity': quantity,
+
+            'search_text': search_text,
+            };
+
+
+
+
+      $.ajax({                       // initialize an AJAX request
+        url: url,                    // set the url of the request (= localhost:8000/hr/ajax/load_idemat_processs/)
+          data: data_prep,
+          success: function (data) {   // `data` is the return of the `load_parts` view function
+            $("#process_preview").html(data.html_process_preview);  // replace the contents of the process preview
+
+           
+                if (parseInt($("#id_process_choice").val()) !== 0) {
+                    document.querySelector('#submit_button').disabled =false
+
+                }
+                if (parseInt($("#id_process_choice").val()) === 0) {
+                    document.querySelector('#submit_button').disabled =true
+                    }
+        }
+      });
+
+    });
+
+      $(document).ready(refreshOptions)
+
+      function refreshOptions() {
+          $('#id_lca_group_choice').attr("disabled", true);
+          $('#id_lca_subgroup_choice').attr("disabled", true);
+          $('#id_lca_process_choice').attr("disabled", true);
+          document.querySelector('#submit_button').disabled =true
+      }
+
+
+
+  </script>
+
+
+
+
+
+

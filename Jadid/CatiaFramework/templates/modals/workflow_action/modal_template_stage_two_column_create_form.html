@@ -1,0 +1,57 @@
+{% load widget_tweaks %}
+<style type="text/css">
+    label{
+        display: block; /* add this */
+        padding-top: 20px;
+    }    
+</style>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group{% if field.errors %} has-error{% endif %}" >
+
+                        <label for="id_name">Name</label>
+                        {{ form.name|add_class:"form-control"}}
+                        <span class="text-danger">{{ form.name.errors|striptags }}</span>
+
+                        <label for="id_name">Description</label>
+                        {{ form.description|add_class:"form-control"}}
+                        <span class="text-danger">{{ form.description.errors|striptags }}</span>
+
+                        <label for="id_name">Thumbnail</label>
+                        {{ form.thumbnail|add_class:"form-control"}}
+                        <span class="text-danger">{{ form.thumbnail.errors|striptags }}</span>
+
+
+                        <label for="id_target_object">Target Object</label>
+                        {{ form.target_object|add_class:"form-control"}}
+                        <span class="text-danger">{{ form.target_object.errors|striptags }}</span>
+ 
+
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <label for="id_framework_request">Framework Request</label>
+                    {{ form.framework_request|add_class:"form-control"}}
+                    <span class="text-danger">{{ form.framework_request.errors|striptags }}</span>
+                    <label for="id_url_route">URL Request</label>
+                    {{ form.url_route|add_class:"form-control"}}
+                    <span class="text-danger">{{ form.url_route.errors|striptags }}</span>
+                        <div class="container-fluid m-0 p-0" id="dotnet_components" style="max-width: 100%; overflow-x: auto;">
+                            {% if dotnet_components %}                            
+                                {% include 'modals/workflow_action/dotnet_component_list_modal_content.html' %} 
+                            {% endif %}                                
+                            {% if dotnet_component %}                    
+                                {% include 'modals/workflow_action/dotnet_component_details_modal_content.html' %} 
+                            {% endif %}
+                        </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+

@@ -1,0 +1,57 @@
+<h5>Parameters:</h5>               
+<form method="post" id="ParameterForm">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <input type="hidden" name="instance_UUID" value= {{object.UUID}}>    
+    <button type="submit" class="btn btn-primary btn-sm" id="parameterSubmit">Submit</button>
+</div>
+  </form>
+
+<script>
+        $('#ParameterForm').submit(function(event) {   
+            event.preventDefault();
+        
+            const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+            var url = "{% url 'CatiaFramework:save_instance_parameters' instance_object.UUID %}";
+            $.ajax({                       // initialize an AJAX request
+                type:'POST',
+                headers: { 'X-CSRFToken': csrftoken },
+                url: url, //$(this).data('url'), 
+                dataType: 'json',                  
+                data:  $(this).serialize(),
+                success: function (data) {   // `data` is the return of the `load_parts` view function
+                    debugger;
+                    $("#timedMessages").html(data.html_message) ;  
+                    timeout_message(); 
+                } 
+            });
+        }); 
+
+        function timeout_message(){
+        let messagesDiv = $('#timedMessages');
+            // success-messages timeout for 5 sec 
+            setTimeout(function () {
+                messagesDiv.find('.alert-success').removeClass("show");
+                setTimeout(function () {
+                    messagesDiv.find('.alert-success').addClass("hidden");
+                }, 100);
+            }, 3000); // <!-- time in milliseconds -->
+
+            // info-messages timeout for 7 sec 
+            setTimeout(function () {
+                messagesDiv.find('.alert-info').removeClass("show");
+                setTimeout(function () {
+                    messagesDiv.find('.alert-info').addClass("hidden");
+                }, 100);
+            }, 7000); // <!-- time in milliseconds-->
+
+            // warning-messages timeout for 15 sec 
+            setTimeout(function () {
+                messagesDiv.find('.alert-warning').removeClass("show");
+                setTimeout(function () {
+                    messagesDiv.find('.alert-warning').addClass("hidden");
+                }, 100);
+            }, 15000); 
+
+        } 
+</script>

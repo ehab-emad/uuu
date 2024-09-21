@@ -1,0 +1,210 @@
+{% extends 'BoltMan/base.html' %}
+{% load static %}
+
+{% block Apps %}
+
+
+
+<style>
+    .card-img-top {
+        width: 100%;
+        height: 10vw;
+        object-fit: contain;
+    }
+</style>
+<div class="container-fluid ">
+    <div class="row">
+        <div class="col-md-10 border-right">
+            <div class="row">
+                <div class="card  mx-1 my-3" style="width: 12rem;" >
+                    <img class="card-img-top" src="{% static 'BoltMan/images/Screw.png' %}" alt="Card image cap">
+                    <div class="card-body d-flex flex-column">
+                        <h5 class="card-title">Single Bolt Case Assessment</h5>
+                        <p class="card-text">Perform an assessmen for a single Bolt Case</p>
+                        <div class="container-fluid" style="margin-top: auto;">
+                            <div class="row">
+                                <a href="{% url 'BoltMan:assessment_welcome_screen' %}" class="btn btn-warning btn-lg btn-block" role="button" aria-disabled="true">Start</a>
+                                <button type="submit" name="submit" value="analyses"  class="btn btn-info btn-lg btn-block js-modalinfo-create " data-url="{% url 'info_concept' %}">Info</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card  mx-1 my-3" style="width: 12rem;">
+                    <img class="card-img-top" src="{% static 'BoltMan/images/Multiple_Screws.png' %}" alt="Card image cap">
+                    <div class="card-body d-flex flex-column">
+                        <h5 class="card-title">Bolt Cases Manager</h5>
+                        <p class="card-text">Manage Multiple Bolt Casess </p>
+                        <div class="container-fluid" style="margin-top: auto;">
+                            <div class="row">
+                                <a href="{% url 'BoltMan:manager_welcome_screen'%}" class="btn btn-warning btn-lg btn-block " role="button" aria-disabled="true">Start</a>
+                               <button type="submit" name="submit" value="qlca"  class="btn btn-info btn-lg btn-block js-modalinfo-create " data-url="{% url 'info_concept' %}">Info</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+
+                <div class="card  mx-1 my-3" style="width: 12rem;">
+                    <img class="card-img-top" src="{% static 'BoltMan/images/Material_Database.png' %}" alt="Card image cap">
+                    <div class="card-body d-flex flex-column">
+                        <h5 class="card-title">Bolt Material Database</h5>
+                        <p class="card-text">Review contents of Open Source Databases like Idemat </p>
+                        <div class="container-fluid" style="margin-top: auto;">
+                            <div class="row">
+                                <a href="{% url 'BoltMan:boltmaterial_list'%}" class="btn btn-warning btn-lg btn-block " role="button" aria-disabled="true">Start</a>
+                               <button type="submit" name="submit" value="idemat_database"  class="btn btn-info btn-lg btn-block js-modalinfo-create " data-url="{% url 'info_concept' %}">Info</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="card  mx-1 my-3" style="width: 12rem;">
+                    <img class="card-img-top" src="{% static 'BoltMan/images/Material_Database.png' %}" alt="Card image cap">
+                    <div class="card-body d-flex flex-column">
+                        <h5 class="card-title">Part Material Database</h5>
+                        <p class="card-text">Review contents of Open Source Databases like Idemat </p>
+                        <div class="container-fluid" style="margin-top: auto;">
+                            <div class="row">
+                                <a href="{% url 'BoltMan:partmaterial_list'%}" class="btn btn-warning btn-lg btn-block " role="button" aria-disabled="true">Start</a>
+                               <button type="submit" name="submit" value="idemat_database"  class="btn btn-info btn-lg btn-block js-modalinfo-create " data-url="{% url 'info_concept' %}">Info</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+
+                <div class="card  mx-1 my-3" style="width: 12rem; ">
+                    <img class="card-img-top" src="{% static 'BoltMan/images/Friction_Database.png' %}" %}" alt="Card image cap">
+                    <div class="card-body d-flex flex-column">
+                        <h5 class="card-title">Friction Thread Database</h5>
+                        <p class="card-text">Definition of Friction between Bolt Thread and Clamped Material</p>
+                        <div class="container-fluid" style="margin-top: auto;">
+                            <div class="row">
+                                
+                                <a href="{% url 'BoltMan:frictionthread_list'%}" class="btn btn-warning btn-lg btn-block " role="button" aria-disabled="true">Start</a>
+                                <button type="submit" name="submit" value="analyses_comparison"  class="btn btn-info btn-lg btn-block js-modalinfo-create " data-url="{% url 'info_concept' %}">Info</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card  mx-1 my-3" style="width: 12rem; ">
+                    <img class="card-img-top" src="{% static 'BoltMan/images/Friction_Database.png' %}" %}" alt="Card image cap">
+                    <div class="card-body d-flex flex-column">
+                        <h5 class="card-title">Friction Head Database</h5>
+                        <p class="card-text">Definition of Friction between Bolt Head and Clamped Material</p>
+                        <div class="container-fluid" style="margin-top: auto;">
+                            <div class="row">
+                                
+                                <a href="{% url 'BoltMan:frictionhead_list'%}" class="btn btn-warning btn-lg btn-block " role="button" aria-disabled="true">Start</a>
+                                <button type="submit" name="submit" value="analyses_comparison"  class="btn btn-info btn-lg btn-block js-modalinfo-create " data-url="{% url 'info_concept' %}">Info</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+
+            </div>
+        </div>
+            <div class="col-md-2">
+                {% include "website/current_project.html" %}
+                {% include "website/idemat_licence_badge.html"%}
+            </div>
+    </div>
+</div>
+
+<script type="module">
+    import {ExpirationChecker} from "{% static 'js/expiration_checker.js' %}";
+    const expirationTime = {{ expiration_timestamp }}; // Expire after 5 seconds
+    const djangoUrl = 'website:expired_login'; // Replace with your Django URL
+    const checker = new ExpirationChecker(expirationTime, djangoUrl); // Starts the expiration checker
+</script>
+
+
+<style>
+    /* The Modal (background) */
+    .modal-dialog{
+      margin:auto;
+      position: relative;  
+    }
+    .modalinfo {
+      display: none; /* Hidden by default */
+      position: fixed; /* Stay in place */
+      z-index: 1; /* Sit on top */
+      padding-top: 100px; /* Location of the box */
+      left: 0;
+      top: 0;
+      width: 100%; /* Full width */
+      height: 100%; /* Full height */
+      overflow: auto; /* Enable scroll if needed */
+      background-color: rgb(0,0,0); /* Fallback color */
+      background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+    }
+
+    /* Modal Content */
+    .modalinfo-content {
+      background-color: #fefefe;
+      margin: auto;
+      padding: 20px;
+      border: 1px solid #888;
+      width: 20%;
+    }
+
+    /* The Close Button */
+    .close {
+      color: #aaaaaa;
+      float: right;
+      font-size: 28px;
+      font-weight: bold;
+    }
+
+    .close:hover,
+    .close:focus {
+      color: #000;
+      text-decoration: none;
+      cursor: pointer;
+    }
+</style>
+
+<!-- The Modal -->
+<div id="myModalEco" class="modalinfo">
+
+  <!-- Modal content -->
+  <div class="modalinfo-content">
+
+    <p>Under development</p>
+  </div>
+
+</div>
+
+
+
+
+  <script type="text/javascript">
+        // Get the modal
+        var modal = document.getElementById("myModalEco");
+
+        // Get the button that opens the modal
+        var btn20 = document.getElementById("myBtn20");
+        // Get the <span> element that closes the modal
+        var span = document.getElementsByClassName("close")[0];
+
+
+        // When the user clicks on the button, open the modal
+        btn20.onclick = function() {
+          modal.style.display = "block";
+        }
+
+        // When the user clicks anywhere outside of the modal, close it
+        window.onclick = function(event) {
+          if (event.target == modal) {
+            modal.style.display = "none";
+          }
+        } 
+</script>
+
+{% endblock Apps %}

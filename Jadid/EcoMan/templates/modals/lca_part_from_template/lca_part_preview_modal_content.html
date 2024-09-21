@@ -1,0 +1,295 @@
+﻿{% load widget_tweaks %}
+{% load humanize %}
+<style>
+    #customers {
+      font-family: Arial, Helvetica, sans-serif;
+      border-collapse: collapse;
+      width: 100%;
+    }
+
+    #customers td, #customers th {
+      border: 1px solid #ddd;
+      padding: 8px;
+    }
+
+    #customers tr:nth-child(even){background-color: #f2f2f2;}
+
+    #customers tr:hover {background-color: #ddd;}
+
+    #customers th {
+      padding-top: 2px;
+      padding-bottom: 2px;
+      text-align: justify;
+      background-color: #04AA6D;
+      color: white;
+    }
+
+    label {
+        padding-top: 15px;"
+    }
+</style>
+
+
+
+
+    {% if selected_template_preview %}
+        <b>Preselected Upstream Processes: </b>
+        <table id="customers">
+            <thead>
+                <tr>
+                    <th >Apply</th>                              
+                    <th >ID</th>
+                    <th >Name</th>
+                    <th >Quantity</th>
+                    <th >Unit</th>
+                </tr>
+            </thead>
+            <tbody>
+                        {% for element in selected_template_preview.lca_process_model.all %}
+                            {% if  element.lca_step == "LCASTEP1" %}
+                                <tr>
+                                    <td><input type="checkbox" name="checkbox_{{ element.id }}" value="{{ element.id }}"></td>
+                                    <td > {{ element.id }}</td>
+                                    <td > {{ element.name }}</td>
+                                    <td > {{ element.process_quantity }}</td>
+                                    <td > {{ element.process_model.unit }} </td>
+                                </tr>
+                            {% endif %}
+                        {% endfor %}
+
+
+
+            </tbody>
+        </table>
+        <b>Preselected Core Processes: </b>
+        <table id="customers">
+            <thead>
+                <tr>
+                    <th >Apply</th>                              
+                    <th >ID</th>
+                    <th >Name</th>
+                    <th >Quantity</th>
+                    <th >Unit</th>
+                </tr>
+            </thead>
+            <tbody>
+                        {% for element in selected_template_preview.lca_process_model.all %}
+                           {% if  element.lca_step == "LCASTEP2" %}
+                                <tr>
+                                    <td><input type="checkbox" name="checkbox_{{ element.id }}" value="{{ element.id }}"></td>
+                                    <td > {{ element.id }}</td>
+                                    <td > {{ element.name }}</td>
+                                    <td > {{ element.process_quantity }}</td>
+                                    <td > {{ element.process_model.unit }} </td>
+                                </tr>
+                            {% endif %}
+                        {% endfor %}
+
+
+
+            </tbody>
+        </table>
+        <b>Preselected Downstream Processes: </b>
+        <table id="customers">
+            <thead>
+                <tr>
+                    <th >Apply</th>                              
+                    <th >ID</th>
+                    <th >Name</th>
+                    <th >Quantity</th>
+                    <th >Unit</th>
+                </tr>
+            </thead>
+            <tbody>
+                        {% for element in selected_template_preview.lca_process_model.all %}
+                           {% if  element.lca_step == "LCASTEP3" %}
+                                <tr>
+                                    <td><input type="checkbox" name="checkbox_{{ element.id }}" value="{{ element.id }}"></td>
+                                    <td > {{ element.id }}</td>
+                                    <td > {{ element.name }}</td>
+                                    <td > {{ element.process_quantity }}</td>
+                                    <td > {{ element.process_model.unit }} </td>
+                                </tr>
+                            {% endif %}
+                        {% endfor %}
+            </tbody>
+        </table>
+        <b>Preselected Circularity Processes: </b>
+        <table id="customers">
+            <thead>
+                <tr>
+                    <th >Apply</th>                              
+                    <th >ID</th>
+                    <th >Name</th>
+                    <th >Quantity</th>
+                    <th >Unit</th>
+                </tr>
+            </thead>
+            <tbody>
+                        {% for element in selected_template_preview.lca_process_model.all %}
+                           {% if  element.lca_step == "LCASTEP4" %}
+                                <tr>
+                                    <td><input type="checkbox" name="checkbox_{{ element.id }}" value="{{ element.id }}"></td>
+                                    <td > {{ element.id }}</td>
+                                    <td > {{ element.name }}</td>
+                                    <td > {{ element.process_quantity }}</td>
+                                    <td > {{ element.process_model.unit }} </td>
+                                </tr>
+                            {% endif %}
+                        {% endfor %}
+            </tbody>
+        </table>
+            <button type = "button" class = "btn-secondary mr-auto" id="refresh_table" >Refresh</button>
+            <button type = "button" class = "btn-secondary mr-auto" id="select_all" >Select All</button>
+            <button type = "button" class = "btn-secondary mr-auto" id="deselect_all" >Deselect All</button>
+        {% else %}
+
+       <style>
+            .select ul li.option {
+              background-color: #DEDEDE;
+              box-shadow: 0px 1px 0 #DEDEDE, 0px -1px 0 #DEDEDE;
+              -webkit-box-shadow: 0px 1px 0 #DEDEDE, 0px -1px 0 #DEDEDE;
+              -moz-box-shadow: 0px 1px 0 #DEDEDE, 0px -1px 0 #DEDEDE;
+            }
+
+            .select ul li.option:hover {
+              background-color: #B8B8B8;
+            }
+
+            .select ul li.option {
+              z-index: 1;
+              padding: 5px;
+              
+              list-style: none;
+            }
+
+            .select ul li:first-child {
+              display: block;
+            }
+
+            .select ul li {
+              cursor: default;
+            }
+
+
+       </style>   
+
+            {% if search_result %}
+                <div class="select">
+                    <p>Search Result:</p>
+                    <ul>
+                        {% for element in search_result %}
+                            <li value={{ element.id }} class="option">{{ element.name }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            {% endif %}
+        {% endif %}
+
+
+  <script>
+      $('.select ul li.option').click(function () {
+        var url = $("#modal-form").attr("data-process-url");  // get the url of the `load_idemat_processs` view
+        var matchedEle = document.querySelectorAll(".modal.fade.show")[0].id; //find the div name of the modal
+        var modalwindow = document.getElementById(matchedEle)
+        var modalwindowcontent = modalwindow.getElementsByClassName("modal-content")[0];
+
+        var templateId = $(this).attr('value');  // get the selected process group ID from the HTML input
+
+        var quantity = $("#id_quantity").val();
+
+        var form = $('.js-object-update-form')
+        var search_text = $("#search_box").val();
+        const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+        var data_prep = {
+            'trigger_id': "option_submit",      // trigger id help to identify which action was trigerred in modal window
+            'lca_part_template_id': templateId,
+        };
+        
+        $.ajax({                       // initialize an AJAX request
+            url: url,                    // set the url of the request (= localhost:8000/hr/ajax/load_idemat_processs/)
+            type: 'get',
+            headers: { 'X-CSRFToken': csrftoken },
+            data: data_prep,
+            success: function (data) {   // `data` is the return of the `load_parts` view function
+                $("#templates_preview").html(data.html_template_preview); // update preview window for selected item
+                $("#id_selected_template_id").val(data.selected_template_id)
+                $("#id_selected_template_name").val(data.selected_template_name)
+                $("#id_selected_template_notes").val(data.selected_template_notes)
+
+                document.querySelector('#submit_button').disabled =false
+            }
+        });
+
+
+          })
+
+      $(function() {
+          $('#search_template_submit').click(function() {
+                var url = $("#modal-form").attr("data-process-url");  // get the url of the `load_idemat_processs` view
+                var matchedEle = document.querySelectorAll(".modal.fade.show")[0].id; //find the div name of the modal
+                var modalwindow = document.getElementById(matchedEle)
+                var modalwindowcontent = modalwindow.getElementsByClassName("modal-content")[0];
+
+                var processId = $(this).attr('value');  // get the selected process group ID from the HTML input
+                var lca_step_id = $('.js-object-update-form').data().parameter2
+                var form = $('.js-object-update-form')
+                var search_text = $("#search_text_template").val();
+                var lca_part_source = $("#id_lca_part_source").val();
+                $.ajax({                       // initialize an AJAX request
+                url: url,                    // set the url of the request (= localhost:8000/hr/ajax/load_idemat_processs/)
+                    data: {
+                    'trigger_id': "search_submit",      // trigger id help to identify which action was trigerred in modal window
+                    'lca_step_id': lca_step_id,
+                    'search_text': search_text,
+                    'lca_part_source': lca_part_source,
+                },
+                    success: function (data) {   // `data` is the return of the `load_parts` view function
+                    $("#templates_preview").html(data.html_templates_preview);  // replace the contents of the city input with the data that came from the server
+                    }
+                });
+          });
+      });
+
+      $(function() {
+          $('#refresh_table').click(function() {
+                var url = $("#modal-form").attr("data-process-url");  // get the url of the `load_idemat_processs` view
+                var databaseId = $("#id_lca_database_choice").val();
+                var groupId = $("#id_lca_group_choice").val();
+                var subgroupId = $("#id_lca_subgroup_choice").val();
+                var processId = $("#id_lca_process_choice").val();  // get the selected process group ID from the HTML input
+                var quantity = $("#id_quantity").val();
+                var lca_step_id = $('.js-object-update-form').data().parameter2
+                var form = $('.js-object-update-form')
+                var search_text = $("#search_box").val();
+                $.ajax({                       // initialize an AJAX request
+                url: url,                    // set the url of the request (= localhost:8000/hr/ajax/load_idemat_processs/)
+                    data: {
+                    'trigger_id': "refresh_table",      // trigger id help to identify which action was trigerred in modal window
+                    'lca_step_id': lca_step_id,
+                    'database_id': databaseId,
+                    'group_id': groupId,
+                    'subgroup_id': subgroupId,
+                    'process_id': processId,
+                    'quantity': quantity,
+                    'search_text': search_text,
+                },
+                    success: function (data) {   // `data` is the return of the `load_parts` view function
+                    $("#process_preview").html(data.html_process_preview); // update preview window for selected item
+                    }
+                });
+          });
+        });
+
+      $(function() {
+          $('#select_all').click(function() {
+            $('input[type="checkbox"]').prop('checked', true);
+          });
+        });
+      $(function() {
+          $('#deselect_all').click(function() {
+            $('input[type="checkbox"]').prop('checked', false);
+          });
+        });
+
+  </script>

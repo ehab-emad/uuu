@@ -1,0 +1,31 @@
+body {
+    background: rgb(241, 239, 239);
+}
+
+.navbar {
+    border-radius: 0;
+}
+
+.button0px {
+    border-radius: 0;
+}
+
+.navbar-brand {
+    font-family: "Satisfy", cursive;
+    font-size: xx-large;
+    margin-top: -10px;
+}
+
+.wrapper {
+    display: flex;
+    align-items: stretch;
+}
+
+#sidebar {
+    min-width: 250px;
+    max-width: 250px;
+}
+
+    #sidebar.active {
+        margin-left: -250px;
+    }

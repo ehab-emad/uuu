@@ -1,0 +1,84 @@
+{% extends 'website/base.html' %}
+{% load static %}
+{% load custom_tags %}
+{% block AppIcon %}
+{% endblock AppIcon %}
+
+{% block NavItems %}
+    <li class="nav-item active">
+        <a class="nav-link js-object-create" id="#modal-window-xl" href="#" data-url="{% url 'project_create' %}"> Add new project </a>    
+    </li>
+{% endblock NavItems %}
+{% block Apps %}
+
+    <div class="container-fluid " id="objects-container">
+        <div class="row">
+            <div class="col-md-10 border-right">
+                <div class="row">
+                  {% for app in apps %} {% include app %} {% endfor %}
+                </div>
+              </div>
+            <div class="col-md-2">
+              <div class="row">              
+                {% include "website/current_project.html" %}              
+                {% include "website/current_user.html" %}
+              </div>
+            </div>
+        </div>
+    </div>
+
+<script type="module">
+  import {ExpirationChecker} from "{% static 'js/expiration_checker.js' %}";
+  const expirationTime = {{ expiration_timestamp }}; // Expire after 5 seconds
+  const djangoUrl = 'website:expired_login'; // Replace with your Django URL
+  const checker = new ExpirationChecker(expirationTime, djangoUrl); // Starts the expiration checker
+</script>
+
+
+<style>
+    /* The Modal (background) */
+    .modal-dialog{
+      margin:auto;
+      position: relative;  
+    }
+    .modalinfo {
+      display: none; /* Hidden by default */
+      position: fixed; /* Stay in place */
+      z-index: 1; /* Sit on top */
+      padding-top: 100px; /* Location of the box */
+      left: 0;
+      top: 0;
+      width: 100%; /* Full width */
+      height: 100%; /* Full height */
+      overflow: auto; /* Enable scroll if needed */
+      background-color: rgb(0,0,0); /* Fallback color */
+      background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+    }
+
+    /* Modal Content */
+    .modalinfo-content {
+      background-color: #fefefe;
+      margin: auto;
+      padding: 20px;
+      border: 1px solid #888;
+      width: 20%;
+    }
+
+    /* The Close Button */
+    .close {
+      color: #aaaaaa;
+      float: right;
+      font-size: 28px;
+      font-weight: bold;
+    }
+
+    .close:hover,
+    .close:focus {
+      color: #000;
+      text-decoration: none;
+      cursor: pointer;
+    }
+</style>
+
+
+{% endblock Apps %}

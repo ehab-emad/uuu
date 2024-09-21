@@ -1,0 +1,50 @@
+version: "3.8"
+name: "be_paramount_dev"
+services:
+  django_app_dev:
+    image: fdslphost006.service-hosting.org:9001/be_paramount:develop_build_number_${BUILD_NUMBER}
+    command: bash -c "python manage.py collectstatic --noinput && python manage.py runserver 0.0.0.0:8000"
+    env_file:
+      - .env
+    environment:
+      - BUILD_NUMBER=${BUILD_NUMBER}
+    volumes:
+      - /data/media-prod:/app/media
+      - ./static:/app/static
+      - ./var/run/clamav:/var/run/clamav/
+    ports:
+      - ${DJANGO_EXTERNAL_PORT}:8000
+    links:
+      - redis_dev
+    networks:
+      - redisnet_dev
+  redis_dev:
+    image: redis:latest
+    ports:
+      - 6379
+    networks:
+      - redisnet_dev
+  clamav:
+    image: clamav/clamav:latest
+    container_name: clamav
+    ports:
+      - "3310:3310"
+    volumes:
+      - ./clamav-db:/var/lib/clamav
+      - ./var/run/clamav/clamd.ctl:/var/run/clamav/clamd.ctl # socket host mount
+    environment:
+      - CLAMD_LOG_FILE=/var/log/clamav/clamd.log
+      - CLAMD_LOG_TIME=yes
+      - FRESHCLAM_CONF_MAX_LOG_SIZE=2M
+    command: clamd
+    depends_on:
+      - freshclam
+
+  freshclam:
+    image: clamav/clamav:latest
+    container_name: freshclam
+    command: freshclam
+    volumes:
+      - ./clamav-db:/var/lib/clamav
+networks:
+  redisnet_dev:

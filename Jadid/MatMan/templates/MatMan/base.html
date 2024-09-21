@@ -1,0 +1,54 @@
+{% extends 'website/base.html' %}
+{% load static %}
+
+{% block AppIcon %}
+<a class="navbar-brand" href="{% url 'MatMan:index_materialgroups' %}">
+    <span><img src="{% static 'MatMan/images/MatMan_Ico.png' %}" alt="Logo" ></span>
+    MatMan
+</a>
+{% endblock AppIcon %}
+
+
+{% block NavItems %}
+
+<div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+
+        <li class="nav-item dropdown active">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Add Material Item
+            </a>
+            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+
+                <a class="nav-link js-engineeringmaterial-create" href="#" data-url="{% url 'MatMan:engineeringmaterial_create' %}">New material </a>
+
+            </div>
+        </li>
+
+
+    </ul>
+</div>
+{% endblock NavItems %}
+
+{% block Apps %}
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="row">
+                <div class="col-md-10">
+                    <div class="row">
+                        <div class="col-md-12">
+
+                            {% block Cards %}
+                            {% endblock Cards %}
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    {% include "website/current_project.html" %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock Apps %}

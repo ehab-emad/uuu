@@ -1,0 +1,50 @@
+<div class="container-fluid ">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="row-no-gutters">
+                {% if error_message %}
+                <p><strong>{{ error_message }}</strong></p>
+                {% endif %}
+            <div class="table-responsive w-100 d-block d-md-table">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>Applied Process:</th>
+                            <th>Actions:</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        {% if object.process_model %}
+                        {% for object in object.process_model.all %}
+
+                        <tr>
+                            <td>{{ object.name }}</td>
+                            <td>
+                            <a href="{% url 'MatMan:engineeringmaterial_detailview' object.id%}" class="btn btn-info btn-sm " role="button" aria-pressed="true">Details</a>
+                            <button type="button" class="btn btn-primary btn-sm js-boltmaterial-update " data-url=#> Norm </button>
+                            <a href=# class="btn btn-danger btn-sm " role="button" aria-pressed="true">Remove</a>
+                            </td>
+                        </tr>
+
+
+                        {% endfor %}
+                        {% endif %}
+                    </tbody>
+                </table>
+
+            </div>
+            </div>
+
+        </div>
+
+
+    </div>
+
+            <div class="d-flex h-100">
+            <div class="align-self-end ml-auto">
+                <button type="button" class="btn btn-warning btn-sm js-part-update " data-url="{% url 'ConceptMan:part_select_manufacturingprocess' object.id %}"> Add </button>
+            </div>
+
+        </div>
+</div>    

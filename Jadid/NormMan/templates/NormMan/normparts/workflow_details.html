@@ -1,0 +1,14 @@
+{% load static %}
+<div class="card animationoff my-1">
+    <div class="card-body " >                    
+        <h3>Step Instructions:</h3>
+            
+            <strong>UUID: </strong>  {{ object_details.id }} </br>
+            <strong>Description: </strong>  {{ object_details.gui.description }} </br>
+
+            <div class="container-fluid " style="margin-top: 20px; padding:0px">
+                <img class="card-img-top"  src='{{ object_details.gui.gif }}' alt="" style="max-width: 50rem;  ">     
+            </div>
+            
+    </div>
+</div> 

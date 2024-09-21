@@ -1,0 +1,38 @@
+{% load static %}
+
+
+<div class="card  mx-1 my-3 w-100">
+    <div class="card-body">
+        <strong> #Current Vehicle </strong>
+        {% if vehicle.logo == 'Default Vehicle Logo' %}
+        <img class="card-img-top" src="{% static '/website/images/Vehicle_Icon.png' %}" alt="Vehicle image not available1">
+        {% else %}
+        <img class="card-img-top" src="{{ vehicle.logo }}" alt="Vehicle image not available">
+        {% endif %}
+    </div>
+    <div class="card-footer">
+
+        {% if vehicle %}
+        <strong>Name:</strong> <br>{{ vehicle.name }}<br>
+        <strong>Vehicle Class:</strong> <br>{{ vehicle.get_vehicle_classification_display }}<br>
+        <strong>Target Weight:</strong> <br>{{ vehicle.target_weight }}<br>
+        <strong>Vehicle Lifetime in km:</strong> <br>{{ vehicle.life_distance_in_km }}<br>
+        <strong>Manufactured Units:</strong> <br>{{ vehicle.production_rate_model.produced_units }}
+        {% endif %}
+
+    </div>
+    <div class="container-fluid">
+        <div class="row">
+
+        <button type="button" class="btn btn-warning btn-sm btn-block js-object-update" id="#modal-window-lg" data-url="{% url 'vehicle_update' vehicle.UUID|stringformat:"s" %}">
+                    Edit Header Data
+        </button>
+        <button type="button" class="btn btn-warning btn-sm btn-block js-object-update" id="#modal-window-xl" data-url="{% url 'EcoMan:energysource_update' vehicle.energy_source_model.id %}">
+                    Edit Energy Source model
+        </button>
+        <button type="button" class="btn btn-warning btn-sm btn-block js-object-update" id="#modal-window-xl" data-url="{% url 'production_rate_update' vehicle.production_rate_model.id %}">
+                    Edit Production Rates model
+        </button>
+        </div>
+    </div>
+</div>

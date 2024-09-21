@@ -1,0 +1,66 @@
+
+{% load widget_tweaks %}
+
+<form method="post" id="#modal-form" action="{% url 'token_create_modal' uuid_component=uuid_component%}" class="js-object-create-form" novalidate>
+    
+  {% csrf_token %}
+      <div class="modal-content">
+        <div class="modal-header bg-warning text-white">
+              <h5 class="modal-title" id="exampleModalLongTitle"><b>Add new Token</b></h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+        </div>
+        <div class="modal-body">
+            {% include 'modals/modal_template_form.html' %}
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          <button type="submit" class="btn btn-primary">Add to database</button>
+        </div>
+      </div>
+</form>
+
+
+
+<script>
+  $(document).ready(function() {
+      // Ensure elements exist
+      const tokenTypeField = $('#id_token_type');
+      if (tokenTypeField.length === 0) {
+          console.error('#id_token_type element not found.');
+          return;
+      }
+
+      // Grab the form groups for fields to toggle
+      const maxUsageField = $('#id_max_usage').closest('.form-group');
+      const expiryDateField = $('#id_expiry_date').closest('.form-group');
+
+      // Function to toggle the visibility of fields based on token type
+      function toggleFields(tokenType) {
+          if (tokenType === 'unlimited') {
+              maxUsageField.hide();
+              expiryDateField.hide();
+          } else if (tokenType === 'limited') {
+              maxUsageField.show();
+              expiryDateField.hide();
+          } else if (tokenType === 'expiry') {
+              maxUsageField.hide();
+              expiryDateField.show();
+          } else {
+              maxUsageField.show();
+              expiryDateField.show();
+          }
+      }
+
+      // When the token type changes, toggle the relevant fields
+      tokenTypeField.change(function () {
+          const tokenType = $(this).val();  // Get the selected value
+          toggleFields(tokenType);
+      });
+
+      // Initialize the form state on page load
+      const initialTokenType = tokenTypeField.val();
+      toggleFields(initialTokenType);  // Set the correct state when the page loads
+  });
+</script>

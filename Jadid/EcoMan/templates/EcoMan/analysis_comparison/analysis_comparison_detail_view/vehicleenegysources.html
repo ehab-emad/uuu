@@ -1,0 +1,168 @@
+    {% load static %}
+<div class="container-fluid" >
+    <div class="row m-0 p-0">
+        <div class="col-md-12  m-0 p-0">
+            <h4> Vehicle Energy Source - For Left and Right Concept</h4>
+        </div>
+        <div class="col-md-12  m-0 p-0">
+            <div class="col-md-12 border border-secondary m-0 p-2 bgEDAGGrau">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <h3> Analysis Vehicle</h3>
+
+                                    Name: {{vehicle.name}}<br>
+                                    Owner: {{vehicle.owner}}<br>
+                                    Notes: {{energy_source.notes}}
+                                </div>
+                                <div class="col-md-4">
+                                    <h3> Primary Energy Source </h3>
+
+                                    {% if energy_source.get_energysource_1_display != "Electricity" %}                            
+                                   <p style="text-align: left; width:49%; display: inline-block;">Energy Type:</p> <p style="text-align: right; width:40%;  display: inline-block;">{{energy_source.get_energysource_1_display}}</p>
+                                   <p style="text-align: left; width:49%; display: inline-block;">Target fuel consumption [l/100km]:</p> <p style="text-align: right; width:40%;  display: inline-block;">{{energy_source.estimated_fuel_consumption_source_1}}</p>
+                                   <p style="text-align: left; width:49%; display: inline-block;">Tank Capacity [l]:</p> <p style="text-align: right; width:40%;  display: inline-block;">{{energy_source.capacity_source_1}}</p>
+                                   
+                                   <p style="text-align: left; width:49%; display: inline-block;">Utilisation [-] (%):</p> <p style="text-align: right; width:40%;  display: inline-block;">{{energy_source.utilisation_ratio_source_1}}</p>
+                                    {% else %}
+                                   <p style="text-align: left; width:49%; display: inline-block;">Energy Type:</p> <p style="text-align: right; width:40%;  display: inline-block;">{{energy_source.get_energysource_1_display}}</p>
+                                   <p style="text-align: left; width:49%; display: inline-block;">Estimated energy consumption [kWh/100km]:</p> <p style="text-align: right; width:40%;  display: inline-block;">{{energy_source.estimated_energy_consumption_source_1}}</p>
+                                   <p style="text-align: left; width:49%; display: inline-block;">Battery Capacity [kWh]:</p> <p style="text-align: right; width:40%;  display: inline-block;">{{energy_source.battery_capacity_source_1}}</p>
+                                   <p style="text-align: left; width:49%; display: inline-block;">Battery Type [-]:</p> <p style="text-align: right; width:40%;  display: inline-block;">{{energy_source.utilisation_ratio_source_1}}</p>
+                                   <p style="text-align: left; width:49%; display: inline-block;">Battery Weight [kg]:</p> <p style="text-align: right; width:40%;  display: inline-block;">{{energy_source.battery_weight_source_1}}</p>
+
+                                   <p style="text-align: left; width:49%; display: inline-block;">Utilisation [-] (%):</p> <p style="text-align: right; width:40%;  display: inline-block;">{{energy_source.utilisation_ratio_source_1}}</p> 
+                                    {% endif %}
+                                </div>
+                                <div class="col-md-4">
+                                    <h3> Secondary Energy Source</h3>
+
+                                    {% if energy_source.get_energysource_2_display != "Electricity" %}                                 
+                                       <p style="text-align: left; width:49%; display: inline-block;">Energy Type:</p> <p style="text-align: right; width:40%;  display: inline-block;">{{energy_source.get_energysource_2_display}}</p>
+                                       <p style="text-align: left; width:49%; display: inline-block;">Target fuel consumption [l/100km]:</p> <p style="text-align: right; width:40%;  display: inline-block;">{{energy_source.estimated_fuel_consumption_source_2}}</p>
+                                       <p style="text-align: left; width:49%; display: inline-block;">Tank Capacity [l]:</p> <p style="text-align: right; width:40%;  display: inline-block;">{{energy_source.capacity_source_2}}</p>
+                                
+                                       <p style="text-align: left; width:49%; display: inline-block;">Utilisation [-] (%):</p> <p style="text-align: right; width:40%;  display: inline-block;">{{energy_source.utilisation_ratio_source_2}}</p>
+                                        {% else %}
+                                       <p style="text-align: left; width:49%; display: inline-block;">Energy Type:</p> <p style="text-align: right; width:40%;  display: inline-block;">{{energy_source.get_energysource_2_display}}</p>
+                                       <p style="text-align: left; width:49%; display: inline-block;">Estimated energy consumption [kWh/100km]:</p> <p style="text-align: right; width:40%;  display: inline-block;">{{energy_source.estimated_energy_consumption_source_2}}</p>
+                                       <p style="text-align: left; width:49%; display: inline-block;">Battery Capacity [kWh]:</p> <p style="text-align: right; width:40%;  display: inline-block;">{{energy_source.battery_capacity_source_2}}</p>
+                                       <p style="text-align: left; width:49%; display: inline-block;">Battery Type [-]:</p> <p style="text-align: right; width:40%;  display: inline-block;">{{energy_source.utilisation_ratio_source_2}}</p>
+                                       <p style="text-align: left; width:49%; display: inline-block;">Battery Weight [kg]:</p> <p style="text-align: right; width:40%;  display: inline-block;">{{energy_source.battery_weight_source_2}}</p>
+                                      
+                                       <p style="text-align: left; width:49%; display: inline-block;">Utilisation [-] (%):</p> <p style="text-align: right; width:40%;  display: inline-block;">{{energy_source.utilisation_ratio_source_2}}</p> 
+      
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                       <h5><b>Estimation Results</b></h5>
+                    <div class="table-responsive w-100 d-block d-md-table">
+                        <table class="table ">
+                            <thead>
+                                <tr>
+                                    <th>Property:</th>
+                                    <th>Value:</th>
+                                    <th>Unit:</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+
+                                <tr>
+                                    <td>
+                                        Global Warming potential Primary Source
+
+                                    </td>
+                                    <td>
+                                        {{energy_source.engwp_source_1}}
+
+                                    </td>
+                                    <td>
+                                        [kg] (Co2 equivalent)
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        Global Warming potential Secondary Source
+
+                                    </td>
+                                    <td>
+                                        {{energy_source.engwp_source_2}}
+
+                                    </td>
+                                    <td>
+                                        [kg] (Co2 equivalent)
+                                    </td>
+                                </tr>
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+   <div class="row m-0 p-0">
+        <div class="col-md-12  m-0 p-0">
+            <h4> Vehicle Utilisation</h4>
+        </div>
+           <div class="col-md-12 border border-secondary mt-3 p-2 bgEDAGGrau" >
+                <p><strong>Utilisation models will be applied for all parts and both concepts</strong></p> 
+                <div class="row-no-gutters">
+                    <div class="table-responsive w-100 d-block d-md-table">
+                        <table class="table ">
+
+                            <thead>
+                                <tr >
+                                    <th style="text-align: center;"> Items: </th>
+                                    <th style="text-align: right;" > Add Item: </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td >
+                                        {% for utilisation in analysis_comparison.utilisation_instance_model.all %}
+                                        <button     type="button"  
+                                                    class="btn btn-light btn-sm js-object-update" 
+                                                    id="#modal-window"
+                                                    data-toggle="popover" 
+                                                    data-trigger="hover" 
+                                                    title={{utilisation.vehicle.name|slugify}} 
+                                                    data-content={{utilisation.quantity}} 
+                                                    data-url="{% url 'EcoMan:utilisation_instance_process_update' pk_instance=utilisation.id%}">
+                                                            {% if utilisation.status == "GREEN" %}
+                                                                <img src="{% static '/website/images/Utilisation_Green_Icon.png' %}" width="20" />
+                                                            {% elif utilisation.status == "RED" %}
+                                                                <img src="{% static '/website/images/Utilisation_Red_Icon.png' %}" width="20" />
+                                                            {% else %}
+                                                                <img src="{% static '/website/images/Utilisation_Orange_Icon.png' %}" width="20" />
+                                                            {% endif %}
+                                        </button>
+                                        {% endfor %}
+                                    </td>
+                                    <td align="right">
+                                        <button type="button"  id="#modal-window" class="btn btn-light btn-sm js-object-update" data-toggle="tooltip" data-placement="top" title="Add Utilisation" data-url="{% url 'EcoMan:analysis_comparison_add_utilisation' pk=analysis_comparison.id %}">
+                                            <img src="{% static '/website/images/Utilisation_Icon.png' %}" width="20" />
+                                        </button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+ 
+    </div>
+
+ 
+</div>
+
+<script type="text/javascript">
+$('#popoverData').popover();
+$('#popoverOption').popover({ trigger: "hover" });
+
+</script>

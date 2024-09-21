@@ -1,0 +1,75 @@
+{% extends 'website/base.html' %}
+
+{% block details %}
+    {% if part %}   
+
+<div class="container-fluid boltcases-container">
+        <div class="row-no-gutters">
+                <div class="panel panel-default" id="parts-container">
+                    <div class="panel-body">
+
+                        {% if error_message %}
+                            <p><strong>{{ error_message }}</strong></p>
+                        {% endif %}
+
+                        <table class="table table-hover">
+                            <thead>
+                            <tr>
+                                <th>ID:</th>
+                                <th>Name:</th>
+                                <th>Owner:</th>    
+                                <th>Creation date:</th>    
+                                <th>Last changed:</th> 
+                                <th>Thickness</th>
+                                <th>Hole Diameter</th>
+                                <th>Joint Diameter</th>
+                                <th>Vehicles</th>
+                                <th>Action</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for result in part%}
+
+                                <tr>
+                                    <td>{{ result.id }}</td>
+                                    <td>{{ result.name }}</td>
+                                    <td>{{ result.user }}</td>                                      
+                                    <td>{{ result.created_at }}</td>
+                                    <td>{{ result.updated_at }}</td>         
+                                    <td>{{ result.thickness }}</td>                                    
+                                    <td>{{ result.holediameter }}</td>
+                                    <td>{{ result.jointdiameter }}</td>
+                                    <td>
+
+                                        {% for car in result.vehicles.all %}
+                                        <div> {{ car.name }}</div>
+                                        {% endfor %}    
+                                    </td>                     
+
+                                    <td>
+                                        <a href="{% url 'BoltMan:partdetailview' result.id %}" class="btn btn-primary btn-sm " role="button" aria-pressed="true">Usage</a>    
+                                        <button type="button" 
+                                            class="btn btn-warning btn-sm js-part-update " 
+                                            data-url="{% url 'BoltMan:part_update' result.id %}">
+                                            Edit
+                                        </button>
+                                        <button type="button" 
+                                            class="btn btn-danger btn-sm js-part-delete " 
+                                            data-url="{% url 'BoltMan:part_delete' result.id %}">
+                                            Delete
+                                        </button>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>                 
+        </div>
+
+
+
+     {% endif %}
+{% endblock %}                   
+

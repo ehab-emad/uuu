@@ -1,0 +1,202 @@
+
+<style>
+    .form-container {
+        max-width: 600px;
+        margin: 50px auto;
+        padding: 20px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        background-color: #f8f9fa;
+    }
+
+    .form-group {
+        margin-bottom: 1.5rem; /* Increase spacing between form groups */
+    }
+
+    .submit-btn {
+        background-color: #FFD700; /* Yellow color */
+        color: #000;
+        padding: 10px 20px;
+    }
+
+    .form-row {
+        margin-bottom: 1.5rem; /* Add spacing between the two columns */
+    }
+</style>
+{% load widget_tweaks %}
+<div class="container" id="requirements">
+    <form method="post">
+        {% csrf_token %}
+        <div class="row" >
+            <!-- First Column: Positioning Fields -->
+            <div class="col-md-4">
+                <div class="col-md-12 border-bottom" style="margin-top:10px">    
+                    <h5> <b>  Head  </b></h5> 
+                                    <!-- Right-aligned Submit Button -->
+                <div class="form-group text-right">
+                    <button type="button" id="#modal-window-xl" class="btn btn-warning btn-sm m-2 js-object-update ml-auto" data-url="{% url 'BoltMan:select_friction_head_modal' uuid_boltcase_instance=object.boltcase.UUID %}"> Select</button>      
+                </div>                                                                                            
+                </div>   
+                <div class="form-group">
+                    <label for="{{ form_friction_head.mat_1_name.id_for_label }}">{{ form_friction_head.mat_1_name.label }}</label>
+                    {{ form_friction_head.mat_1_name|add_class:"form-control"}}
+                    <span class="text-danger">{{ form_friction_head.mat_1_name.errors|striptags }}</span>
+                </div>
+                <div class="form-group">
+                    <label for="{{ form_friction_head.plating.id_for_label }}">{{ form_friction_head.mat_2_name.label }}</label>
+                    {{ form_friction_head.mat_2_name|add_class:"form-control"}}
+                    <span class="text-danger">{{ form_friction_head.mat_2_name.errors|striptags }}</span>
+                </div>                                    
+                <div class="form-group">
+                    <label for="{{ form_friction_head.plating.id_for_label }}">{{ form_friction_head.plating.label }}</label>
+                    {{ form_friction_head.plating|add_class:"form-control"}}
+                    <span class="text-danger">{{ form_friction_head.plating.errors|striptags }}</span>
+                </div>  
+                <div class="form-group">
+                    <label for="{{ form_friction_head.colour.id_for_label }}">{{ form_friction_head.colour.label }}</label>
+                    {{ form_friction_head.colour|add_class:"form-control"}}
+                    <span class="text-danger">{{ form_friction_head.colour.errors|striptags }}</span>
+                </div>                  
+                <div class="form-group">
+                    <label for="{{ form_friction_head.lubrication.id_for_label }}">{{ form_friction_head.lubrication.label }}</label>
+                    {{ form_friction_head.lubrication|add_class:"form-control"}}
+                    <span class="text-danger">{{ form_friction_head.lubrication.errors|striptags }}</span>
+                </div> 
+                <div class="form-group">
+                    <label for="{{ form_friction_head.friction_av.id_for_label }}">{{ form_friction_head.friction_av.label }}</label>
+                    {{ form_friction_head.friction_av|add_class:"form-control"}}
+                    <span class="text-danger">{{ form_friction_head.friction_av.errors|striptags }}</span>
+                </div>  
+                <div class="form-group">
+                    <label for="{{ form_friction_head.friction_min.id_for_label }}">{{ form_friction_head.friction_min.label }}</label>
+                    {{ form_friction_head.friction_min|add_class:"form-control"}}
+                    <span class="text-danger">{{ form_friction_head.friction_min.errors|striptags }}</span>
+                </div>    
+                <div class="form-group">
+                    <label for="{{ form_friction_head.friction_max.id_for_label }}">{{ form_friction_head.friction_max.label }}</label>
+                    {{ form_friction_head.friction_max|add_class:"form-control"}}
+                    <span class="text-danger">{{ form_friction_head.friction_max.errors|striptags }}</span>
+                </div>  
+                <div class="form-group">
+                    <label for="{{ form_friction_head.source.id_for_label }}">{{ form_friction_head.source.label }}</label>
+                    {{ form_friction_head.source|add_class:"form-control"}}
+                    <span class="text-danger">{{ form_friction_head.source.errors|striptags }}</span>
+                </div>      
+                <div class="form-group">
+                    <label for="{{ form_friction_head.notes.id_for_label }}">{{ form_friction_head.notes.label }}</label>
+                    {{ form_friction_head.notes|add_class:"form-control"}}
+                    <span class="text-danger">{{ form_friction_head.notes.errors|striptags }}</span>
+                </div>                                                                                   
+            </div>
+            <!-- Second Column: Joint -->
+            <div class="col-md-4">
+                <div class="col-md-12 border-bottom" style="margin-top:10px">    
+                    <h5> <b>  Joint  </b></h5> 
+                    <div class="form-group text-right">
+                        <button type="button" id="#modal-window-xl" class="btn btn-warning btn-sm m-2 js-object-update ml-auto" data-url="{% url 'BoltMan:select_friction_joint_modal' uuid_boltcase_instance=object.boltcase.UUID %}"> Select</button>      
+                    </div>                                                                                          
+                </div>   
+                <div class="form-group">
+                    <label for="{{ form_friction_joint.mat_1_name.id_for_label }}">{{ form_friction_joint.mat_1_name.label }}</label>
+                    {{ form_friction_joint.mat_1_name|add_class:"form-control"}}
+                    <span class="text-danger">{{ form_friction_joint.mat_1_name.errors|striptags }}</span>
+                </div>
+                <div class="form-group">
+                    <label for="{{ form_friction_joint.plating.id_for_label }}">{{ form_friction_joint.mat_2_name.label }}</label>
+                    {{ form_friction_joint.mat_2_name|add_class:"form-control"}}
+                    <span class="text-danger">{{ form_friction_joint.mat_2_name.errors|striptags }}</span>
+                </div>                                                   
+                <div class="form-group">
+                    <label for="{{ form_friction_joint.lubrication.id_for_label }}">{{ form_friction_joint.lubrication.label }}</label>
+                    {{ form_friction_joint.lubrication|add_class:"form-control"}}
+                    <span class="text-danger">{{ form_friction_joint.lubrication.errors|striptags }}</span>
+                </div> 
+                <div class="form-group">
+                    <label for="{{ form_friction_joint.friction_av.id_for_label }}">{{ form_friction_joint.friction_av.label }}</label>
+                    {{ form_friction_joint.friction_av|add_class:"form-control"}}
+                    <span class="text-danger">{{ form_friction_joint.friction_av.errors|striptags }}</span>
+                </div>  
+                <div class="form-group">
+                    <label for="{{ form_friction_joint.friction_min.id_for_label }}">{{ form_friction_joint.friction_min.label }}</label>
+                    {{ form_friction_joint.friction_min|add_class:"form-control"}}
+                    <span class="text-danger">{{ form_friction_joint.friction_min.errors|striptags }}</span>
+                </div>    
+                <div class="form-group">
+                    <label for="{{ form_friction_joint.friction_max.id_for_label }}">{{ form_friction_joint.friction_max.label }}</label>
+                    {{ form_friction_joint.friction_max|add_class:"form-control"}}
+                    <span class="text-danger">{{ form_friction_joint.friction_max.errors|striptags }}</span>
+                </div>  
+                <div class="form-group">
+                    <label for="{{ form_friction_joint.source.id_for_label }}">{{ form_friction_joint.source.label }}</label>
+                    {{ form_friction_joint.source|add_class:"form-control"}}
+                    <span class="text-danger">{{ form_friction_joint.source.errors|striptags }}</span>
+                </div>      
+                <div class="form-group">
+                    <label for="{{ form_friction_joint.notes.id_for_label }}">{{ form_friction_joint.notes.label }}</label>
+                    {{ form_friction_joint.notes|add_class:"form-control"}}
+                    <span class="text-danger">{{ form_friction_joint.notes.errors|striptags }}</span>
+                </div>                                                                                   
+            </div>
+            <!-- Third Column: Thread -->
+            <div class="col-md-4">
+                <div class="col-md-12 border-bottom" style="margin-top:10px">    
+                    <h5> <b>  Thread  </b></h5> 
+                                    <!-- Right-aligned Submit Button -->
+                    <div class="form-group text-right">
+                        <button type="button" id="#modal-window-xl" class="btn btn-warning btn-sm m-2 js-object-update ml-auto" data-url="{% url 'BoltMan:select_friction_thread_modal' uuid_boltcase_instance=object.boltcase.UUID %}"> Select</button>      
+                    </div>                                                                                           
+                </div>           
+                <div class="form-group">
+                    <label for="{{ form_friction_thread.f_class.id_for_label }}">{{ form_friction_thread.f_class.label }}</label>
+                    {{ form_friction_thread.f_class|add_class:"form-control"}}
+                    <span class="text-danger">{{ form_friction_thread.f_class.errors|striptags }}</span>
+                </div>
+                <div class="form-group">
+                    <label for="{{ form_friction_thread.colour.id_for_label }}">{{ form_friction_thread.colour.label }}</label>
+                    {{ form_friction_thread.colour|add_class:"form-control"}}
+                    <span class="text-danger">{{ form_friction_thread.colour.errors|striptags }}</span>
+                </div>                                    
+                <div class="form-group">
+                    <label for="{{ form_friction_thread.surface.id_for_label }}">{{ form_friction_thread.surface.label }}</label>
+                    {{ form_friction_thread.surface|add_class:"form-control"}}
+                    <span class="text-danger">{{ form_friction_thread.surface.errors|striptags }}</span>
+                </div>  
+                <div class="form-group">
+                    <label for="{{ form_friction_thread.precision.id_for_label }}">{{ form_friction_thread.precision.label }}</label>
+                    {{ form_friction_thread.precision|add_class:"form-control"}}
+                    <span class="text-danger">{{ form_friction_thread.precision.errors|striptags }}</span>
+                </div>                  
+                <div class="form-group">
+                    <label for="{{ form_friction_thread.lubrication.id_for_label }}">{{ form_friction_thread.lubrication.label }}</label>
+                    {{ form_friction_thread.lubrication|add_class:"form-control"}}
+                    <span class="text-danger">{{ form_friction_thread.lubrication.errors|striptags }}</span>
+                </div> 
+                <div class="form-group">
+                    <label for="{{ form_friction_thread.friction_av.id_for_label }}">{{ form_friction_thread.friction_av.label }}</label>
+                    {{ form_friction_thread.friction_av|add_class:"form-control"}}
+                    <span class="text-danger">{{ form_friction_thread.friction_av.errors|striptags }}</span>
+                </div>  
+                <div class="form-group">
+                    <label for="{{ form_friction_thread.friction_min.id_for_label }}">{{ form_friction_thread.friction_min.label }}</label>
+                    {{ form_friction_thread.friction_min|add_class:"form-control"}}
+                    <span class="text-danger">{{ form_friction_thread.friction_min.errors|striptags }}</span>
+                </div>    
+                <div class="form-group">
+                    <label for="{{ form_friction_thread.friction_max.id_for_label }}">{{ form_friction_thread.friction_max.label }}</label>
+                    {{ form_friction_thread.friction_max|add_class:"form-control"}}
+                    <span class="text-danger">{{ form_friction_thread.friction_max.errors|striptags }}</span>
+                </div>  
+                <div class="form-group">
+                    <label for="{{ form_friction_thread.source.id_for_label }}">{{ form_friction_thread.source.label }}</label>
+                    {{ form_friction_thread.source|add_class:"form-control"}}
+                    <span class="text-danger">{{ form_friction_thread.source.errors|striptags }}</span>
+                </div>      
+                <div class="form-group">
+                    <label for="{{ form_friction_thread.notes.id_for_label }}">{{ form_friction_thread.notes.label }}</label>
+                    {{ form_friction_thread.notes|add_class:"form-control"}}
+                    <span class="text-danger">{{ form_friction_thread.notes.errors|striptags }}</span>
+                </div>                                                                                   
+            </div>             
+        </div>
+    </form>
+</div>

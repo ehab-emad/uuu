@@ -1,0 +1,5 @@
+<option value="0">--------</option>
+{% for config in configuration_list %}
+<option value="{{ config.id }}">{{ config.parameters }}</option>
+{% endfor %}
+

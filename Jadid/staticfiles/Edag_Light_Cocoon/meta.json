@@ -1,0 +1,327 @@
+{
+      "EDAG_Light_Cocoon_ROOF": {
+            "color": "#d71945",
+            "transparent": false,
+			"opacity": 1.0,
+			"visible": true,
+			"emissive": 0,
+			"roughness": 0.0,			
+			
+			"type": "MeshLambertMaterial",
+			"depthFunc": 3,
+			"depthTest": true,
+			"depthWrite": true               
+      },
+      "EDAG_Light_Cocoon_WINDSCHIELD": {
+            "color": "#000000",
+            "transparent": false,
+			"opacity": 1.0,
+			"visible": true,
+			"emissive": 0,
+			"roughness": 0.0,			
+			
+			"type": "MeshLambertMaterial",
+			"depthFunc": 3,
+			"depthTest": true,
+			"depthWrite": true                 
+      },
+      "EDAG_Light_Cocoon_GLASS_TAILGATE": {
+            "color": "#000000",
+            "transparent": false,
+			"opacity": 1.0,
+			"visible": true,
+			"emissive": 0,
+			"roughness": 0.0,			
+			
+			"type": "MeshLambertMaterial",
+			"depthFunc": 3,
+			"depthTest": true,
+			"depthWrite": true                 
+      },     
+      "EDAG_Light_Cocoon_REAR_WHEEL_ARCH": {
+            "color": "#455562",
+            "transparent": false,
+			"opacity": 1.0,
+			"visible": true,
+			"emissive": 0,
+			"roughness": 0.0,			
+			
+			"type": "MeshLambertMaterial",
+			"depthFunc": 3,
+			"depthTest": true,
+			"depthWrite": true                  
+      }, 
+      "EDAG_Light_Cocoon_FRONT_WHEEL_ARCH": {
+            "color": "#455562",
+            "transparent": false,
+			"opacity": 1.0,
+			"visible": true,
+			"emissive": 0,
+			"roughness": 0.0,			
+			
+			"type": "MeshLambertMaterial",
+			"depthFunc": 3,
+			"depthTest": true,
+			"depthWrite": true                  
+      },    
+      "EDAG_Light_Cocoon_BONNET": {
+            "color": "#d71945",
+            "transparent": false,
+			"opacity": 1.0,
+			"visible": true,
+			"emissive": 0,
+			"roughness": 0.0,			
+			
+			"type": "MeshLambertMaterial",
+			"depthFunc": 3,
+			"depthTest": true,
+			"depthWrite": true                 
+      },     
+      "EDAG_Light_Cocoon_CANT_RAIL": {
+            "color": "#d71945",
+            "transparent": false,
+			"opacity": 1.0,
+			"visible": true,
+			"emissive": 0,
+			"roughness": 0.0,			
+			
+			"type": "MeshLambertMaterial",
+			"depthFunc": 3,
+			"depthTest": true,
+			"depthWrite": true                 
+      },    
+      "EDAG_Light_Cocoon_REAR_BUMPER": {
+            "color": "#d71945",
+            "transparent": false,
+			"opacity": 1.0,
+			"visible": true,
+			"emissive": 0,
+			
+			
+			"type": "MeshLambertMaterial",
+			"depthFunc": 3,
+			"depthTest": true,
+			"depthWrite": true                 
+      }, 
+      "EDAG_Light_Cocoon_REAR_FENDER": {
+            "color": "#d71945",
+            "transparent": false,
+			"opacity": 1.0,
+			"visible": true,
+			"emissive": 0,
+			
+			
+			"type": "MeshLambertMaterial",
+			"depthFunc": 3,
+			"depthTest": true,
+			"depthWrite": true                 
+      },   
+      "EDAG_Light_Cocoon_TUER": {
+            "color": "#d71945",
+            "transparent": false,
+			"opacity": 1.0,
+			"visible": true,
+			"emissive": 0,
+			
+			
+			"type": "MeshLambertMaterial",
+			"depthFunc": 3,
+			"depthTest": true,
+			"depthWrite": true                 
+      },     
+      "EDAG_Light_Cocoon_FRONT_FENDER": {
+            "color": "#d71945",
+            "transparent": false,
+			"opacity": 1.0,
+			"visible": true,
+			"emissive": 0,
+			
+			
+			"type": "MeshLambertMaterial",
+			"depthFunc": 3,
+			"depthTest": true,
+			"depthWrite": true                 
+      },   
+      "EDAG_Light_Cocoon_SCHEIBEN_TUER": {
+            "color": "#000000",
+            "transparent": false,
+			"opacity": 1.0,
+			"visible": true,
+			"emissive": 0,
+			
+			
+			"type": "MeshLambertMaterial",
+			"depthFunc": 3,
+			"depthTest": true,
+			"depthWrite": true                 
+      }, 
+      "EDAG_Light_Cocoon_REAR_DIFFUSOR": {
+            "color": "#455562",
+            "transparent": false,
+			"opacity": 1.0,
+			"visible": true,
+			"emissive": 0,
+			
+			
+			"type": "MeshLambertMaterial",
+			"depthFunc": 3,
+			"depthTest": true,
+			"depthWrite": true                 
+      }, 
+      "EDAG_Light_Cocoon_TAILGATE": {
+            "color": "#d71945",
+            "transparent": false,
+			"opacity": 1.0,
+			"visible": true,
+			"emissive": 0,
+			
+			
+			"type": "MeshLambertMaterial",
+			"depthFunc": 3,
+			"depthTest": true,
+			"depthWrite": true                 
+      }, 
+      "EDAG_Light_Cocoon_FRONT_BLADE": {
+            "color": "#455562",
+            "transparent": false,
+			"opacity": 1.0,
+			"visible": true,
+			"emissive": 0,
+			
+			
+			"type": "MeshLambertMaterial",
+			"depthFunc": 3,
+			"depthTest": true,
+			"depthWrite": true                 
+      },  
+      "EDAG_Light_Cocoon_LIGHT_TAILGATE": {
+            "color": "#455562",
+            "transparent": false,
+			"opacity": 1.0,
+			"visible": true,
+			"emissive": 0,
+			
+			
+			"type": "MeshLambertMaterial",
+			"depthFunc": 3,
+			"depthTest": true,
+			"depthWrite": true                 
+      },  
+      "EDAG_Light_Cocoon_FRONT_LOGO": {
+            "color": "#455562",
+            "transparent": false,
+			"opacity": 1.0,
+			"visible": true,
+			"emissive": 0,
+			
+			
+			"type": "MeshLambertMaterial",
+			"depthFunc": 3,
+			"depthTest": true,
+			"depthWrite": true                 
+      },  
+      "EDAG_Light_Cocoon_REAR_LOGO": {
+            "color": "#455562",
+            "transparent": false,
+			"opacity": 1.0,
+			"visible": true,
+			"emissive": 0,
+			
+			
+			"type": "MeshLambertMaterial",
+			"depthFunc": 3,
+			"depthTest": true,
+			"depthWrite": true                 
+      }, 
+      "EDAG_Light_Cocoon_FRONT_BUMPER": {
+            "color": "#d71945",
+            "transparent": false,
+			"opacity": 1.0,
+			"visible": true,
+			"emissive": 0,
+			
+			
+			"type": "MeshLambertMaterial",
+			"depthFunc": 3,
+			"depthTest": true,
+			"depthWrite": true                 
+      },  
+      "EDAG_Light_Cocoon_FRONT_LIGHT": {
+            "color": "#455562",
+            "transparent": false,
+			"opacity": 1.0,
+			"visible": true,
+			"emissive": 0,
+			
+			
+			"type": "MeshLambertMaterial",
+			"depthFunc": 3,
+			"depthTest": true,
+			"depthWrite": true                 
+      },       
+      "EDAG_Light_Cocoon_FRONT_RIM": {
+            "color": "#455562",
+            "transparent": false,
+			"opacity": 1.0,
+			"visible": true,
+			"emissive": 0,
+			
+			
+			"type": "MeshLambertMaterial",
+			"depthFunc": 3,
+			"depthTest": true,
+			"depthWrite": true                 
+      },
+      "EDAG_Light_Cocoon_REAR_RIM": {
+            "color": "#455562",
+            "transparent": false,
+			"opacity": 1.0,
+			"visible": true,
+			"emissive": 0,
+			
+			
+			"type": "MeshLambertMaterial",
+			"depthFunc": 3,
+			"depthTest": true,
+			"depthWrite": true                 
+      },  
+      "EDAG_Light_Cocoon_FRONT_TYRE": {
+            "color": "#000000",
+            "transparent": false,
+			"opacity": 1.0,
+			"visible": true,
+			"emissive": 0,
+			
+			
+			"type": "MeshLambertMaterial",
+			"depthFunc": 3,
+			"depthTest": true,
+			"depthWrite": true                 
+      },        
+      "EDAG_Light_Cocoon_REAR_TYRE": {
+            "color": "#000000",
+            "transparent": false,
+			"opacity": 1.0,
+			"visible": true,
+			"emissive": 0,
+			
+			
+			"type": "MeshLambertMaterial",
+			"depthFunc": 3,
+			"depthTest": true,
+			"depthWrite": true                 
+      },  
+      "EDAG_Light_Cocoon_REAR_LIGHT": {
+            "color": "#d71945",
+            "transparent": false,
+			"opacity": 1.0,
+			"visible": true,
+			"emissive": 0,
+			
+			
+			"type": "MeshLambertMaterial",
+			"depthFunc": 3,
+			"depthTest": true,
+			"depthWrite": true                 
+      }               
+}

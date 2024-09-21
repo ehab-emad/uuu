@@ -1,0 +1,122 @@
+{% extends 'CatiaFramework/base.html' %}
+{% load static %}
+{% load standard_operators %}
+
+{% block Apps %}
+<style>
+    div.card.session_template:hover{
+        transform: none !important;
+        transition: none !important;
+        box-shadow: 0 5px 5px rgba(0,0,0,.7), 0 0 5px rgba(50,50,0,.7);
+        padding-right: 0px;
+        padding-left: 0px;
+        padding-top: 0px;
+        margin-top: 10px;
+    }
+</style>
+
+<div class="container-fluid" id="objects-container">
+    <div class="col-md-12">
+        <div class="row">
+            <div class="col-md-10 border-right">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div href="#" class="list-group-item list-group-item-secondary my-1" onclick="toggleSelection(this)">
+                            <div class="container-fluid" id="objects-container">
+                                <div class="row"> 
+                                    <div class='col-md-10'>
+                                        <h3> Workflow sessions</h3>
+                                    </div>                      
+                                </div>   
+                            </div>                              
+                        </div> 
+                        <div class="list-group">
+                            {% if templates %}
+                            <div id="accordion" class="container-fluid">
+                                {% for object in templates %}                              
+                                <div class="card session_template animationoff  mx-0 my-2  clickable-instance "  style="width: max; " id="{{object.UUID}}" >    
+                                    <div class="card-header  bgSuperHellgrau m-1 p-1" id="heading_{{ object.UUID }}" style="background: rgb(214, 216, 219);">
+                                        <h5 class="mb-0"> 
+                                            <div class="row "> 
+
+                                                <div class="col-md-10">
+                                                    <button class="btn btn-link btn-block collapsed"  style="color: black; padding: 0; " data-toggle="collapse" data-target="#collapse_{{object.UUID}}" aria-expanded="true" aria-controls="collapse_{{object.UUID}}">                                                         
+                                                        Name: <b>{{ object.name }}</b>
+                                                        <br> 
+                                                        Description: <b>{{ object.description }}</b>
+                                                        <br>
+                                                        Sessions count: <b>{{ object.workflowss_reference_sessions.all | length }}</b>                                                            
+                                                    </button>
+                                                </div>
+                                                <div class="col-md-2">
+                                                    <div class="container-fluid p-1 align-self-center" style="display: block; text-align: right">
+            
+                                                    </div>                                                   
+                                                </div>
+                                            </div>                           
+                                        </h5>                                     
+                                    </div>  
+                                    <div id="collapse_{{object.UUID}}" class="collapse overflow-auto" style="max-height: 750px" aria-labelledby="heading_{{object.UUID}}" data-parent="#accordion">                     
+                                        <div class="card-body">
+                                            {% for session in object.workflowss_reference_sessions.all|order_by_time %}                                                                                                
+                                            <div id="accordion_child_{{session.UUID}}">
+                                                <div href="#" class="list-group-item list-group-item-action my-1" onclick="toggleSelection(this)">
+                                                    <div class="row">                
+                                                        <div class='col-md-9 w-auto ms-auto'> 
+                                                            <div class="row">                                            
+                                                                <div class='col-md-3 w-auto ms-auto'>
+                                                                    Session name: <br><strong>
+                                                                    {%if session.name %}
+                                                                        {{ session.name }}
+                                                                    {%else%}
+                                                                        Anonymous
+                                                                    {%endif%}
+                                                                    </strong><br> 
+                                                                    Session Description: <br><strong>
+                                                                        {%if session.description %}
+                                                                            {{ session.description }}
+                                                                        {%else%}
+                                                                            No description
+                                                                        {%endif%}
+                                                                        </strong><br> 
+                                                                </div>
+                                                                <div class='col-md-2 w-auto ms-auto'>                 
+                                                                    Owner: <br>{{ session.owner.nickname }} <br>  
+                                                                </div>  
+                                                                <div class='col-md-4 w-auto ms-auto'>  
+                                                                    Created: {{ session.created_at }}    <br>             
+                                                                    Updated: {{ session.updated_at }}
+                                                                </div>   
+                                                                <div class='col-md-2 w-auto ms-auto'>  
+                                                                    Objects:<br><strong>{{ session.sessions_object_instances.all|length }}</strong>
+                                                                </div>    
+                                                            </div>                                                                                                                                     
+                                                        </div>
+                                                        <div class='col-md-3 w-auto ms-auto'>
+                                                            <div class="btn-group" role="group" aria-label=" " style="display: block; text-align: right">
+                                                                <a href="{% url 'CatiaFramework:workflow_dashboard' uuid_session=session.UUID editor_mode='False' %}" class="btn btn-secondary btn-sm">Continue</a>
+                                                                <button type="button" class="btn btn-warning btn-sm my-1 js-object-update " id="#modal-window" data-url="{% url 'CatiaFramework:workflow_session_update' session.UUID %}">Edit</button>
+                                                                <button type="button" class="btn btn-danger btn-sm my-1 js-object-delete " id="#modal-window" data-url="{% url 'CatiaFramework:workflow_session_delete' session.UUID %}">Delete</button>
+                                                            </div>
+                                                        </div>
+                                                    </div>                
+                                                </div>
+                                            </div> 
+                                            {% endfor %}
+                                        </div>    
+                                    </div>   
+                                </div>         
+                                {% endfor %}
+                            </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-2">
+                {% include "website/current_project.html" %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock Apps %}

@@ -1,0 +1,3 @@
+C:\Users\hr63674\source\repos\BE_PARAMOUNT\obj\Any CPU\Debug\BE_PARAMOUNT.pyproj.CoreCompileInputs.cache
+C:\Users\hr63674\source\repos\BE_PARAMOUNT\bin\Microsoft.PythonTools.WebRole.dll
+C:\Users\hr63674\source\repos\BE_PARAMOUNT\bin\wfastcgi.py

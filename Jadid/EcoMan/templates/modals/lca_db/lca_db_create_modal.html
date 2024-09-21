@@ -1,0 +1,39 @@
+
+{% load widget_tweaks %}
+{% load form_tags %}
+<form method="post" id="#modal-form" action="{% url 'EcoMan:lca_db_create'%}" class="js-object-create-form"  enctype="multipart/form-data" novalidate>
+  {% csrf_token %}
+      <div class="modal-content">
+        <div class="modal-header bg-warning text-white">
+              <h5 class="modal-title" id="exampleModalLongTitle"><b>Add new user Database</b></h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+        </div>
+        <div class="modal-body">
+          <div class="alert alert-info" role="alert">
+            <h4>
+              If option "Accessibility -> Project Related Database" selected, your newly created database will be visible for all #Current Project members.
+            </h4>
+          </div> 
+
+            {% render_field form.id %}
+            {% render_field form.name %}
+            {% render_field form.owner%}
+            {% render_field form.note %}
+            {% render_field form.logo %}
+            {% render_field form.is_archive %}
+            {% render_field form.accessibility %}         
+            {% render_field form.last_import_document%}                                           
+            {% render_field form.current_project %}      
+
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          <button type="submit" class="btn btn-primary">Add to database</button>
+        </div>
+      </div>
+</form>
+
+

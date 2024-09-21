@@ -1,0 +1,384 @@
+{% load weight_unit_switch  %}
+<style type="text/css">
+    .chart_legend {
+        width:100%;
+        font-size: 11px;
+        text-align:right;
+        margin-bottom: 5px;
+        border-bottom-width: 10px;
+        border-bottom-style: solid;
+        border-color: white;
+        padding-bottom: 5px;
+    }
+
+    
+</style>
+
+<div class="container-fluid my-1">
+    <div class="row">
+
+        {% comment %} DOUGNUT LEFT CONCEPT {% endcomment %}
+        <div class="col-md-6 d-flex align-items-stretch">
+            <div class="card  mx-1 my-1" style="width: 100%;">
+                <div class="card-body" id="pie-chart-weight-left_concept">
+                    <div row style="margin-bottom: 30px">
+                        <strong>Weight distribution among parts {% weight_unit current_analysis.analysis_settings.weight_units  %}</strong> </br>
+                    </div>
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="chart-container" style="position: relative; width: 100%; height: 20rem">
+                                                    <canvas id="doughnut-chart_parts_rc"></canvas>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6" >
+                                                <strong>Left Concept</strong> </br>
+                                                <strong>Name: {{analysis_left.name}}</strong>
+                                                <table class="chart_legend">
+                                                    <thead>
+                                                    <tr>
+                                                        <th>     </th>
+                                                        <th>Name</th>
+                                                        <th>Weight</th>
+                                                        <th>Total Weight</th>
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        {% for object in lca_parts_left_all_list %}
+                                                            <tr style ="text-align:right;">
+                                                                <td style = "background-color: {{object.color}}; color: {{object.color}}">{{object.part_model.diagram_color}}</td>
+                                                                <td>{{object.part_model.name}}</td>
+                                                                <td>{% weight_conversion object.part_model.weight current_analysis.analysis_settings.weight_units current_analysis.analysis_settings.weight_decimal_points %}</td>
+                                                                <td>{% weight_conversion object.total_weight current_analysis.analysis_settings.weight_units current_analysis.analysis_settings.weight_decimal_points %}</td>
+                                                            </tr>
+                                                        {% endfor %}
+                                                    </tbody>
+                                                    </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card-footer">
+                    <div class="container-fluid my-3">
+                        <div class="row">
+                            <div class="col-md-6 text-center">
+                                <form>
+                                    <button type="button" class="btn btn-warning btn-sm js-vehicle-update " data-url="{% url 'vehicle_update' vehicle.UUID|stringformat:"s" %}" disabled>Get Table Data</button>
+                                </form>
+                            </div>
+                            <div class="col-md-6 text-center">
+                                <form>
+                                    <button onclick="download('pie-chart-weight-left_concept')" type="button"  class="btn btn-warning btn-sm" data-url=# >Save As Png</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% comment %} DOUGNUT RIGHT CONCEPT {% endcomment %}
+        <div class="col-md-6 d-flex align-items-stretch">
+            <div class="card  mx-1 my-1" style="width: 100%;">
+                <div class="card-body" id="pie-chart-weight-right_concept">
+                    <div row style="margin-bottom: 30px">
+                        <strong>Weight distribution among parts {% weight_unit current_analysis.analysis_settings.weight_units  %} </strong> </br>
+
+                    </div>
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="chart-container" style="position: relative; width: 100%; height: 20rem">
+                                                    <canvas id="doughnut-chart_parts_ac"></canvas>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <strong>Right Concept</strong> </br>
+                                                <strong>Name: {{analysis_right.name}}</strong>
+                                                <table class="chart_legend">
+                                                    <thead>
+                                                    <tr>
+                                                        <th>     </th>
+                                                        <th>Name</th>
+                                                        <th>Weight</th>
+                                                        <th>Total Weight</th>
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        {% for object in lca_parts_right_all_list %}
+                                                            <tr style ="text-align:right;">
+                                                                <td style = "background-color: {{object.color}}; color: {{object.color}}">{{object.part_model.diagram_color}}</td>
+                                                                <td>{{object.part_model.name}}</td>
+                                                                <td>{% weight_conversion object.part_model.weight current_analysis.analysis_settings.weight_units current_analysis.analysis_settings.weight_decimal_points %}</td>
+                                                                <td>{% weight_conversion object.total_weight current_analysis.analysis_settings.weight_units current_analysis.analysis_settings.weight_decimal_points %}</td>
+                                                            </tr>
+                                                        {% endfor %}
+                                                    </tbody>
+                                                    </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+
+                <div class="card-footer">
+                    <div class="container-fluid my-3">
+                        <div class="row">
+                            <div class="col-md-6 text-center">
+                                <form>
+                                    <button type="button" class="btn btn-warning btn-sm js-vehicle-update " data-url="{% url 'vehicle_update' vehicle.UUID|stringformat:"s" %}" disabled>Get Table Data</button>
+                                </form>
+                            </div>
+                            <div class="col-md-6 text-center">
+                                <form>
+                                    <button onclick="download('pie-chart-weight-right_concept')" type="button"  class="btn btn-warning btn-sm" data-url=# >Save As Png</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        {% comment %} BAR COMPARISON {% endcomment %}
+        <div class="col-md-12 d-flex align-items-stretch">
+            <div class="card  mx-1 my-1" style="width: 100%;">
+                <div class="card-body" id="bar-chart-weight-distribution">
+                    <div row style="margin-bottom: 30px; text-align:center"  >
+                        <strong>Concepts weight comparison {% weight_unit current_analysis.analysis_settings.weight_units  %} </strong>
+                    </div>
+                    <div class="container-fluid">
+                        <div class="col-md-12">
+                            <div class="row">
+                                        <div class="col-md-4" >
+                                            <strong>  Left Concept </strong> </br>
+                                            Name: {{ analysis_left.name }}</br>
+                                            Weight: {% weight_conversion analysis_left.weight current_analysis.analysis_settings.weight_units current_analysis.analysis_settings.weight_decimal_points %}
+                                            <table class="chart_legend">
+                                                <thead>
+                                                <tr>
+                                                    <th>     </th>
+                                                    <th>Name</th>
+                                                    <th>Weight</th>
+                                                    <th>Total Weight</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                    {% for object in lca_parts_left_all_list %}
+                                                        <tr style ="text-align:right;">
+                                                            <td style = "background-color: {{object.color}}; color: {{object.color}}">{{object.part_model.diagram_color}}</td>
+                                                            <td>{{object.part_model.name}}</td>
+                                                            <td>{% weight_conversion object.part_model.weight current_analysis.analysis_settings.weight_units current_analysis.analysis_settings.weight_decimal_points %}</td>
+                                                            <td>{% weight_conversion object.total_weight current_analysis.analysis_settings.weight_units current_analysis.analysis_settings.weight_decimal_points %}</td>
+                                                        </tr>
+                                                    {% endfor %}
+                                                </tbody>
+                                                </table>
+                                        </div>
+                                        <div class="col-md-4 d-flex justify-content-center">
+                                            <div class="chart-container" style="position: relative; width: 100%; height: 20rem; display: flex; justify-content: center; align-items: center;">
+                                                <canvas id="bar-chart_parts" style="width: 100%; height: 100%; max-width: 100%; max-height: 100%;"></canvas>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <strong>  Right Concept </strong> </br>
+                                            Name: {{ analysis_right.name }}</br>
+                                            Weight: {% weight_conversion analysis_right.weight current_analysis.analysis_settings.weight_units current_analysis.analysis_settings.weight_decimal_points %}
+                                            <table class="chart_legend">
+                                                <thead>
+                                                <tr>
+                                                    <th>     </th>
+                                                    <th>Name</th>
+                                                    <th>Weight</th>
+                                                    <th>Total Weight</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                    {% for object in lca_parts_right_all_list %}
+                                                        <tr style ="text-align:right;">
+                                                            <td style = "background-color: {{object.color}}; color: {{object.color}}">{{object.part_model.diagram_color}}</td>
+                                                            <td>{{object.part_model.name}}</td>
+                                                            <td>{% weight_conversion object.part_model.weight current_analysis.analysis_settings.weight_units current_analysis.analysis_settings.weight_decimal_points %}</td>
+                                                            <td>{% weight_conversion object.total_weight current_analysis.analysis_settings.weight_units current_analysis.analysis_settings.weight_decimal_points %}</td>
+                                                        </tr>
+                                                    {% endfor %}
+                                                </tbody>
+                                                </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                </div>
+
+                <div class="card-footer">
+                    <div class="container-fluid my-3">
+                        <div class="row">
+                            <div class="col-md-6 text-center">
+                                <form>
+                                    <button type="button" class="btn btn-warning btn-sm js-vehicle-update " data-url="{% url 'vehicle_update' vehicle.UUID|stringformat:"s" %}" disabled>Get Table Data</button>
+                                </form>
+                            </div>
+                            <div class="col-md-6 text-center">
+                                <form>
+                                    <button onclick="download('pie-chart-weight-left_concept')" type="button"  class="btn btn-warning btn-sm" data-url=# >Save As Png</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% comment %} JAVASCRIPT {% endcomment %}
+
+<script type="text/javascript">
+
+    var config_parts_bar = {
+        type: 'bar',
+        data: {{ data_parts_bar_json|safe }},
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            aspectRatio: 1,
+
+            layout: {
+                padding:2
+            },
+            plugins: {
+                legend: {
+                    display: false,
+                    position: "bottom",
+                    align: "middle",
+                    }
+            },
+            title: {
+                display: true,
+                text: 'Total weight [kg]'
+            },
+        scales: {
+            x: {
+                stacked: true,
+                },
+            y: {
+                stacked: true,
+                }
+                }
+        }
+    };
+
+    var config_parts_rc = {
+          type: 'doughnut',
+
+            data: {{ data_parts_doughnut_left_json|safe }},
+          options: {
+                    layout: {
+                        padding:2
+                    },
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    aspectRatio: 1,
+
+                    plugins: {
+                        legend: {
+                            display: false,
+                          position: "bottom",
+                          align: "middle",
+                            labels: {
+                                color: 'rgb(255, 99, 132)'
+                            },
+                        title: {
+                            display: false,
+                            text: 'Reference Concept - Weight distribution among parts [kg]',
+                            position: 'top',
+                            font: {
+                	        size: 15
+                            }
+                        },
+                    }
+                }
+          }
+        };
+    var config_parts_ac = {
+          type: 'doughnut',
+
+            data: {{ data_parts_doughnut_right_json|safe }},
+          options: {
+                    layout: {
+                        padding:2
+                    },
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    aspectRatio: 1,
+                plugins: {
+                    legend: {
+                        display: false,
+                        position: "bottom",
+                        align: "middle",
+                        labels: {
+                            color: 'rgb(255, 99, 132)'
+                        },
+                    title: {
+                        display: false,
+                        text: 'Alternative Concept - Weight distribution among parts [kg]',
+                        position: "top",
+                        font: {
+                	    size: 15
+                        }
+                    },
+                    }
+            },
+          }
+        };
+
+     //first row weight distribution by parts
+          var ctx_parts_rc = document.getElementById('doughnut-chart_parts_rc').getContext('2d');
+          window.myPieWeight_left = new Chart(ctx_parts_rc, config_parts_rc);
+
+          var ctx_parts_bar = document.getElementById('bar-chart_parts').getContext('2d');
+          window.myBarWeight_middle = new Chart(ctx_parts_bar, config_parts_bar);
+
+          var ctx_parts_ac = document.getElementById('doughnut-chart_parts_ac').getContext('2d');
+          window.myPieWeight_Right = new Chart(ctx_parts_ac, config_parts_ac);
+
+</script>
+
+
+
+<script type="text/javascript">
+    function download(element_ID) {
+    //if (!isChartRendered) return; // return if chart not rendered
+    var element = document.getElementById(element_ID);
+    html2canvas(element, {
+                                useCORS: true,
+                                allowTaint: true,
+                                }).then((canvas) => {
+
+            var link = document.createElement('a');
+            link.href = canvas.toDataURL('image/png');
+            link.download = element_ID +'.png';
+            link.click();
+
+   })
+}
+
+
+
+</script>

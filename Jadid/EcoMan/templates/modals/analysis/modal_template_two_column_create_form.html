@@ -1,0 +1,87 @@
+{% load widget_tweaks %}
+{% load form_tags %}
+<style>
+label {
+    margin-top: 20px;
+  }
+  /* Error Styles */
+.has-error .form-control {
+    border-color: #a94442;
+    box-shadow: none;
+}
+
+.has-error label {
+    color: #a94442;
+}
+
+.text-danger {
+    color: #a94442;
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+</style>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group{% if field.errors %} has-error{% endif %}">
+                        {% render_field form.name %}
+                        {% render_field form.logo %}
+                        <i class="fas fa-info-circle"
+                        data-toggle="popover"
+                        data-trigger="hover"
+                        title="Publish - Explanation"
+                        data-content ="This option makes the analyses accessible to other project users. You can modify this setting by going to 'Edit' in the analysis settings."
+                        ></i>
+                        {% render_field form.is_public %}
+                        {% render_field form.is_automotive %}                             
+
+                        {% render_field form.project_model %}                        
+                        {% render_field form.weight_units %}         
+                        {% render_field form.weight_decimal_points %} 
+                        <i class="fas fa-info-circle"
+                        data-toggle="popover"
+                        data-trigger="hover"
+                        data-html="true" 
+                        title="Primary Property - Explanation"
+                        data-content ="This is the value that the anaysis will compare, availability of values is dependent on completeness of databases used"
+                        ></i>                                            
+                        {% render_field form.primary_property %}                              
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <i class="fas fa-info-circle"
+                    data-toggle="popover"
+                    data-trigger="hover"
+                    data-html="true" 
+                    title="Goal Definition - Explanation"
+                    data-content ="<div><b>The goal definition of an LCA can include:</b></br>
+                        -the purpose of the LCA</br>
+                        -why you do the LCA</br>
+                        -for whom you do the LCA</br>
+                        -how to communicate the results of the LCA</div>"
+                    ></i>
+                    {% render_field form.goal_definition %}                      
+                    <i class="fas fa-info-circle"
+                    data-toggle="popover"
+                    data-trigger="hover"
+                    data-html="true" 
+                    title="Scope Definition - Explanation"
+                    data-content = "<div><b>The scope definition can include the following aspects:</b></br>
+                        -the product system and function, which are assessed</br>
+                        -the functional unit (e.g. transportation of person over 1 km or providing 1 kWh of energy or the production of a part) If you want to compare different concepts, it is important to choose a functional unit that allows a 'fair' comparison</br>
+                        -system boundaries (e.g. what you include and exclude)</br>
+                        -if applicable: assumptions and limitions</div>"
+                    ></i>
+                    {% render_field form.scope_definition %}   
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+</div>
+

@@ -1,0 +1,140 @@
+{% extends 'EcoMan/base.html' %}
+
+{% load static %}
+
+{% block Apps %}
+
+<div class="container-fluid" id="objects-container">
+    <div class="col-md-12">
+        <div class="row">
+            <div class="col-md-10 border-right">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div href="#" class="list-group-item list-group-item-secondary my-1" onclick="toggleSelection(this)">
+                            <div class="container-fluid" id="objects-container">
+                                <div class="row"> 
+                                    <div class='col-md-10'>
+                                        <h3> Public A-B-Analyses in Current Project</h3>
+                                    </div>                      
+                                </div>   
+                            </div>                              
+                        </div> 
+                        <div class="list-group">
+                            {% if objects_current_project %}
+                            {% for object in objects_current_project %}
+                                <div href="#" class="list-group-item list-group-item-action my-1" onclick="toggleSelection(this)">
+                                    <div class="row">                
+                                        <div class='col-md-10 w-auto ms-auto'> 
+                                            <div class="row">         
+                                                <div class="col-md-1 center-block align-self-center">
+                                                    <div class="container-fluid p-1"  >
+                                                        {% if object.logo %}
+                                                            <img class="card-img-top" src='{{ object.logo.url }}' alt="Error: 404" style="max-height: 145px;">     
+                                                        {% else %}
+                                                            <img class="card-img-top" src="{% static '/website/images/Playground_Icon.png' %}" alt="Default" style="max-height: 145px;">
+                                                        {% endif %}      
+                                                    </div>                                                     
+                                                </div>
+                                                
+                                                <div class='col-md-3 w-auto ms-auto'>                  
+                                                    Analysis: {{ object.name }} <br> 
+                                                    Protection Class: {{ object.protection_class }}
+                                                </div>
+                                                <div class='col-md-3 w-auto ms-auto'>                 
+                                                    Owner: {{ object.owner.nickname }} <br>  
+                                                    ID: {{ object.id}}
+                                                </div>  
+                                                <div class='col-md-3 w-auto ms-auto'>                  
+                                                    Part Count: {{object.lca_part_models.count}} <br>  
+                                                    Weight: {{object.weight|floatformat:3}} kg
+                                                </div>  
+                                                <div class='col-md-2 w-auto ms-auto'>  
+                                                    Created: {{ object.created_at }}    <br>             
+                                                    Updated: {{ object.updated_at }}
+                                                </div>    
+                                            </div>                                                                                                                                     
+                                        </div>
+                                        <div class='col-md-2 w-auto ms-auto'>
+                                            <div class="btn-group" role="group" aria-label=" " style="display: block; text-align: right">
+                                                <a href="{% url 'EcoMan:analysis_comparison_detail_view' object.id %}" class="btn btn-info btn-sm">Continue</a>
+                                                <button type="button" class="btn btn-warning btn-sm js-object-update " id="#modal-window-xl" data-url="{% url 'EcoMan:analysis_comparison_update' object.id %}">Edit</button>
+                                                <button type="button" class="btn btn-danger btn-sm js-object-delete " id="#modal-window" data-url="{% url 'EcoMan:analysis_comparison_delete' object.id %}">Delete</button>
+                                            </div>
+                                        </div>
+                                    </div>                
+                                </div>
+                            {% endfor %}
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <div class="col-md-12">
+                        <div href="#" class="list-group-item list-group-item-secondary my-1" onclick="toggleSelection(this)">
+                            <div class="container-fluid" id="objects-container">
+                                <div class="row"> 
+                                    <div class='col-md-10'>
+                                        <h3> A-B-Analyses of Current user </h3>
+                                    </div>                      
+                                </div>   
+                            </div>                              
+                        </div> 
+                        <div class="list-group">
+                            {% if objects_current_user %}
+                            {% for object in objects_current_user %}
+                                <div href="#" class="list-group-item list-group-item-action my-1" onclick="toggleSelection(this)">
+                                    <div class="row">                
+                                        <div class='col-md-10 w-auto ms-auto'> 
+                                            <div class="row">                                                 
+                                                <div class="col-md-1 enter-block align-self-center">
+                                                    <div class="container-fluid p-1"  >
+                                                        {% if object.logo %}
+                                                            <img class="card-img-top" src='{{ object.logo.url }}' alt="Error: 404" style="max-height: 145px;">     
+                                                        {% else %}
+                                                            <img class="card-img-top" src="{% static '/website/images/Playground_Icon.png' %}" alt="Default" style="max-height: 145px;">
+                                                        {% endif %}      
+                                                    </div>                                                     
+                                                </div>
+                                                <div class='col-md-3 w-auto ms-auto'>                  
+                                                    Analysis: {{ object.name }} <br> 
+                                                    Protection Class: {{ object.protection_class }}
+                                                </div>
+                                                <div class='col-md-3 w-auto ms-auto'>                 
+                                                    Owner: {{ object.owner.nickname }} <br>  
+                                                    ID: {{ object.id}}
+                                                </div>  
+                                                <div class='col-md-3 w-auto ms-auto'>                  
+                                                    Part Count: {{object.lca_part_models.count}} <br>  
+                                                    Weight: {{object.weight|floatformat:3}} kg
+                                                </div>  
+                                                <div class='col-md-2 w-auto ms-auto'>  
+                                                    Created: {{ object.created_at }}    <br>             
+                                                    Updated: {{ object.updated_at }}
+                                                </div>    
+                                            </div>                                                                                                                                     
+                                        </div>
+                                        <div class='col-md-2 w-auto ms-auto'>
+                                            <div class="btn-group" role="group" aria-label=" " style="display: block; text-align: right">
+                                                <a href="{% url 'EcoMan:analysis_comparison_detail_view' object.id %}" class="btn btn-info btn-sm">Continue</a>
+                                                <button type="button" class="btn btn-warning btn-sm js-object-update " id="#modal-window-xl" data-url="{% url 'EcoMan:analysis_comparison_update' object.id %}">Edit</button>
+                                                <button type="button" class="btn btn-danger btn-sm js-object-delete " id="#modal-window" data-url="{% url 'EcoMan:analysis_comparison_delete' object.id %}">Delete</button>
+                                            </div>
+                                        </div>
+                                    </div>                
+                                </div>
+                            {% endfor %}
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-2">
+                {% include "website/current_project.html" %}
+                {% include "website/idemat_licence_badge.html" %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock Apps %}
+
+
+

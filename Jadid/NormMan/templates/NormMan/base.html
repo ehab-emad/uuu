@@ -1,0 +1,285 @@
+{% extends 'website/base.html' %}
+{% load static %}
+
+{% block AppIcon %}
+<a class="navbar-brand" href="{% url 'NormMan:shared_components_dashboard' %}">
+    <span><img src="{% static '/website/images/NorMan.png' %}" alt="Logo" ></span>
+    NormMan
+</a>
+{% endblock AppIcon %}
+
+
+{% block NavItems %}
+
+<div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+        <li class="nav-item active">
+            {% if 'user-professional' in request.session.groups %}
+                <a class="nav-link js-object-create" id="#modal-window-xl" href="#" data-url="{% url 'project_create' %}"> Add new project </a>
+            {% else %}
+                <a class="nav-link disabled js-object-create" href="#"> Add new project </a>
+            {% endif %}  
+        </li>
+
+        <li class="nav-item dropdown active">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Add Norm Item 
+            </a>
+            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                <a class="dropdown-item js-object-create" id="#modal-window-xl"  href=# data-url="{% url 'NormMan:shared_component_create_modal' %}">New Shared Component</a>
+            </div>
+
+        </li>
+
+
+    </ul>
+</div>    
+
+{% endblock NavItems %}
+
+{% block Apps %}
+<div class="container-fluid" id="objects-container">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="row">
+                <div class="col-md-10">
+                    <div class="row">
+                        <div class="col-md-12">
+                            {% block Cards %}
+                            {% endblock Cards %}
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    {% block ManagementCards %}
+                    {% endblock ManagementCards %}
+                    {% include "website/current_project.html" %}  
+                    <div class="card mx-3 my-3" id="framework_status">
+                        {% include "website/current_framework_session.html" %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type=text/javascript> 
+
+    // chat/static/room.js
+
+    console.log("Sanity check from room.js.");
+    var id = "{{ request.user.username | safe }}"
+
+    let chatSocket = null;
+
+    function connect() {
+        const protocol = window.location.protocol.includes('https') ? 'wss': 'ws'
+        chatSocket = new WebSocket(`${protocol}://${window.location.host}/ws/framework/${id}/`);
+    
+        chatSocket.onopen = function(e) {
+            console.log("Successfully connected to the WebSocket.");
+        }
+    
+        chatSocket.onclose = function(e) {
+            console.log("WebSocket connection closed unexpectedly. Trying to reconnect in 2s...");
+            setTimeout(function() {
+                console.log("Reconnecting...");
+                connect();
+            }, 2000);
+        };
+    
+        chatSocket.onmessage = function(e) {
+            const data = JSON.parse(e.data);
+            console.log(data);
+            if ('type' && 'message' in data){
+                if( data['type'] == 'framework_command'){
+                    var message = JSON.parse(data['message'])
+                    //message = JSON.parse(message)
+                    console.log(message.command)
+                    if('command' in message) {
+                        
+                        if(message['command'] == 'framework_alert_message'){
+                            console.log($('#toaster').find("#toast_zero")[0].className.includes("show")); 
+                            console.log($('#toaster').find("#toast_one")[0].className.includes("show"));
+                            console.log($('#toaster').find("#toast_zero").data('state'))
+                            console.log($('#toaster').find("#toast_one").data('state'))
+                            console.log($('#toaster').find("#toast_zero")[0].hidden); 
+                            console.log($('#toaster').find("#toast_one")[0].hidden); 
+                            var currentdate = new Date(); 
+                            console.log("Logging Execution status")
+                            console.log(message['exec_status'])
+                            var datetime = currentdate.getHours() + ":"  + currentdate.getMinutes() + ":" + currentdate.getSeconds();
+                            if($('#toaster').find("#toast_zero")[0].className.includes("show")){
+                                console.log('I am shown');  
+                                if($('#toaster').find("#toast_one")[0].className.includes("show")){
+                                    console.log('I am shown as well'); 
+                                    // use the first one - overwrite                
+                                    $('#toaster').find("#toast_zero").find('#time_stamp')[0].innerHTML = datetime;                                    
+                                    if(message['exec_status'] == true){
+                                        $('#toaster').find("#toast_zero").find('#content_text')[0].innerHTML = 
+                                        "<img src='{% static '/website/images/done.png' %}' width='25' height='25' class='rounded mr-2' alt='...'>"
+                                        + '     Execution succeded';
+                                    } else {
+                                        $('#toaster').find("#toast_zero").find('#content_text')[0].innerHTML = 
+                                        "<img src='{% static '/website/images/failed.png' %}' width='25' height='25' class='rounded mr-2' alt='...'>"                                        
+                                        + '     Execution failed!';
+                                    }
+                                    $('#toaster').find("#toast_zero").toast('show');
+                                } else {
+                                    console.log('I am hidden and can be shown')    
+                                    // use the second one
+                                    $('#toaster').find("#toast_one").find('#time_stamp')[0].innerHTML = datetime;
+                                    if(message['exec_status'] == true){
+                                        $('#toaster').find("#toast_one").find('#content_text')[0].innerHTML = 
+                                        "<img src='{% static '/website/images/done.png' %}' width='25' height='25' class='rounded mr-2' alt='...'>"
+                                        + '     Execution succeded';
+                                    } else {
+                                        $('#toaster').find("#toast_one").find('#content_text')[0].innerHTML = 
+                                        "<img src='{% static '/website/images/failed.png' %}' width='25' height='25' class='rounded mr-2' alt='...'>"                                        
+                                        + '     Execution failed!';
+                                    }
+                                    $('#toaster').find("#toast_one").toast('show');
+                                }
+
+                            } else {
+                                console.log('I am hidden and can be shown')
+                                console.log($('#toaster').find("#toast_zero"))
+                                console.log($('#toaster').find("#toast_zero").find('#time_stamp')[0])
+                                console.log($('#toaster').find("#toast_zero").find('#time_stamp')[0].innerHTML)
+                                // just write to first one
+                                $('#toaster').find("#toast_zero").find('#time_stamp')[0].innerHTML = datetime;
+                                if(message['exec_status'] == true){
+                                    $('#toaster').find("#toast_zero").find('#content_text')[0].innerHTML = 
+                                    "<img src='{% static '/website/images/done.png' %}' width='25' height='25' class='rounded mr-2' alt='...'>"
+                                    + '     Execution succeded';
+                                } else {
+                                    $('#toaster').find("#toast_zero").find('#content_text')[0].innerHTML = 
+                                    "<img src='{% static '/website/images/failed.png' %}' width='25' height='25' class='rounded mr-2' alt='...'>"                                        
+                                    + '     Execution failed!';
+                                }
+                                $('#toaster').find("#toast_zero").toast('show');
+                            }
+                        }
+
+                        if(message['command'] == 'framework_status_update_available'){
+                            trigger_id = "framework_status_update_available"
+                            user_id = message['user']
+                            session_id = message['session_uuid']
+                            const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+                            var url = "{% url 'NormMan:load_framework_status' %}";
+                            var o_data = { "trigger_id": trigger_id,
+                                           "user_id": message['user'], 
+                                           "session_id": sessionStorage.getItem("session_id"),                     
+                                         }
+                            $.ajax({                       // initialize an AJAX request
+                            type:'POST',
+                            headers: { 'X-CSRFToken': csrftoken },
+                            url: url, //$(this).data('url'), 
+                            dataType: 'json',                  
+                            data: o_data,
+                        
+                                success: function (data) {  
+                                    $("#framework_status").html() ;
+                                    $("#framework_status").html(data['html_framework_details']) ;  
+                                   
+                                    console.log("new framework update available be refreshed accordingly")
+                            } }
+                            );
+                        }
+                        if(message['command'] == 'workflow_dashboard_status_update_available'){
+                            trigger_id = message['trigger_id']
+                            user_id = message['user']
+                            session_id = message['session_id']
+                            const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+                            var url = "{% url 'NormMan:load_workflow_details' %}";
+                            var o_data = { 
+                                "user": message["user"],
+                                "command": "workflow_dashboard_status_update_request",
+                                "trigger_id": trigger_id,
+                                "method_id": message["method_id"],
+                                "master_id": message["master_id"],
+                                "session_id": message['session_id']
+                                }
+                            $.ajax({                       // initialize an AJAX request
+                            type:'POST',
+                            headers: { 'X-CSRFToken': csrftoken },
+                            url: url, //$(this).data('url'), 
+                            dataType: 'json',                  
+                            data: o_data,
+                        
+                                success: function (data) {  
+                                    $("#actions").html() ;
+                                    $("#actions").html(data.html_object_actions) ;                  
+                                    $("#step_details").html() ;
+                                    $("#step_details").html(data.html_object_details) ;    
+                                    $("#details").html() ;
+                                    $("#details").html(data.html_workflow_details) ;
+                                    $("#norm_parts").html(data.html_list_norm_parts);
+                                    if(data.norm_parts_hits != null){
+                                        $("#norm_parts_hits").html() ;
+                                        $("#norm_parts_hits").html('1: Norm Parts; hits: ' + data.norm_parts_hits) ;
+                                    }
+                            } }
+                            );
+                        } 
+                        if(message['command'] == 'reload_data_after_selection'){
+                            trigger_id = message['trigger_id']
+                            user_id = message['user']
+                            session_id = message['session_id']
+                            const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+                            var url = "{% url 'NormMan:load_workflow_details' %}";
+                            var o_data = { 
+                                "user": message["user"],
+                                "command": "workflow_dashboard_status_update_request",
+                                "trigger_id": trigger_id,
+                                "method_id": message["method_id"],
+                                "master_id": message["workflow_id"],
+                                "session_id": message['session_id']
+                                }
+                            $.ajax({                       // initialize an AJAX request
+                            type:'POST',
+                            headers: { 'X-CSRFToken': csrftoken },
+                            url: url, //$(this).data('url'), 
+                            dataType: 'json',                  
+                            data: o_data,
+                        
+                                success: function (data) {  
+                                    $("#actions").html() ;
+                                    $("#actions").html(data.html_object_actions) ;                  
+                                    $("#step_details").html() ;
+                                    $("#step_details").html(data.html_object_details) ;    
+                                    $("#details").html() ;
+                                    $("#details").html(data.html_workflow_details) ;
+                                    $("#norm_parts").html(data.html_list_norm_parts);
+                                    $("#norm_parts_hits").html() ;
+                                    $("#norm_parts_hits").html('1: Norm Parts; hits: ' + data.norm_parts_hits) ;
+                            } }
+                            );
+                        }                       
+
+
+
+
+
+
+
+
+
+                    } 
+                }
+            }
+
+        };
+    
+        chatSocket.onerror = function(err) {
+            console.log("WebSocket encountered an error: " + err.message);
+            console.log("Closing the socket.");
+            chatSocket.close();
+        }
+    }
+    connect();
+
+
+</script>
+
+{% endblock Apps %}

@@ -1,0 +1,132 @@
+body {
+    background: rgb(252, 252, 252);
+    padding-top: 90px; 
+}
+
+
+.navbar-custom {
+    background-color: rgb(53, 74, 95);
+    border-radius: 0px;
+    padding-top: 0.25rem;
+    padding-bottom: 0.25rem;
+    height: 90px;
+}
+.navbar a {
+    color: whitesmoke;
+}
+.navbar-brand img {
+
+    height: 70px; 
+
+}
+
+
+
+.navbar-brand {
+    font-family: "Segoe UI";
+    font-size: xx-large;
+    margin-top: -10px;
+    height: 70px;
+}
+
+
+
+
+.border-right {
+    border-right: 3px solid #ddd;
+}
+
+.border-left {
+    border-right: 3px solid #ddd;
+}
+
+.modal.custom .modal-dialog {  
+    max-width: 50%;
+    background-color: green;
+}
+
+.container-fluid {
+
+    background-size: 100%;
+}
+
+.navbar-toggler-icon {
+    background-image: url("data:image/svg+xml;charset=utf8,%3Csvg viewBox='0 0 32 32' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath stroke='rgba(255,255,255, 1)' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 8h24M4 16h24M4 24h24'/%3E%3C/svg%3E");
+}
+.dropdown-menu {
+    background-color: rgb(53, 74, 95);
+}
+/*font-family: "Segoe UI Web (West European)", Segoe UI, -apple-system, BlinkMacSystemFont, Roboto, Helvetica Neue, sans-serif;*/
+.sidenav {
+    height: 100%;
+    width: 0px;
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    background-color: rgb(53, 74, 95);
+    overflow-x: hidden;
+    padding-top: 20px;
+    transition: 0.5s;
+}
+
+    .sidenav a {
+        padding: 6px 8px 6px 16px;
+        text-decoration: none;
+        font-size: 25px;
+        color: #818181;
+        display: block;
+        transition: 0.3s;
+    }
+
+        .sidenav a:hover {
+            color: #f1f1f1;
+        }
+
+.brightness {  
+    padding-top: 0px;
+}
+
+.brightness img:hover {
+    opacity: .70;
+
+}
+.brightness a:hover {
+    filter: brightness(70%)
+}
+
+
+
+@media screen and (max-height: 450px) {
+    .sidenav {
+        padding-top: 15px;
+    }
+
+        .sidenav a {
+            font-size: 18px;
+        }
+}
+
+
+
+.card:not(.animationoff) {
+    border-radius: 4px;
+    background: #fff;
+    box-shadow: 0 6px 10px rgba(0,0,0,.08), 0 0 6px rgba(0,0,0,.05);
+    transition: .3s transform cubic-bezier(.155,1.105,.295,1.12),.3s box-shadow,.3s -webkit-transform cubic-bezier(.155,1.105,.295,1.12);
+    padding: 3px 3px 3px 3px;
+}
+
+.card:hover:not(.animationoff) {
+    transform: scale(1.01);
+    box-shadow: 0 10px 20px rgba(0,0,0,.12), 0 4px 8px rgba(0,0,0,.06);
+}
+
+
+.popover {
+    max-width: 350px;
+}
+
+    .popover img {
+        max-width: 250px;
+    }

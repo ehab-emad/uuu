@@ -1,0 +1,105 @@
+{% extends 'ConceptMan/concept/conceptdetail.html' %}
+{% load static %}
+{% block details %}            
+    <div class="container-fluid" id="parts-container"> 
+        <div class="row">
+			<div class="col-md-12">   
+                <div class="row-no-gutters">
+                    {% if error_message %}
+                        <p><strong>{{ error_message }}</strong></p>
+                    {% endif %}
+                    <div class="table-responsive w-100 d-block d-md-table">
+                        <table class="table table-hover" >
+                            <thead>
+                                <tr>
+                                    <th>ID:</th>
+                                    <th>Name:</th>
+                                    <th>Owner:</th>    
+                                    <th>Creation date:</th>    
+                                    <th>Last changed:</th>  
+                                    <th>Weight[g]:</th> 
+                                    <th>Thickness[mm]:</th> 
+                                </tr>
+                            </thead>
+                            <tbody >
+                            {% for object in objects %}
+                                <tr>
+                                    <td data-toggle="popover">{{ object.id }}</td>
+                                    <td data-toggle="popover">{{ object.name }}</td>
+                                    <td data-toggle="popover">{{ object.owner }}</td>    
+                                    <td data-toggle="popover">{{ object.created_at }}</td>
+                                    <td data-toggle="popover">{{ object.engineering_material.name }}</td>     
+                                    <td data-toggle="popover">{{ object.weight|floatformat:3 }}</td>                                            
+                                    <td data-toggle="popover">{{ object.thickness }}</td>                                                                                                                                                          
+                                    <td>
+                                    <a href="{% url 'ConceptMan:part_detailview' object.id %}" class="btn btn-info btn-sm " role="button" aria-pressed="true">Details</a>                                               
+                                    <button type="button" class="btn btn-warning btn-sm js-part-update" data-url= "{% url 'ConceptMan:part_update' object.id %}"> Edit </button>
+
+                                    <a href=# class="btn btn-danger btn-sm " role="button" aria-pressed="true">Remove</a>   
+                                    <button type="button" class="btn btn-danger btn-sm js-part-delete" data-url= "{% url 'ConceptMan:part_delete' object.id %}"> Delete </button>    
+                                    </td>
+                                </tr>
+                            {% endfor %}
+
+
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                
+            <button class="btn btn-warning btn-sm js-boltcase-update float-right" data-url="#">Add existing part</button>
+            </div>
+
+
+
+            <div>
+                  <canvas id="doughnut-chart"></canvas>
+            </div>
+
+        </div> 
+     </div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
+
+  <script type="text/javascript">
+
+    var config = {
+      type: 'doughnut',
+      data: {
+        datasets: [{
+          data: {{ data|safe }},
+          backgroundColor: ["#3e95cd", "#8e5ea2","#3cba9f","#e8c3b9","#c45850"],
+          label: 'Weight distribution'
+        }],
+        labels: {{ labels|safe }}
+      },
+      options: {
+        title: {
+            display: true,
+            text: 'Weight distribution [g]'
+        }
+      }
+    };
+
+    window.onload = function() {
+      var ctx = document.getElementById('doughnut-chart').getContext('2d');
+      window.myPie = new Chart(ctx, config);
+    };
+
+  </script>
+
+<script type="text/javascript">
+$(document).ready(function(){
+    $('[data-toggle="popover"]').popover({
+        placement : 'right',
+        trigger : 'hover',
+        html : true,
+        content : '<div class="media"><a href="#" class="pull-left"><img src="{% static "/website/images/Part_Icon.png" %}" class="media-object" alt="Sample Image"></a><div class="media-body"></div></div>'
+    });
+});
+</script>
+
+
+
+{% endblock %}                   

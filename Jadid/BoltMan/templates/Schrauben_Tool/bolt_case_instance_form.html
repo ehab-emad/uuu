@@ -1,0 +1,44 @@
+{% extends 'website/base.html' %}
+{% block title %}Add a New Album{% endblock %}
+{% block cars_active %}active{% endblock %}
+
+{% block body %}
+<div class="container-fluid">
+
+    <div class="row">
+
+        <div class="col-sm-12 col-md-7">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <h3>Add a New Bolt Case Instance</h3>
+                    {% if error_message %}
+                        <p><strong>{{ error_message }}</strong></p>
+                    {% endif %}
+                    <form class="form-horizontal" role="form" action="" method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        {% include 'BoltMan/form_template.html' %}
+                        <div class="form-group">
+                            <div class="col-sm-offset-2 col-sm-10">
+                                <button type="submit" class="btn btn-success">Submit</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-sm-12 col-md-5">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <h3>What is an bolt case instance?</h3>
+                    <p>Bolt case instance allows you to assign your boltcase to one or more vehicles or to create many instances of the same bolt case. Remember bolt case requires a part which already inherits a target vehicle. </p>
+                    <h3>How do I add bolt case instance?</h3>
+                    <p>First, create a boltcase by clicking <a href={% url 'BoltMan:boltcase-add' %}>+ Add Bolt Case</a> on the right top corner and fill the necessary forms </p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+{% endblock %}

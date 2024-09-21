@@ -1,0 +1,215 @@
+{% load static %}
+{% load weight_unit_switch %}
+        <div id="accordion-{{lca_part.id}}">
+            <div class="card animationoff" style="background-color: rgba(240, 240, 240, 1); border: none">
+                {% for object in lca_part.lca_process_model.all %}
+                    {% if object.lca_step == "LCASTEP3" %}
+                        <div class="card-header processisactive{{object.is_active}} {{object.process_type}}" id="processes_container_upstream">
+                            <h5 class="mb-0">
+                                <div class="container" >
+                                    <div class="row" >
+                                        <div class="col col-md-12" >
+                                            <a class="collapsed" role="button" data-toggle="collapse" href="#collapse-{{lca_part.id}}-{{object.id}}" aria-expanded="false" aria-controls="collapse-{{lca_part.id}}-{{object.id}}">
+                                                <div class="container" id="heading-{{lca_part.id}}-{{object.id}}" >
+                                                    <div class="row">                                          
+                                                        {% if object.process_type == "PTYPE0_OTHER" %}
+                                                            <div class="col col-md-1" >
+                                                                {% if object.is_active %}
+                                                                    <label> <input type="checkbox" id="chb_{{object.id}}" name="is_active_preview" style=" margin-right:20px;" onclick="location.href='{% url 'EcoMan:process_instance_is_active' object.id %}'" class="form-control" id="id_is_active_preview" checked>Active</label>
+                                                                {% else %}
+                                                                    <label> <input type="checkbox" id="chb_{{object.id}}" name="is_active_preview" style=" margin-right:20px;" onclick="location.href='{% url 'EcoMan:process_instance_is_active' object.id %}'" class="form-control" id="id_is_active_preview">Active</label>
+                                                                {% endif %}  
+                                                            </div>                                                            
+                                                            <div class="col col-md-1" >
+                                                                <img src="{% static '/website/images/Process_Icon.png' %}" width="30" class="center"/>
+                                                            </div>
+                                                            {% if object.is_active %}
+                                                                <div class="col col-md-4" >
+                                                                    {{object.name}}
+                                                                </div>
+                                                            {% else %}
+                                                                <div class="col col-md-4" style="color:grey">
+                                                                    <s>{{object.name}}</s> (Not active)
+                                                                </div>
+                                                            {% endif %}
+
+                                                            <div class="col col-md-3" >
+                                                                Quant.: {% if object.process_model.unit == 'kg' %} 
+                                                                            {% weight_conversion object.process_total_quantity weight_unit weight_decimals %} 
+                                                                        {% else %}
+                                                                            {{object.process_total_quantity|floatformat:weight_decimals }}[{{object.process_model.unit }}]
+                                                                        {% endif %}
+                                                            </div>
+                                                            <div class="col col-md-2" >
+                                                                {% weight_conversion_no_unit object.results_model.carbon_footprint 'KILOGRAMS' weight_decimals %} [kg CO&#8322;eq]
+                                                            </div>
+                                                            <div class="col col-md-1" >
+                                                                <button type="button"
+                                                                    class="btn btn-light btn-sm js-object-update"
+                                                                    id="#modal-window-xl"
+                                                                    data-toggle="popover"
+                                                                    data-trigger="hover"
+                                                                    title={{object.process_model.name|slugify}}
+                                                                    data-content={{object.process_quantity}}
+                                                                    data-url="{% url 'EcoMan:processing_process_instance_update' pk_instance=object.id weight_unit=weight_unit weight_decimals=weight_decimals  %}">
+                                                                    <img src="{% static '/website/images/Edit_Icon.png' %}" width="30" />
+                                                                </button>
+                                                            </div>
+
+                                                        {% endif %}
+
+                                                        {% if object.process_type == "PTYPE1_MATERIAL" %}
+                                                            <div class="col col-md-1" >
+                                                                {% if object.is_active %}
+                                                                    <label> <input type="checkbox" id="chb_{{object.id}}" name="is_active_preview" style=" margin-right:20px;" onclick="location.href='{% url 'EcoMan:process_instance_is_active' object.id %}'" class="form-control" id="id_is_active_preview" checked>Active</label>
+                                                                {% else %}
+                                                                    <label>   <input type="checkbox" id="chb_{{object.id}}" name="is_active_preview" style=" margin-right:20px;" onclick="location.href='{% url 'EcoMan:process_instance_is_active' object.id %}'" class="form-control" id="id_is_active_preview">Active</label>
+                                                                {% endif %}  
+                                                            </div>                                                        
+                                                            <div class="col col-md-1">
+                                                                <img src="{% static '/website/images/Material_Icon.png' %}" width="30" class="center"/>
+                                                            </div>
+                                                            {% if object.is_active %}
+                                                                <div class="col col-md-4" >
+                                                                    {{object.name}}
+                                                                </div>
+                                                            {% else %}
+                                                                <div class="col col-md-4" style="color:grey">
+                                                                    <s>{{object.name}}</s> (Not active)
+                                                                </div>
+                                                            {% endif %}
+                                                            <div class="col col-md-3">
+                                                                Quant.: {% if object.process_model.unit == 'kg' %} 
+                                                                            {% weight_conversion object.process_total_quantity weight_unit weight_decimals %} 
+                                                                        {% else %}
+                                                                            {{object.process_total_quantity|floatformat:weight_decimals }}[{{object.process_model.unit }}]
+                                                                        {% endif %}
+                                                            </div>
+                                                            <div class="col col-md-2">
+                                                                {% weight_conversion_no_unit object.results_model.carbon_footprint 'KILOGRAMS' weight_decimals %} [kg CO&#8322;eq]
+                                                            </div>
+                                                            <div class="col col-md-1">
+                                                                <button type="button"
+                                                                    class="btn btn-light btn-sm js-object-update"
+                                                                    id="#modal-window-xl"
+                                                                    data-toggle="popover"
+                                                                    data-trigger="hover"
+                                                                    title={{object.process_model.name|slugify}}
+                                                                    data-content={{object.process_quantity}}
+                                                                    data-url="{% url 'EcoMan:material_process_instance_update'  pk_instance=object.id weight_unit=weight_unit weight_decimals=weight_decimals%}">
+                                                                    <img src="{% static '/website/images/Edit_Icon.png' %}" width="30" />
+                                                                </button>
+                                                            </div>
+
+
+                                                        {% endif %}
+
+                                                        {% if object.process_type == "PTYPE2_MANUFACTURING_PROCESS" %}
+                                                        <div class="col col-md-1" >
+                                                            {% if object.is_active %}
+                                                                <label> <input type="checkbox" id="chb_{{object.id}}" name="is_active_preview" style=" margin-right:20px;" onclick="location.href='{% url 'EcoMan:process_instance_is_active' object.id %}'" class="form-control" id="id_is_active_preview" checked>Active</label>
+                                                            {% else %}
+                                                                <label>   <input type="checkbox" id="chb_{{object.id}}" name="is_active_preview" style=" margin-right:20px;" onclick="location.href='{% url 'EcoMan:process_instance_is_active' object.id %}'" class="form-control" id="id_is_active_preview">Active</label>
+                                                            {% endif %}  
+                                                        </div>                                                        
+                                                            <div class="col col-md-1">
+                                                                <img src="{% static '/website/images/Process_Icon.png' %}" width="30" class="center" />
+                                                            </div>
+                                                            {% if object.is_active %}
+                                                                <div class="col col-md-4" >
+                                                                    {{object.name}}
+                                                                </div>
+                                                            {% else %}
+                                                                <div class="col col-md-4" style="color:grey">
+                                                                    <s>{{object.name}}</s> (Not active)
+                                                                </div>
+                                                            {% endif %}
+                                                            <div class="col col-md-3">
+                                                                Quant.: {% if object.process_model.unit == 'kg' %} 
+                                                                            {% weight_conversion object.process_total_quantity weight_unit weight_decimals %} 
+                                                                        {% else %}
+                                                                            {{object.process_total_quantity|floatformat:weight_decimals }}[{{object.process_model.unit }}]
+                                                                        {% endif %}
+                                                            </div>
+                                                            <div class="col col-md-2">
+                                                                {% weight_conversion_no_unit object.results_model.carbon_footprint 'KILOGRAMS' weight_decimals %} [kg CO&#8322;eq]
+                                                            </div>
+                                                            <div class="col col-md-1">
+                                                                <button type="button"
+                                                                    class="btn btn-light btn-sm js-object-update"
+                                                                    id="#modal-window-xl"
+                                                                    data-toggle="popover"
+                                                                    data-trigger="hover"
+                                                                    title={{object.process_model.name|slugify}}
+                                                                    data-content={{object.process_quantity}}
+                                                                    data-url="{% url 'EcoMan:processing_process_instance_update'  pk_instance=object.id weight_unit=weight_unit weight_decimals=weight_decimals %}">
+                                                                    <img src="{% static '/website/images/Edit_Icon.png' %}" width="30" />
+                                                                </button>
+                                                            </div>
+
+
+                                                        {% endif %}
+
+                                                        {% if object.process_type == "PTYPE3_TRANSPORT" %}
+                                                            <div class="col col-md-1" >
+                                                                {% if object.is_active %}
+                                                                    <label> <input type="checkbox" id="chb_{{object.id}}" name="is_active_preview" style=" margin-right:20px;" onclick="location.href='{% url 'EcoMan:process_instance_is_active' object.id %}'" class="form-control" id="id_is_active_preview" checked>Active</label>
+                                                                {% else %}
+                                                                    <label>   <input type="checkbox" id="chb_{{object.id}}" name="is_active_preview" style=" margin-right:20px;" onclick="location.href='{% url 'EcoMan:process_instance_is_active' object.id %}'" class="form-control" id="id_is_active_preview">Active</label>
+                                                                {% endif %}  
+                                                            </div>                                                        
+                                                            <div class="col col-md-1" >
+                                                                <img src="{% static '/website/images/Transport_Icon.png' %}" width="30" class="center"/>
+                                                            </div>
+                                                            {% if object.is_active %}
+                                                                <div class="col col-md-4" >
+                                                                    {{object.name}}
+                                                                </div>
+                                                            {% else %}
+                                                                <div class="col col-md-4" style="color:grey">
+                                                                    <s>{{object.name}}</s> (Not active)
+                                                                </div>
+                                                            {% endif %}
+                                                            <div class="col col-md-3" >
+                                                                Quant.: {% if object.process_model.unit == 'kg' %} 
+                                                                            {% weight_conversion object.process_total_quantity weight_unit weight_decimals %} 
+                                                                        {% else %}
+                                                                            {{object.process_total_quantity|floatformat:weight_decimals }}[{{object.process_model.unit }}]
+                                                                        {% endif %}
+                                                            </div>
+                                                            <div class="col col-md-2" >
+                                                                {% weight_conversion_no_unit object.results_model.carbon_footprint 'KILOGRAMS' weight_decimals %} [kg CO&#8322;eq]
+                                                            </div>
+
+                                                            <div class="col col-md-1" >
+                                                                <button type="button"
+                                                                    class="btn btn-light btn-sm js-object-update"
+                                                                    id="#modal-window-xl"
+                                                                    data-toggle="popover"
+                                                                    data-trigger="hover"
+                                                                    title={{object.process_model.name|slugify}}
+                                                                    data-content={{object.process_quantity}}
+                                                                    data-url="{% url 'EcoMan:transport_process_instance_update' pk_instance=object.id weight_unit=weight_unit  weight_decimals=weight_decimals%}">
+                                                                    <img src="{% static '/website/images/Edit_Icon.png' %}" width="30" />
+                                                                    </button>
+                                                            </div>
+                                                        {% endif %}
+                                                    </div>
+                                                </div>
+                                            </a>
+                                        </div>                                      
+                                    </div>
+                                </div>
+                            </h5>
+                        </div>
+                        <div id="collapse-{{lca_part.id}}-{{object.id}}" class="collapse"  aria-labelledby="heading-{{lca_part.id}}-{{object.id}}">
+                            <div class="card-body">
+                                {% include '../process_preview_table.html' %}
+                            </div>
+                        </div>
+                    {% endif %}
+
+                {% endfor %}
+            </div>
+
+         </div>

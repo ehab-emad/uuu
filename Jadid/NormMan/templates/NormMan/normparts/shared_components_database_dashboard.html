@@ -1,0 +1,284 @@
+{% extends 'NormMan/base.html' %}
+{% load static %}
+{% block Breadcrumb %}
+{% endblock Breadcrumb %}
+{% block Cards %}
+  <style type="text/css">
+
+    .modal-dialog{
+      margin:auto;
+      position: relative;  
+    }
+
+    div.card.playground {
+        border-radius: 7px;
+        box-shadow: 0 3px 3px rgba(0,0,0,.08), 0 0 3px rgba(50,50,0,.05);
+        padding-right: 0px;
+        padding-left: 0px;
+        padding-top: 0px;
+        margin-top: 10px;
+        background-color: rgba(240, 240, 240, 1)
+    }
+
+    div.card.playground:hover{
+        transform: none !important;
+        transition: none !important;
+        box-shadow: 0 5px 5px rgba(0,0,0,.7), 0 0 5px rgba(50,50,0,.7);
+        padding-right: 0px;
+        padding-left: 0px;
+        padding-top: 0px;
+        margin-top: 10px;
+    }
+    .stlviewer {
+        width: 100%;
+        height: 100%;
+        background: #f0f0f0;
+        overflow: hidden;
+      }
+    .bgEDAGBraun{
+        background-color: rgb(184, 172, 165);
+    }
+    .bgEDAGBeige{
+        background-color: rgb(216, 207, 201);
+    }
+    .bgEDAGGrau{
+        background-color: rgb(208, 216, 223);
+    }
+    .bgEDAGHellgrau{
+        background-color: rgb(228, 229, 230);
+    }
+
+    .bgSuperHellgrau{
+        background-color: rgb(240, 240, 240);
+    }
+    .bgDebianRed{
+        background-color: #D71946;
+    }
+
+    .button-box {                                            
+            display: grid;
+            grid-template-columns: 60px 60px;
+            grid-template-rows: 60px ;
+            gap: 15px 15px;
+            width: 9rem; 
+            justify-content: center;
+            justify-items: center;
+            position:relative;
+            margin: 5px;
+        }
+
+        .button-box :first-child {
+            align-self: stretch;
+
+        }                            
+
+  /* Add your custom styles here */
+  .transitioning {
+    transition: width 2.5s ease-in-out;
+  }
+</style>
+
+<script>
+    function toggleColumns() {
+      $('#column1').toggleClass('col-md-3 col-md-12 transitioning');
+      $('#column2').toggleClass('col-md-9 col-md-12 transitioning');
+        // Create and dispatch a resize event
+        var resizeEvent = new Event('resize');
+        window.dispatchEvent(resizeEvent);
+    }
+  </script>
+<div class="container-fluid">
+    <div class="col-md-12 border-right">
+      <div class="row">
+        <div class="col-md-3 transitioning" id="column1">
+          <div class="card my-3">
+            <div class="card-body ">
+              <h3>3D Interactive Selection:</h3>
+              <div class="stlviewer"
+                id='stlviewer_EDAG_LightCocoon'
+                style="display: block;
+                        cursor: grab;
+                        position: relative;
+                        width: 100%;
+                        height: 0;
+                        padding-bottom: 100%;
+                        border-radius: 5%; 
+                        border-width: 0.1rem"
+                data-src='{{ stl_file_list | safe }}'>
+              </div>
+                <div class="row p-1" style="height: auto;">
+                  <div class="col p-3">
+                    <button type="button" class="btn btn-outline-secondary btn-sm btn-block js-object-update" onclick="toggleColumns()">Full Screen</button>
+                  </div>
+                  <div class="col p-3">
+                    <button type="button" class="btn btn-outline-secondary btn-sm btn-block js-object-update"  onclick="stlviewer_EDAG_LightCocoon.removeObjects()">Remove all objects</button>
+                  </div>
+                </div>
+            </div>
+          </div>
+          <div class="card my-3">
+            <div class="card-body ">
+              <h3>Filter:</h3>
+                {% include '../filter_shared_component.html' %}
+
+              <!-- <div class="row py-2">
+                <span>
+                  Name
+                  <input id="search_text_component"
+                         type="text"
+                         name="search_box"
+                         placeholder="Search...">
+                  <button type="button"
+                          class="btn-secondary mr-auto"
+                          id="search_component_submit"
+                          target_url="{% url 'NormMan:load_content' %}">Search</button>
+                </span>
+              </div> -->
+            </div>
+          </div>
+        </div>
+        <div class="col-md-9 transitioning" id="column2">
+          <div class="container-fluid m-0 p-0" id="category-container">
+            {% include './list_shared_components/cards_category_group_children.html' %}
+          </div>
+          <div class="card my-3">
+            <div class="card-body ">
+              <h3>Shared Components:</h3>
+              <div class="row">
+                <div id="accordion" class="container-fluid">
+                  {% include './submenus/accordion_norm_parts.html' %}
+                  {% include './submenus/accordion_vehicle_components.html' %}
+                  {% include './submenus/accordion_vehicle_section.html' %}
+
+                  {% if False %}
+                    {% include './submenus/accordion_workflows.html' %}
+                    {% include './submenus/accordion_knowledge_manager.html' %}
+                    {% include './submenus/accordion_pdtec_references.html' %} 
+                  {% endif %}
+
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    {% include 'NormMan/toaster.html' %}
+  </div>
+  
+  <script type=text/javascript> 
+    $(function() {
+      $('#search_component_submit').click(function() {
+        var search_text = $("#search_text_component").val();
+        var current_category =  $("#current_category").attr('value');
+        $.ajax({                       // initialize an AJAX request
+          type:'GET',        
+          url: $(this).attr('target_url'),                  // set the url of the request (= localhost:8000/hr/ajax/load_idemat_processs/)
+          data: {
+          'trigger_id': "search_component_submit",      // trigger id help to identify which action was trigerred in modal window
+          'search_text': search_text,
+          'current_category': current_category 
+          },
+          success: function (data) {   // `data` is the return of the `load_parts` view function
+            $("#norm_parts").html(data.html_list_norm_parts);
+            $("#norm_parts_hits").html() ;
+            $("#norm_parts_hits").html('1: Norm Parts; hits: ' + data.norm_parts_hits) ;
+
+            $("#vehicle_components").html(data.html_list_vehicle_components);
+            $("#vehicle_components_hits").html() ;
+            $("#vehicle_components_hits").html('2: Vehicle Components; hits: ' +  data.vehicle_components_hits) ;
+
+            $("#sections").html(data.html_list_sections);
+            $("#sections_hits").html() ;
+            $("#sections_hits").html('3: Vehicle Sections; hits: ' + data.sections_hits) ;
+
+            $("#workflows").html(data.html_list_workflows);
+            $("#workflows_hits").html() ;
+            $("#workflows_hits").html('4: Workflows; hits: ' + data.workflows_hits) ;  
+
+            $("#tools").html(data.html_list_tools);
+            $("#tools_hits").html() ;
+            $("#tools_hits").html('5: Tools; hits: ' + data.tools_hits) ;
+          }
+        });
+      });
+    });
+  </script>
+
+  <script type="importmap">
+    {
+      "imports": {
+        "three": "{% static 'js/part_visualiser/three.js/build/three.module.min.js' %}",
+        "three/addons/": "{% static 'js/part_visualiser/three.js/examples/' %}"
+      }
+    }
+  </script>
+
+  <script type="module">
+    import {ExpirationChecker} from "{% static 'js/expiration_checker.js' %}";
+    const expirationTime = {{ expiration_timestamp }}; // Expire after 5 seconds
+    const djangoUrl = 'website:expired_login'; // Replace with your Django URL
+    const checker = new ExpirationChecker(expirationTime, djangoUrl); // Starts the expiration checker
+    import {StlViewer} from "{% static 'js/part_visualiser/StlViewer.js' %}";
+    import {CocoonAnimator} from "{% static 'js/part_visualiser/ModelViewerInternals/ModelViewerAnimators.js' %}"
+
+    window.stlviewer_EDAG_LightCocoon = new StlViewer('stlviewer_EDAG_LightCocoon', new CocoonAnimator(), "{% static 'js/part_visualiser/' %}", onStlViewerSelection);
+  
+    function onStlViewerSelection(objectName) {
+      //ajax
+      var url = "{% url 'NormMan:load_content' %}"; // get the url of the `load_idemat_processs` view
+
+      $.ajax({
+      // initialize an AJAX request
+      url: url, // set the url of the request (= localhost:8000/hr/ajax/load_idemat_processs/)
+      data: {
+          trigger_id: "search_submit", // trigger id help to identify which action was trigerred in modal window
+          object_name: objectName,
+        },
+        success: function (data) {
+          $("#norm_parts").html(data.html_list_norm_parts);
+          $("#norm_parts_hits").html() ;
+          $("#norm_parts_hits").html(`Norm Parts (${data.norm_parts_hits})`) ;
+
+          $("#vehicle_components").html(data.html_list_vehicle_components);
+          $("#vehicle_components_hits").html() ;
+          $("#vehicle_components_hits").html(`Vehicle Components (${data.vehicle_components_hits})`) ;
+      
+          $("#sections").html(data.html_list_sections);
+          $("#sections_hits").html() ;
+          $("#sections_hits").html(`Vehicle Sections (${data.sections_hits})`) ;
+      
+          $("#category-container").html(data.html_category_groups);
+
+          if($("#jstree_vehicle_components").jstree(true)){
+            //update tree view
+            $("#jstree_vehicle_components").jstree(true).data = data.json_tree;
+            $("#jstree_vehicle_components").jstree(true).redraw();
+          }
+        },
+      });
+    }
+  </script>
+  <script type=text/javascript>
+    function set_preview_3D_visualisation(id) {
+      document.getElementById('set_preview_picture_screenshot_' + id).classList.remove('active');                                                
+      document.getElementById('set_preview_3D_visualisation_' + id).classList.add('active');  ;
+      document.getElementById('thumbnail_' + id).style.display = "none";
+      document.getElementById('stlviewer_' + id).style.display = "block";                                       
+      // animate(document.getElementById('stlviewer_' + id));
+    };
+
+    function set_preview_picture_screenshot(id) {
+      document.getElementById('set_preview_3D_visualisation_' + id).classList.remove('active');                                                
+      document.getElementById('set_preview_picture_screenshot_' + id).classList.add('active');  ;              
+      document.getElementById('stlviewer_' + id).style.display = "none";                                                  
+      document.getElementById('thumbnail_' + id).style.display = "block";
+    };
+
+    function set_preview_technical_drawing(id) {
+      //document.getElementById('stlviewer_' + id).style.display = "none";                                                  
+      //document.getElementById('thumbnail_' + id).style.display = "block";
+    };                                            
+  </script>
+
+{% endblock Cards %}

@@ -1,0 +1,319 @@
+{% load static %}
+{% load icon_status_filter %}
+{% load action_extractor %}
+    <div class="container-fluid m-0 p-0">
+        <div class="row">                             
+
+
+            <div class="col-md-10 ">
+                <div class="row flex-row flex-nowrap sortable-object-actions overflow-auto border-right" id="{{object.UUID}}">          
+                    {% for obj_action in object.actions %}        
+                    <div class="container mt-4" style="display: flex; flex-direction: column; justify-content: top; align-items: center; " data-toggle="tooltip" data-placement="top" title="{{ obj_action.framework_request}}">                                                                                                                   
+                        <div class="card m-1 p-1 object_action_card  p-1 mx-0 my-0             
+                                {% if object.status   == 'COMPLETED' %}completed 
+                                {% elif obj_action.status == 'CANCELLED' %}cancelled 
+                                {% elif obj_action.status == 'INPROGRESS' %}in-progress 
+                                {% elif obj_action.status == 'PENDING' %}pending 
+                                {% elif obj_action.status == 'UNKNOWN' %}unknown 
+                                {% elif obj_action.status == 'WAITING' %}waiting 
+                                {% elif obj_action.status == 'FAILED' %}failed 
+                                {% elif obj_action.status == 'CAUTION' %}caution
+                                {% else %}unknown  {% endif %}"
+                            {% if not obj_action.auverride_parameters %} onclick="execute_object_action(this)" {% else %} onclick="execute_object_action_with_override(this)" {% endif %} 
+                            style="height: 7rem; width: 7rem; cursor: pointer; border-radius: 30%; border-width: 0.3rem; " 
+                            id="object_action_card" 
+                            UUID_action="{{obj_action.UUID}}" 
+                            UUID_request="{{obj_action.framework_request}}" 
+                            UUID_object="{{object.UUID}}" 
+                            UUID_workflow="{{workflow.UUID}}" 
+                            UUID_stage="{{stage.UUID}}" 
+                            UUID_target_object="{{obj_action.target_object}}" >
+                            <div class="card-body p-0 m-0 text-center "  style="font-size: 10px; flex-grow: 1; justify-content:flex-start;" >  
+                                <strong id="statusText" text-center>{{ object.status }}</strong>
+                                <div class="d-flex p-1 align-items-center">                          
+                                    <img class="card-img-top" src="{% if obj_action.thumbnail %}{{ obj_action.thumbnail }}{% else %}{% static 'CatiaFramework/images/Action.png' %}{% endif %}"  style="  object-fit: contain; max-height: 4rem;"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class=" title text-center p-2" style="font-size: 12px; word-break: normal; width: 7rem;">
+                            {{ obj_action.name}}     
+                            {% if editor_mode  %}  
+                            <button type="button" class="btn btn-warning btn-block btn-sm my-1 js-object-update " id="#modal-window" data-url="{% url 'CatiaFramework:workflow_object_action_update_modal' obj_action.UUID %}">Edit</button> 
+                            <button type="button" class="btn btn-warning btn-block btn-sm my-1 js-object-update " id="#modal-window"  data-url="{% url 'CatiaFramework:workflow_instruction_update_modal' obj_action.instruction %}"> Edit Instructions </button> 
+                            <button type="button" class="btn btn-danger btn-block btn-sm my-1 js-object-delete " id="#modal-window" data-url="{% url 'CatiaFramework:workflow_object_action_delete_modal' obj_action.UUID %}">Delete</button>                                                                                                     
+                            {% endif %}      
+                        </div>
+                    </div>
+                    {% endfor %}   
+                </div>   
+            </div>
+            <div class="col-md-2">
+                {% if not editor_mode  %}
+                    {% with '2e27faed-759c-4731-a646-8dd72b8a250e'|get_action as obj_action %}
+                    <div class="container mt-4" style="display: flex; flex-direction: column; justify-content: center; align-items: center; " data-toggle="tooltip" data-placement="top" title="{{ obj_action.framework_request}}">                                                                                                                   
+                        <div class="card m-1 p-1 object_action_card  p-1 mx-0 my-0             
+                                {% if object.status   == 'COMPLETED' %}completed 
+                                {% elif obj_action.status == 'CANCELLED' %}cancelled 
+                                {% elif obj_action.status == 'INPROGRESS' %}in-progress 
+                                {% elif obj_action.status == 'PENDING' %}pending 
+                                {% elif obj_action.status == 'UNKNOWN' %}unknown 
+                                {% elif obj_action.status == 'WAITING' %}waiting 
+                                {% elif obj_action.status == 'FAILED' %}failed 
+                                {% elif obj_action.status == 'CAUTION' %}caution
+                                {% else %}unknown  {% endif %}"
+                        
+                            onclick="static_add_representation(this)" 
+                            style="height: 7rem; width: 7rem; cursor: pointer; border-radius: 30%; border-width: 0.3rem;" 
+                            id="object_action_card" 
+                            UUID_action="{{obj_action.UUID}}" 
+                            UUID_request="{{obj_action.framework_request}}" 
+                            UUID_object="{{object.UUID}}" 
+                            UUID_stage="{{stage.UUID}}" >
+                            <div class="card-body p-0 m-0 text-center"  style="font-size: 10px;" >  
+                                <strong id="statusText" text-center>{{ object.status }}</strong>
+                                <div class="d-flex p-1 align-items-center">                          
+                                    <img class="card-img-top" src="{% if obj_action.thumbnail %}{{ obj_action.thumbnail.url }}{% else %}{% static 'CatiaFramework/images/Action.png' %}{% endif %}"  style="  object-fit: contain; max-height: 4rem;"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="title text-center p-2" style="font-size: 12px; word-break: normal; width: 7rem;">
+                            {{ obj_action.name}}     
+                            {% if editor_mode  %}  
+                            <button type="button" class="btn btn-warning btn-block btn-sm my-1 js-object-update " id="#modal-window" data-url="{% url 'CatiaFramework:workflow_object_action_update_modal' obj_action.UUID %}">Edit</button> 
+                            <button type="button" class="btn btn-warning btn-block btn-sm my-1 js-object-update " id="#modal-window"  data-url="{% url 'CatiaFramework:workflow_instruction_update_modal' obj_action.instruction %}"> Edit Instructions </button> 
+                            <button type="button" class="btn btn-danger btn-block btn-sm my-1 js-object-delete " id="#modal-window" data-url="{% url 'CatiaFramework:workflow_object_action_delete_modal' obj_action.UUID %}">Delete</button>                                                                                                     
+                            {% endif %}      
+                        </div>
+                    </div>
+                    {% endwith %}
+                {% endif %}
+            </div>
+
+
+
+
+
+
+        </div>
+    </div> 
+
+    <script>
+
+
+
+
+
+
+    //this script reloads the instruction content on mousenter and mouseleave event
+
+    $('.object_action_card').hover(   
+    function(data){
+        // Get the button and card elements    
+            var o_data ={}
+            if (data.type == "mouseenter"){
+                o_data['id'] = $(this).attr('id');
+                o_data['UUID_object'] = $(this).attr('UUID_object'); 
+                o_data['UUID_action'] = $(this).attr('UUID_action'); 
+                o_data['editor_mode']= "{{editor_mode}}";    
+                if ({{ editor_mode|yesno:"true,false" }}){ 
+                    $(this).css("cursor", "w-resize");   }
+                else{
+                    $(this).css("cursor", "pointer");   }                        
+                
+
+            }
+            else{               
+                let clickableDivs = document.getElementsByClassName("clickable-stage");
+                // Iterate through each div and remove the "selected" class
+                for (let i = 0; i < clickableDivs.length; i++) {
+                    if (clickableDivs[i].classList.contains("selected")){                                      
+                        o_data['id'] = "stage";
+                        o_data['UUID_stage'] = (clickableDivs[i].getAttribute('UUID_stage')); 
+                        o_data['editor_mode']= "{{editor_mode}}" 
+                        $(this).css("cursor", "initial");  
+                    }
+                }
+            }
+
+            o_data['trigger_id'] = "workflow_instruction_hover"
+
+            const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+            var url = "{% url 'CatiaFramework:instruction_load_hover' %}";
+            $.ajax({                       // initialize an AJAX request
+              type:'POST',
+              headers: { 'X-CSRFToken': csrftoken },
+              url: url, //$(this).data('url'), 
+              dataType: 'json',                  
+              data: o_data,
+                success: function (data) {   // `data` is the return of the `load_parts` view function
+                  $("#stage").html() ;
+                  $("#stage").html(data.html_workflow_stage) ;                  
+                  $("#objects").html() ;
+                  $("#objects").html(data.html_workflow_object) ;    
+                  $("#instruction").html() ;
+                  $("#instruction").html(data.html_workflow_instruction) ;               
+                } 
+            });
+            }
+        
+        );
+        </script>
+
+<script>
+    //reposition elements
+    var elements = document.getElementsByClassName('sortable-object-actions');
+
+    for (var i = 0; i < elements.length; i++) {
+        var currentElement = elements[i];
+
+        var sortableObjectActions = new Sortable(currentElement, {
+            disabled: {{ editor_mode|yesno:"false,true" }}, 
+            animation: 300,
+            onStart: function (evt) {
+                // Add any custom code to execute when dragging starts
+                var cardElement = document.getElementById('object_action_card');
+                cardElement.classList.add('animationoff');
+            },
+            onUpdate: function (evt) {
+                updateOrder_object_actions(evt);
+            },
+            onEnd: function (evt) {
+                // Add any custom code to execute when dragging ends
+            }
+        });
+    }
+
+
+    function updateOrder_object_actions(evt) {
+        // Get the new order of items
+        var newOrder = Array.from(evt.from.children).map(item => item.getAttribute('UUID_action'));
+        const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+        // Send the new order to the server using AJAX
+        $.ajax({
+            url: "{% url 'CatiaFramework:object_actions_reorder' %}",
+            method: "POST",
+            headers: { 'X-CSRFToken': csrftoken },
+            data: { order: newOrder },
+            success: function(response) {
+                console.log("Order successfully updated on the server");
+            },
+            error: function(error) {
+                console.error("Error updating order on the server", error);
+            }
+        });
+    }
+  
+    function execute_object_action(div) { 
+        var editor_mode = {{ editor_mode|default:"false" }};
+        if (editor_mode === false) {
+            var o_data ={}
+            o_data['UUID_workflow'] = '{{workflow.UUID}}'
+            o_data['UUID_action'] = div.getAttribute('UUID_action')
+            o_data['UUID_request'] = div.getAttribute('UUID_request')            
+            o_data['UUID_object'] = div.getAttribute('UUID_object')  
+            o_data['editor_mode']="{{editor_mode}}";
+            o_data['UUID_session']="{{session.UUID}}";
+            const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+            var url = "{% url 'CatiaFramework:execute_object_action' %}";
+            $.ajax({                       // initialize an AJAX request
+                type:'POST',
+                headers: { 'X-CSRFToken': csrftoken },
+                url: url, //$(this).data('url'), 
+                dataType: 'json',                  
+                data: o_data,
+                success: function (data) {   // `data` is the return of the `load_parts` view function
+                    //TOAST!!
+                
+                } 
+            });
+    }
+    };
+
+
+    function execute_object_action_with_override(div) { 
+        var editor_mode = {{ editor_mode|default:"false" }};
+        if (editor_mode === false) {
+            var o_data ={}
+
+
+            o_data['UUID_workflow'] = '{{workflow.UUID}}'
+            o_data['UUID_action'] = div.getAttribute('UUID_action')
+            o_data['UUID_request'] = div.getAttribute('UUID_request')            
+            o_data['UUID_stage'] = div.getAttribute('UUID_stage')
+            o_data['UUID_object'] = div.getAttribute('UUID_object')     
+            o_data['UUID_session']="{{session.UUID}}";  
+            o_data['UUID_target_object']=div.getAttribute('UUID_target_object')  ;  
+            o_data['editor_mode']="{{editor_mode}}";
+
+            const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+            var url = "{% url 'CatiaFramework:workflow_object_action_execute_modal'%}";
+            $.ajax({                       // initialize an AJAX request
+                type:'GET',
+                headers: { 'X-CSRFToken': csrftoken },
+                url: url, //$(this).data('url'), 
+                dataType: 'json',                  
+                data: o_data,
+
+                beforeSend: function () {
+                    $("#modal-window-override-parameters .modal-content").html("");   //modal content
+                    $("#modal-window-override-parameters").modal("show");
+                },
+
+                success: function (data) {   // `data` is the return of the `load_parts` view function
+                    $("#modal-window-override-parameters .modal-content").html(data.html_form);
+                
+                }, 
+                complete: function() {
+                    //$("#modal-window").modal("hide");
+            }
+            });
+    }
+    };    
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    function static_add_representation(div) { 
+        var editor_mode = {{ editor_mode|default:"false" }};
+        if (editor_mode === false) {
+            var o_data ={}
+            o_data['UUID_workflow'] = '{{workflow.UUID}}'
+            o_data['UUID_action'] = div.getAttribute('UUID_action')
+            o_data['UUID_request'] = div.getAttribute('UUID_request')            
+            o_data['UUID_object'] = div.getAttribute('UUID_object')  
+            o_data['editor_mode']="{{editor_mode}}";
+            o_data['UUID_session']="{{session.UUID}}";
+            const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+            var url = "{% url 'CatiaFramework:static_shared_component_select' %}";
+            $.ajax({                       // initialize an AJAX request
+                type:'POST',
+                headers: { 'X-CSRFToken': csrftoken },
+                url: url, //$(this).data('url'), 
+                dataType: 'json',                  
+                data: o_data,
+                beforeSend: function() {$('#spinner').show()},
+                success: function (data) {                                        
+                    $('#modal-window-xl').html(data.html_form);
+                    $('#modal-window-xl').modal('show');
+                    $('#spinner').hide();
+                } 
+            });
+    }
+    };
+</script>   
+

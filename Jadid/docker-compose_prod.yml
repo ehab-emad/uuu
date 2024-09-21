@@ -1,0 +1,27 @@
+version: "3.8"
+name: "be_paramount_prod"
+services:
+  django_app_prod:
+    image: fdslphost006.service-hosting.org:9001/be_paramount:build_number_${BUILD_NUMBER}
+    command: bash -c "python manage.py collectstatic --noinput && python manage.py runserver 0.0.0.0:8000"
+    env_file:
+      - .env
+    environment:  
+      - BUILD_NUMBER=${BUILD_NUMBER}
+    volumes:
+      - /data/media-prod:/app/media
+      - ./static:/app/static
+    ports:
+      - ${DJANGO_EXTERNAL_PORT}:8000
+    links:
+      - redis_prod
+    networks:
+      - redisnet_prod
+  redis_prod:
+    image: redis:latest
+    ports:
+      - 6379
+    networks:
+      - redisnet_prod
+networks:
+  redisnet_prod:  

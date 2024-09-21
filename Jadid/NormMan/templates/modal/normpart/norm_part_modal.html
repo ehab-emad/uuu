@@ -1,0 +1,47 @@
+{% load static %}
+{% load widget_tweaks %}
+
+<form method="post" id="modal-form"
+      class="js-object-update-form" 
+      object_id = "{{form.object_id_property}}"
+      object_uid = "{{form.object_uid_property}}"
+      worklfow_uuid = "{{ form.worklfow_uuid_property}}"
+      session_uuid = "{{ form.session_uuid_property}}"
+      command = "no_command"
+      action="{% url 'NormMan:norm_part_select_modal' form.object_id_property form.object_uid_property form.worklfow_uuid_property%} " 
+      propagate-url="{% url 'NormMan:propagate' form.object_id_property form.object_uid_property form.worklfow_uuid_property %}"
+      data-configurations-url="{% url 'NormMan:load_configurations' %}"
+      novalidate >
+  {% csrf_token %}
+    <div class="modal-dialog modal-xl" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLongTitle"><b>Select Configuration for an output file</b></h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button> 
+        
+          <div class="container-fluid">
+            <div id="category-container-modal">
+              {% include 'modal/normpart/cards_category_group_children.html' %}
+            </div>
+          </div> 
+
+        </div>
+        <div class="modal-body">                              
+		      <div class="col-md-12">          
+            <div class="row">
+              {% if error_message %}
+              <p><strong>{{ error_message }}</strong></p>
+              {% endif %}
+              <div class="container-fluid"></div>
+                <div id="normparts-container-modal">
+                  {% include 'modal/normpart/norm_part_table_modal.html' %}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+</form>

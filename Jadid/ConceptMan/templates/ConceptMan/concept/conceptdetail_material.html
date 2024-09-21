@@ -1,0 +1,104 @@
+{% extends 'ConceptMan/concept/conceptdetail.html' %}
+{% block details %}
+    <div class="container-fluid materials-container">    
+        <div class="row">
+			<div class="col-md-12">
+                <div class="row-no-gutters">
+                    {% if error_message %}
+                        <p><strong>{{ error_message }}</strong></p>
+                    {% endif %}
+                    <div class="table-responsive w-100 d-block d-md-table">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>ID:</th>
+                                    <th>Name:</th>
+                                    <th>Owner:</th>    
+                                    <th>Creation date:</th>    
+                                    <th>Last changed:</th>                                                                                    
+                                </tr>
+                            </thead>                                                                      
+                            <tbody>
+                                {% if objects %} 
+                                    {% for object in objects %}
+                                        <tr>
+                                            <td>{{ object.id }}</td>
+                                            <td>{{ object.name }}</td>
+                                            <td>{{ object.owner }}</td>    
+                                            <td>{{ object.created_at }}</td>
+                                            <td>{{ object.updated_at }}</td>                                                
+                                        <td>
+                                            <div class="btn-group d-flex" role="group" aria-label="...">
+                                                    <button type="button" class="btn btn-primary btn-sm js-boltgeometry-update " data-url="#">Usage</button>                              
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <a href=# class="btn btn-warning btn-sm " role="button" aria-pressed="true">Edit</a>
+                                        </td>   
+                                    {% endfor %}                           
+                                {% else %}
+                                        <td>test if empty</td>  
+                                        <td></td>  
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>      
+                                        <td></td>
+                                        <td></td>                            
+                                        <td></td>
+                                        <td></td>   
+                                        <td></td>                             
+                                        <td></td>                           
+                                        <td>
+                                        <div class="btn-group d-flex" role="group" aria-label="...">
+                                                <button type="button" class="btn btn-primary btn-sm" data-url="#" disabled>Usage</button>                              
+                                        </div>
+                                        </td>
+                                        <td>
+                                        <div class="btn-group d-flex" role="group" aria-label="...">                            
+                                                <button type="button" class="btn btn-warning btn-sm" data-url="#" disabled>Edit</button>
+                                        </div>
+                                        </td>                       
+                                    {% endif %}
+                            </tbody>
+                        </table>
+                    </div>      
+                </div>
+            </div>    
+            <div>
+                  <canvas id="doughnut-chart"></canvas>
+            </div>
+        </div>    
+    </div>
+   
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
+
+  <script type="text/javascript">
+
+    var config = {
+      type: 'doughnut',
+      data: {
+        datasets: [{
+          data: {{ data|safe }},
+          backgroundColor: ["#3e95cd", "#8e5ea2","#3cba9f","#e8c3b9","#c45850"],
+          label: 'Weight distribution'
+        }],
+        labels: {{ labels|safe }}
+      },
+      options: {
+        title: {
+            display: true,
+            text: 'Weight distribution [g]'
+        }
+      }
+    };
+
+    window.onload = function() {
+      var ctx = document.getElementById('doughnut-chart').getContext('2d');
+      window.myPie = new Chart(ctx, config);
+    };
+
+  </script> 
+
+{% endblock %}   

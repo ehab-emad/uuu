@@ -1,0 +1,42 @@
+<div class="card playground" id="cardSeven">
+    <div class="panel panel-default">
+      <div class="panel-body">
+        <div class="card-header" id="headingSeven" style="padding: 0; margin: 0">
+          <h5 class="mb-0">
+            <button id="btnOne"
+                    style="color: black;
+                           padding: 0"
+                    class="btn btn-link btn-block"
+                    data-toggle="collapse"
+                    data-target="#collapseSeven"
+                    aria-expanded="true"
+                    aria-controls="collapseSeven">
+              <div class="col-md-12">
+                <div class="row">
+                  <div class="col-md-12   bgEDAGGrau">
+                    <div class="d-flex text-left">
+                      <div>
+                        <h5>6: PDTec References; hits: {{ vehicle_sections| length }}</h5>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </button>
+          </h5>
+        </div>
+        <div id="collapseSeven"
+             class="collapse"
+             aria-labelledby="headingSeven"
+             data-parent="#accordion">
+          <div class="card-body  ">
+            <div class="panel panel-default">
+              <div class="panel-body ">
+                {% comment %} {% include '../list_shared_components/list_part_tools.html' %} {% endcomment %}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>

@@ -1,0 +1,48 @@
+<style>
+    /* Custom styles for the overlay message */
+    .toast-container {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        z-index: 1055;
+    }
+</style>
+
+<div class="toast-container">
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert {% if message.tags %}{{ message.tags }}{% endif %} alert-dismissible fade show my-0" role="alert">
+                <span class="mr-1">
+                    {% if "alert-success" in message.tags %}
+                        <i class="fas fa-check-circle text-success"></i>
+
+                    {% elif "alert-info" in message.tags %}
+                        <i class="fas fa-info-circle text-info"></i>
+
+                    {% elif "alert-warning" in message.tags %}
+                        <i class="fas fa-exclamation-triangle text-warning"></i>
+                        
+                    {% elif "alert-danger" in message.tags %}
+                        <i class="fas fa-exclamation-circle text-danger"></i>
+                    {% endif %}
+                </span>
+                <span>
+                    {% if 'safe' in message.tags %}
+                        {{ message|safe }}
+                        {% comment %}
+                            Mit dem "safe" Filter kann man den Message-String als HTML-Code interpretieren lassen und somit auch HTML-Links u.ä. in die Message einbauen.
+                            Wenn du das hier benutzen willst, füge der neuen Message (im Python Code) den Parameter "extra_tags='safe'" hinzu.
+                            Beispiel:
+                                messages.add_message(request, messages.INFO, 'Here is a <a href="/">link</a>', extra_tags='safe')
+                        {% endcomment %}
+                    {% else %}
+                        {{ message }}
+                    {% endif %}
+                </span>
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        {% endfor %}
+    {% endif %}        
+</div>

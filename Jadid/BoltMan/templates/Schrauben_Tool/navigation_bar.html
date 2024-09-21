@@ -1,0 +1,61 @@
+ {% extends "website/base.html" %}
+           
+
+ {% block NavItems %}
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+
+            <li class="nav-item dropdown active">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    New Vehicle Item
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+
+                    <a class="dropdown-item js-vehicle-create" href="#" data-url="{% url 'BoltMan:vehicle_create' %}">Vehicle </a>
+                    <a class="dropdown-item js-part-create" href="#" data-url="{% url 'BoltMan:part_create' %}">Part </a>
+                    <a class="dropdown-item js-boltcase-create" href="#" data-url="{% url 'BoltMan:boltcase_create' %}">Bolt Case Instance</a>
+
+                </div>
+            </li>
+            <li class="nav-item dropdown active">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    New Bolt Case Item
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+
+
+                    <a class="dropdown-item js-boltcase-create" href="#" data-url="{% url 'BoltMan:boltcase_create' %}">Bolt Case </a>
+
+                </div>
+            </li>
+            <li class="nav-item dropdown active">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    New Parameter Item
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+
+                    <a class="dropdown-item js-boltgeometry-create" href="#" data-url="{% url 'BoltMan:boltgeometry_create' %}">Bolt Geometry</a>
+                    <a class="dropdown-item js-boltmaterial-create" href="#" data-url="{% url 'BoltMan:boltmaterial_create' %}">Bolt Material </a>
+                    <a class="dropdown-item js-frictionthread-create" href="#" data-url="{% url 'BoltMan:frictionthread_create' %}">Friction on thread </a>
+                    <a class="dropdown-item js-frictionhead-create" href="#" data-url="{% url 'BoltMan:frictionhead_create' %}">Friction on bolt head </a>
+                    <a class="dropdown-item js-frictionjoint-create" href="#" data-url="{% url 'BoltMan:frictionjoint_create' %}">Friction on joint </a>
+                </div>
+            </li>
+            <li class="nav-item dropdown active">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Parameters
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+
+                    <a class="dropdown-item frictionthread_list" href="{% url 'BoltMan:frictionthread_list' %}"> Friction on thread</a>
+                    <a class="dropdown-item frictionhead_list" href="{% url 'BoltMan:frictionhead_list' %}">Friction on bolt head </a>
+                    <a class="dropdown-item js-frictionthread-create" href="{% url 'BoltMan:frictionhead_list' %}">Friction on joint </a>
+                    <a class="dropdown-item partmaterial_list" href="{% url 'BoltMan:partmaterial_list' %}">Part Material </a>
+                    <a class="dropdown-item boltmaterial_list" href="{% url 'BoltMan:boltmaterial_list' %}">Bolt Material </a>
+                </div>
+            </li>
+        </ul>
+    </div>
+
+{% endblock NavItems %}

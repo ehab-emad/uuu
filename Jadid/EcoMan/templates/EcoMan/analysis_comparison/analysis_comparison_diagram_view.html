@@ -1,0 +1,218 @@
+{% extends 'EcoMan/base.html' %}
+{% load static %}
+
+
+{% block Apps %}
+  <script src="{% static 'EcoMan/js/cytoscape.min.js' %}"></script>
+  <script src="{% static 'EcoMan/js/cytoscape-cxtmenu.js' %}"></script>
+  <script src="{% static 'EcoMan/js/dagre.js' %}"></script>
+  <script src="{% static 'EcoMan/js/cytoscape-dagre.js' %}"></script>
+
+  <style>
+    #cy {
+      width: 100%;
+      height: 800px;
+      left: 0px;
+      top: 0px;
+    }
+
+    /* you can set the disabled style how you like on the text/icon */
+    .cxtmenu-disabled {
+      opacity: 0.333;
+    }
+
+    body {
+				font-family: helvetica;
+				font-size: 14px;
+				overflow: hidden;
+			}
+  </style>
+
+  <script>
+    var loadForm = function () {
+        var btn = $(this);
+        //generate modal-div name
+        var modal_div_name = this.id;
+
+        $.ajax({
+            url: btn.attr("data-url"),
+            type: 'get',
+            dataType: 'json',
+            beforeSend: function (clicked_button) {
+
+                $(modal_div_name + " .modal-content").html("");
+                $(modal_div_name).modal("show");
+            },
+            success: function (data) {
+                $(modal_div_name + " .modal-content").html(data.html_form);
+            }
+        });
+    };
+
+    function load_lca_process(parent_id, lca_subpart_dict, lca_subpart_name, nodes_preset, edges_preset){
+      if(lca_subpart_name == "lca_result") return;
+      let id_lca_subpart = lca_subpart_name+parent_id;
+      nodes_preset.push({data: {id: id_lca_subpart, name: lca_subpart_dict["name"], background_color: lca_subpart_dict["color"]}});
+      edges_preset.push({data: { source: parent_id, target: id_lca_subpart } });
+    }
+    function load_lca_subpart(parent_id, lca_subpart_dict, lca_subpart_name, nodes_preset, edges_preset){
+      if(lca_subpart_name == "lca_result") return;
+      let id_lca_subpart = lca_subpart_name+parent_id;
+      nodes_preset.push({data: {id: id_lca_subpart, name: lca_subpart_name}});
+      edges_preset.push({data: { source: parent_id, target: id_lca_subpart }});
+      for(lca_process in lca_subpart_dict)
+      {
+        load_lca_process(id_lca_subpart, lca_subpart_dict[lca_process], lca_process, nodes_preset, edges_preset);
+      }
+    }
+    function load_lca_part(parent, lca_part_dict, lca_part_name, nodes_preset, edges_preset){
+      if(lca_part_name == "lca_result") return;
+      let id_lca_part = lca_part_name+parent["id"];
+      nodes_preset.push({data: {id: id_lca_part, name: lca_part_name, lca_part_id: parent["lca_part_id"]}});
+      edges_preset.push({data: { source: parent["id"], target: id_lca_part } });
+      for(lca_subpart in lca_part_dict){
+        load_lca_subpart(id_lca_part, lca_part_dict[lca_subpart], lca_subpart, nodes_preset, edges_preset)
+      }
+    }
+    function load_parts(parent_id, part_dict, nodes_preset, edges_preset){
+      nodes_preset.push({data: {id: part_dict["id"], name: part_dict["name"]}});
+      edges_preset.push({data: { source: parent_id, target: part_dict["id"] } });
+      for(lca_part in part_dict["lca_part"]){
+        load_lca_part(part_dict, part_dict["lca_part"][lca_part], lca_part, nodes_preset, edges_preset)
+      }
+    }
+    function load_analysis(analysis_dict, nodes_preset, edges_preset){
+      nodes_preset.push({data: {id: analysis_dict["id"], name: analysis_dict["name"]}});
+      for(part in analysis_dict["parts"]){
+        load_parts(analysis_dict["id"], analysis_dict["parts"][part], nodes_preset, edges_preset);
+      }
+    }
+    function load_graph(){
+      var nodes_preset = [
+            // { data: { id: 'j', name: 'Jerry' } },
+            // { data: { id: 'e', name: 'Elaine' } },
+            // { data: { id: 'k', name: 'Kramer' } },
+            // { data: { id: 'g', name: 'George' } }
+          ];
+      var edges_preset = [
+            // { data: { source: 'j', target: 'e' } },
+            // { data: { source: 'j', target: 'k' } },
+            // { data: { source: 'k', target: 'g' } },
+          ];
+      const json_string = `{{json_dict}}`;
+      const json_repaired = json_string.replaceAll("&quot;", '"');
+      let json_dict = JSON.parse(json_repaired);
+      load_analysis(json_dict["analysis_left"], nodes_preset, edges_preset)
+      load_analysis(json_dict["analysis_right"], nodes_preset, edges_preset)
+      
+      return [nodes_preset, edges_preset]
+    }
+    window.addEventListener('DOMContentLoaded', function(){
+      let [nodes_preset, edges_preset] = load_graph();
+      var cy = window.cy = cytoscape({
+        container: document.getElementById('cy'),
+        layout: {name: 'dagre', nodeDimensionsIncludeLabels: true, spacingFactor: 0.8},
+        autoungrabify: false,
+
+        ready: function(){
+        },
+
+        style: [
+          {
+            selector: 'node',
+            css: {
+              'content': 'data(name)',
+              "background-color": "#354a5f",
+              width: "label",
+              height: "label",
+              padding: "6px",
+              color: "white",
+              shape: "round-rectangle",
+              "text-halign": "center",
+              "text-valign": "center"
+            }
+          },
+          {
+            selector: 'node[background_color]',
+            style: {
+                'background-color': 'data(background_color)',
+                'text-outline-color': 'data(background_color)',
+            }
+          },
+          {
+            selector: 'edge',
+            css: {
+              "curve-style": "taxi",
+              "taxi-direction": "downward",
+              "taxi-turn": 20,
+              "taxi-turn-min-distance": 5,
+              //'curve-style': 'bezier',
+              'target-arrow-shape': 'triangle',
+              width: 1.5,
+              color: "#354a5f"
+            }
+          }
+        ],
+
+        elements: {
+          nodes: nodes_preset,
+          edges: edges_preset
+        }
+      });
+
+      cy.cxtmenu({
+        selector: 'node',
+
+        commands: (e) => { 
+          var menu_elements = []
+          let add_process_nodes = ["Upstream", "Core", "Downstream", "Circularity"];
+          if(add_process_nodes.includes(e.data('name'))){
+            menu_elements.push({
+              content: 'Add process',
+              select: function(ele){
+                const btn = document.createElement("button");
+                btn.type = "button";
+                btn.className="js-object-update";
+                btn.id = "#modal-window-xl";
+                btn.title = "Add LCA Process";
+                btn.setAttribute("data-toggle", "tooltip");
+                const dataUrl = `/qlca/lca_part/${e.data("lca_part_id")}/addnewlcaprocess/lca_step/LCASTEP${add_process_nodes.indexOf(e.data("name")) + 1}/`;
+                btn.setAttribute("data-url", dataUrl);
+                btn.onclick = () => loadForm.call(btn);
+                btn.click();
+              }
+            });
+          }
+
+          if(e.data('name') == "Circularity"){
+            menu_elements.push({
+              content: 'Toggle Re-Used',
+              select: function(ele){
+                const btn = document.createElement("button");
+                btn.type = "button";
+                btn.onclick = () => {location.href='/qlca/lca_part/' + e.data("lca_part_id") + '/toggle_ispartreused/';};
+                btn.click();
+              }
+            });
+          }
+
+          menu_elements.push({
+            content: e.data('name'),
+            select: function(ele){
+              console.log( ele.position() );
+            }
+          })
+          return menu_elements;
+        ;}
+      });
+      window.addEventListener('resize', function() {
+        cy.resize();
+        cy.fit();
+      })
+    });
+  </script>
+  <div class="container-fluid" id="objects-container">
+  <div id="cy"></div>
+</div>
+
+{% endblock Apps %}

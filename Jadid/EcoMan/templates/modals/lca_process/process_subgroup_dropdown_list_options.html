@@ -1,0 +1,5 @@
+<option value="0">--------</option>
+{% for subgroup in subgroup_model %}
+<option value="{{ subgroup.pk }}">{{ subgroup.name }} </option>
+{% endfor %}
+

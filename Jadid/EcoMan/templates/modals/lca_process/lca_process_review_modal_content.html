@@ -1,0 +1,157 @@
+{% load widget_tweaks %}
+
+<div class="container-fluid" id="process_preview">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="row">
+                <div class="col-md-4">
+                    <label for="id_process_id">EDAG Process ID</label>
+                    {{ form.process_id|add_class:"form-control"}}
+                    <span class="text-danger">{{ form.process_id.errors|striptags }}</span>
+                </div>
+                <div class="col-md-8">
+                    <label for="id_name">Process Name</label>
+                    {{ form.name|add_class:"form-control"}}
+                    <span class="text-danger">{{ form.name.errors|striptags }}</span>
+                </div>
+
+
+            </div>
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group{% if field.errors %} has-error{% endif %}">
+
+
+
+                            <label for="id_process_owner_dummy">Owner</label>
+                            {{ form.process_owner_dummy|add_class:"form-control"}}
+                            <span class="text-danger">{{ form.process_owner_dummy.errors|striptags }}</span>
+
+                            <label for="id_database_name_dummy">EDAG Database ID and Name</label>
+                            {{ form.database_name_dummy|add_class:"form-control"}}
+                            <span class="text-danger">{{ form.database_name_dummy.errors|striptags }}</span>
+
+                            <label for="id_accessibility_dummy">Accessibility</label>
+                            {{ form.accessibility_dummy|add_class:"form-control"}}
+                            <span class="text-danger">{{ form.accessibility_dummy.errors|striptags }}</span>
+
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="form-group{% if field.errors %} has-error{% endif %}">
+                            <label for="id_unit">Unit</label>
+                            {{ form.unit|add_class:"form-control"}}
+                            <span class="text-danger">{{ form.unit.errors|striptags }}</span>
+
+                            {#source#}
+                            <label for="id_source">Source</label>
+                            {{ form.source|add_class:"form-control"}}
+                            <span class="text-danger">{{ form.source.errors|striptags }}</span>
+
+
+                        </div>
+
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="form-category_name_dummy{% if field.errors %} has-error{% endif %}">
+                            <label for="id_category_model">Category Name</label>
+                            {{ form.category_name_dummy|add_class:"form-control"}}
+                            <span class="text-danger">{{ form.category_name_dummy.errors|striptags }}</span>
+
+                            <label for="id_group_name_dummy">Group Name</label>
+                            {{ form.group_name_dummy|add_class:"form-control"}}
+                            <span class="text-danger">{{ form.group_name_dummy.errors|striptags }}</span>
+
+                            <label for="id_subgroup_name_dummy_model">Subgroup Name</label>
+                            {{ form.subgroup_name_dummy|add_class:"form-control"}}
+                            <span class="text-danger">{{ form.subgroup_name_dummy.errors|striptags }}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        <div class="col-md-12">
+            <div class="row">
+                <div class="col-md-4">
+                    <h3> Basis</h3>
+                    <div class="form-group{% if field.errors %} has-error{% endif %}">
+                        {#GWP (Global Warming Potential)#}
+                        <label for="id_carbon_footprint">GWP (Global Warming Potential) [kg] (Co2 equivalent)</label>
+                        {{ form.carbon_footprint|add_class:"form-control"}}
+                        <span class="text-danger">{{ form.carbon_footprint.errors|striptags }}</span>
+
+                        {#ced-total (embedded energy)#}
+                    <label for="id_ced_total">Ced-Total (embedded energy)  	[MJ]</label>
+                        {{ form.ced_total|add_class:"form-control"}}
+                        <span class="text-danger">{{ form.ced_total.errors|striptags }}</span>
+
+                        {#environmental_footprint#}
+                    <label for="id_environmental_footprint">Environmental Footprint ['pts'] (points) </label>
+                        {{ form.environmental_footprint|add_class:"form-control"}}
+                        <span class="text-danger">{{ form.environmental_footprint.errors|striptags }}</span>
+
+
+                    </div>
+                </div>
+
+
+                <div class="col-md-4">
+                    <h3> Costs</h3>
+                    <div class="form-group{% if field.errors %} has-error{% endif %}">
+                        {#Total eco-costs#}
+                        <label for="id_ec_total">Eco-Costs Total [EUR]</label>
+                        {{ form.ec_total|add_class:"form-control"}}
+                        <span class="text-danger">{{ form.ec_total.errors|striptags }}</span>
+
+                        {#eco-costs of human health#}
+                    <label for="id_ec_of_human_health">Eco-Costs of Human Health [EUR]</label>
+                        {{ form.ec_of_human_health|add_class:"form-control"}}
+                        <span class="text-danger">{{ form.ec_of_human_health.errors|striptags }}</span>
+
+                        {#eco-costs of exo-toxicity#}
+                    <label for="id_ec_exo_toxicity">Eco-Costs of Exo-Toxicity [EUR]</label>
+                        {{ form.ec_exo_toxicity|add_class:"form-control"}}
+                        <span class="text-danger">{{ form.ec_exo_toxicity.errors|striptags }}</span>
+
+                        {#eco-costs of resource scarity#}
+                    <label for="id_ec_resource">Eco-Costs of Resource Scarity [EUR]</label>
+                        {{ form.ec_resource|add_class:"form-control"}}
+                        <span class="text-danger">{{ form.ec_resource.errors|striptags }}</span>
+
+                        {#eco-costs of carbon footprint#}
+                    <label for="id_ec_carbon">Eco-Costs of Carbon Footprint [EUR]</label>
+                        {{ form.ec_carbon|add_class:"form-control"}}
+                        <span class="text-danger">{{ form.ec_carbon.errors|striptags }}</span>
+                    </div>
+
+
+                </div>
+                <div class="col-md-4">
+                    <h3> Recipe</h3>
+                    <div class="form-group{% if field.errors %} has-error{% endif %}">
+                        {#recipe2016_endpoint#}
+                        <label for="id_recipe2016_endpoint">Recipe2016 Endpoint [-]</label>
+                        {{ form.recipe2016_endpoint|add_class:"form-control"}}
+                        <span class="text-danger">{{ form.recipe2016_endpoint.errors|striptags }}</span>
+
+                        {#recipe_human_health#}
+                    <label for="id_recipe_human_health">Recipe Human Healt ['DALY'] (disability adjusted life years)</label>
+                        {{ form.recipe_human_health|add_class:"form-control"}}
+                        <span class="text-danger">{{ form.recipe_human_health.errors|striptags }}</span>
+
+                        {#recipe_eco_toxicity#}
+                    <label for="id_recipe_eco_toxicity">Recipe Eco Toxicity ['species/year'] (species/year)</label>
+                        {{ form.recipe_eco_toxicity|add_class:"form-control"}}
+                        <span class="text-danger">{{ form.recipe_eco_toxicity.errors|striptags }}</span>
+
+                        {#recipe_resources#}
+                    <label for="id_recipe_resources">Recipe Resources ['usd2013'] (US $ 2013)</label>
+                        {{ form.recipe_resources|add_class:"form-control"}}
+                        <span class="text-danger">{{ form.recipe_resources.errors|striptags }}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,126 @@
+<div class="container-fluid" id="boltgeometrys-container">
+    <div class="row-no-gutters">
+
+        <div class="col-md-12">
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>ID: </th> 
+                    <th>Name: </th> 
+                    <th>Norm: </th>                                                                                                                                               
+                    <th>Total Length(mm):</th>                                                                                    
+                    <th>Head Height(mm):</th>
+                    <th>Head Diameter(mm):</th>                    
+                    <th>Thread Size(mm):</th>
+                    <th>Thread Is Metric:</th>
+                    <th>Thread is Right Hand:</th>
+                    <th>Tensile Stress Area(mm^2):</th>      
+                    <th>Material:</th>  
+                    <th>Info:</th>                                                                                                        
+                    <th>Action </th>                                                                                      
+                </tr>
+                </thead>
+                <tbody>                                                                           
+                    <tr>
+                    
+                        {% if bolt_case.bolt_geometry %}
+                            <td>{{ bolt_case.bolt_geometry.id }}</td>
+                            <td>{{ bolt_case.bolt_geometry.name }}</td>
+                            <td>{{ bolt_case.bolt_geometry.norm }}</td> 
+                            <td>{{ bolt_case.bolt_geometry.total_length }}</td>  
+                            <td>{{ bolt_case.bolt_geometry.head_height }}</td>                                                       
+                            <td>{{ bolt_case.bolt_geometry.headdiameter }}</td>                                                                                    
+                            <td>{{ bolt_case.bolt_geometry.thread_size }}</td>    
+                            <td>{{ bolt_case.bolt_geometry.thread_metric}}</td>                                                                              
+                            <td>{{ bolt_case.bolt_geometry.thread_right_hand }}</td>  
+                            <td>{{ bolt_case.bolt_geometry.tsa }}</td>                               
+                            <td>
+                            <div class="btn-group d-flex" role="group" aria-label="...">
+                            <button type="button" class="btn btn-light btn-sm js-boltcase-update "  data-url="{% url 'BoltMan:boltcase_select_boltgeometry' bolt_case.id %}">{{ bolt_case.bolt_geometry.material.name }}</button>                            
+                            </div>
+                            </td>                                                                                               
+                            <td>
+                            <div class="btn-group d-flex" role="group" aria-label="...">
+                                    <button type="button" class="btn btn-primary btn-sm js-boltgeometry-update " data-url="{% url 'BoltMan:part_update' bolt_case.id %}">Usage</button>                              
+                            </div>
+                            </td>
+                            <td>
+                            <div class="btn-group d-flex" role="group" aria-label="...">                            
+                                    <button type="button" class="btn btn-warning btn-sm js-boltgeometry-update " data-url="{% url 'BoltMan:boltgeometry_update' bolt_case.bolt_geometry.id %}">Edit</button>
+                            </div>
+                            </td>                            
+                        {% else %}
+                            <td></td>  
+                            <td></td>  
+                            <td></td>
+                            <td></td>
+                            <td></td>      
+                            <td></td>
+                            <td></td>                            
+                            <td></td>
+                            <td></td>   
+                            <td></td>                             
+                            <td></td>                           
+                            <td>
+                            <div class="btn-group d-flex" role="group" aria-label="...">
+                                    <button type="button" class="btn btn-primary btn-sm" data-url="#" disabled>Usage</button>                              
+                            </div>
+                            </td>
+                            <td>
+                            <div class="btn-group d-flex" role="group" aria-label="...">                            
+                                    <button type="button" class="btn btn-warning btn-sm" data-url="#" disabled>Edit</button>
+                            </div>
+                            </td>                       
+
+                        {% endif %}
+                    </tr>
+                    <tr>
+                            <td></td>  
+                            <td></td>
+                            <td></td>
+                            <td></td>   
+                            <td></td>
+                            <td></td> 
+                            <td></td>   
+                            <td></td> 
+                            
+                            <td></td> 
+                            <td></td>
+                            <td></td>     
+                            <td></td>                                                                                                     
+                    <td>
+                     <div class="btn-group d-flex" role="group" aria-label="....">
+                    <button type="button" class="btn btn-danger btn-sm js-boltcase-update " data-url="{% url 'BoltMan:boltcase_select_boltgeometry' bolt_case.id %}"> Select </button>
+                    </div>
+                    <td>
+                    </tr>
+
+                </tbody>
+            </table>
+
+
+ 
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="row">
+                        <div class="col-md-2">
+                            <h3 class="align-middle">
+                                Description:
+                            </h3>
+                        </div>   
+                        <div class="col-md-8" >
+
+                            <p class="align-middle">
+                                Washer on the nut will be ignored when bolt case type: "Screw Joint"
+                            </p>  
+
+                        </div>   
+           
+                    </div>
+                </div>
+            </div>
+        </div> 
+    </div>                   
+</div>
+
+

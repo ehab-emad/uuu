@@ -1,0 +1,39 @@
+
+                    {% if user.is_authenticated %}
+                    <li class="nav-item dropdown active">
+                       
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            {% if request.session.user_givenName %}
+                                <span>
+                                    <i class="fas fa-question-circle"></i> 
+                                    Help
+                                </span>
+                            {% else %}
+                                    <i class="fas fa-question-circle"></i>
+                                    Help
+                            {% endif %}
+                        </a>
+                        
+                        <div class="dropdown-menu dropdown-menu-right animate slideIn" aria-labelledby="navbarDropdown">
+                            {% csrf_token %}                                 
+                            <a  class="dropdown-item" href="{% url 'EcoMan:qlca_documentation_download' %}" target="_blank">
+                                <i class="fas fa-book-dead"></i> Documentation
+                            </a>      
+                            
+                            
+                            <a href="mailto:qlca@edag.com?subject=Your%20Predefined%20Subject&body=This%20is%20the%20predefined%20email%20content.%0A%0AYou%20can%20add%20more%20text%20here.">Send Email</a>
+                            <a class="dropdown-item js-object-create" href=# id="#modal-window-xl"  data-url="{% url 'EcoMan:lca_support_ticket_create_modal' %}">
+                                <i class="fas fa-ticket"></i> Issue a ticket
+                            </a>                              
+                       
+                        </div>
+                    </li>
+                    {% else %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="/keycloak/login">Login</a>
+                    </li>
+                    {% endif %}
+
+
+
+

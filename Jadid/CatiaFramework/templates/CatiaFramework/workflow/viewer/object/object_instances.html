@@ -1,0 +1,48 @@
+{% load icon_status_filter %}
+{% load static %}
+<div class="list-group-item list-group-item-action m-1 p-1 clickable-instance" is_active = "{{instance.is_active}}"      UUID_stage="{{ stage.UUID }}" UUID_instance= "{{ instance.UUID }}" UUID_object= "{{ object.UUID }}" onclick="select_active_instance(this)">
+    <div class="row">  
+        <div class="col-md-2">
+            {% with catia_rep=instance.reference_instance.catia_representation%}
+                {% with wrl_rep=instance.reference_instance.wrl_representation%}
+                    {% if instance.type == "REFERENCE" %}
+                             
+                        <img src="{% if instance.reference_instance|status_icon %}{{ instance.reference_instance|status_icon }}{% else %}{% static '/CatiaFramework/Status_Icons/Status_Failed_icon.png' %}{% endif %}" style="max-width: 40px;">                                                     
+                        <img class ='instance_subaction' src="{% static '/CatiaFramework/images/CatiaFramework_Catia_File_Representation' %}{% if catia_rep %}.png{% else %}_None.png{% endif %}" style="max-width: 40px;" onclick="execute_object_action(this)"  UUID_action="{{obj_action.UUID}}" UUID_request="8dbd00fb-d7fb-4a93-a8ab-97f069e15588" UUID_object="{{object.UUID}}">
+                        <img class ='instance_subaction' src="{% static '/CatiaFramework/images/CatiaFramework_WRL_File_Representation' %}{% if wrl_rep %}.png{% else %}_None.png{% endif %}" style="max-width: 40px;"  onclick="execute_object_action(this)"  UUID_action="{{obj_action.UUID}}" UUID_request="9b240725-2d51-45e1-aca3-e20f55c6b938" UUID_object="{{object.UUID}}">
+                    {% else %}
+                        <img src="{{ instance|status_icon }}"  style="max-width: 40px;">
+                        <a href="{% url 'CatiaFramework:instance_download_file_internal' instance.UUID %}">
+                            <img class ='instance_subaction' src="{% static '/CatiaFramework/images/CatiaFramework_Catia_File_Representation' %}{% if instance.catia_representation %}.png{% else %}_None.png{% endif %}" style="max-width: 40px;">
+                            <img class ='instance_subaction' src="{% static '/CatiaFramework/images/CatiaFramework_WRL_File_Representation' %}{% if instance.wrl_representation %}.png{% else %}_None.png{% endif %}" style="max-width: 40px;">
+                        </a>
+                        <!-- <img class ='instance_subaction' src="{% static '/CatiaFramework/images/CatiaFramework_Catia_File_Representation' %}{% if instance.catia_representation %}.png{% else %}_None.png{% endif %}" style="max-width: 40px;"  onclick="execute_object_action(this)" UUID_action="{{obj_action.UUID}}" UUID_request="8dbd00fb-d7fb-4a93-a8ab-97f069e15588" UUID_object="{{object.UUID}}">
+                        <img class ='instance_subaction' src="{% static '/CatiaFramework/images/CatiaFramework_WRL_File_Representation' %}{% if instance.wrl_representation %}.png{% else %}_None.png{% endif %}" style="max-width: 40px;"  onclick="execute_object_action(this)"  UUID_action="{{obj_action.UUID}}" UUID_request="9b240725-2d51-45e1-aca3-e20f55c6b938" UUID_object="{{object.UUID}}"> -->
+                    {% endif %}
+                {% endwith %}
+            {% endwith %}
+
+        </div>
+        <div class="col-md-6">
+            Name: <b>{{ instance.name }}</b> 
+            {% if instance.type == "REFERENCE" %} 
+            (Instance is a reference)
+            {% endif %}   
+            <br>
+            Description: <b>{{ instance.description }}</b>
+        </div>
+        <div class="col-md-4">
+                <div class="container-fluid p-1 align-self-center" style="display: block; text-align: right">
+                    {% if instance.type == "REFERENCE" %} 
+                        <a href="{% url 'CatiaFramework:workflow_session_redirect_on_instance' instance.UUID %}" target="_blank" class="btn btn-secondary btn-sm ml-auto">Review Origin Session</a>                                                        
+                    {% endif %}  
+                    <!-- <button type="button" id="#modal-window-xl" class="btn btn-primary btn-sm ml-auto js-object-update" data-url="{% url 'CatiaFramework:shared_component_select' object.UUID instance.UUID %}"> Select</button> -->
+                    <button type="button" class="btn btn-warning btn-sm my-1 js-object-update " id="#modal-window"  data-url="{% url 'CatiaFramework:workflow_object_instance_update_modal' instance.UUID %}"> Edit </button> 
+                    <button type="button" class="btn btn-danger  btn-sm my-1 js-object-delete " id="#modal-window" data-url="{% url 'CatiaFramework:workflow_object_instance_delete_modal' instance.UUID %}">Delete</button> 
+                </div>                                                   
+        </div>   
+        
+        <div class="col-md-3 m-2" id = "parameters_{{object.UUID}}">                     
+        </div>
+    </div>                                        
+</div>

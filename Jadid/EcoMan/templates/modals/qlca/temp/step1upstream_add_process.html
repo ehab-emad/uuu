@@ -1,0 +1,157 @@
+{% load widget_tweaks %}
+
+  <form method="post" action="{% url 'EcoMan:step1upstream_add_process' form.instance.pk  %}" class="js-object-update-form" data-parameter1="add_process" id="modal-form" data-process-url="{% url 'EcoMan:load_lca_database_processes' %}" novalidate>
+  {% csrf_token %}
+    <div class="modal-dialog modal-xl" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLongTitle"><b>Add processing model</b></h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+        </div>
+        <div class="modal-body" >
+		<div class="col-md-12">
+	        <div class="row">
+                		<div class="col-md-4">
+                            {% include 'modals/modal_template_form.html' %}
+                        </div>
+                		<div class="col-md-8">
+                            {% include 'modals/qlca/lca_process_preview_modal_content.html' %}
+                            
+                        </div>
+            </div>
+        </div>
+        </div>
+        <div class="modal-footer">
+        <div class="d-flex justify-content-between w-100">
+            <p class="text-md-left font-weight-bold font-italic"><i class="fa-solid fa-circle-info"></i>    Custom materials can be added in LCA Database Section  <br /> 
+            (LCA Database > Review Current Project Database > Add New Process)</p>
+        </div>
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          <button type="submit" id="submit_button" class="btn btn-primary">Submit</button>
+        </div>
+      </div>
+    </div>
+
+
+  <script>
+    $("#id_idemat_database_choice").change(function () {
+        var url = $("#modal-form").attr("data-process-url");  // get the url of the `load_idemat_processs` view
+        var databaseId = $(this).val();                               // get the selected database ID from the HTML input
+        var groupId = 0;           // get the selected process group ID from the HTML input
+        var processId = 0;
+        var quantity = $("#id_quantity").val();
+        var process_type  =$('.js-object-update-form').data().parameter1
+        $.ajax({                                                      // initialize an AJAX request
+        url: url,                                                   // set the url of the request (= localhost:8000/hr/ajax/load_idemat_processs/)
+            data: {
+            'trigger_id': this.id,
+            'group_id': groupId,      
+            'database_id': databaseId,
+            'process_id': processId,
+            'quantity': quantity,
+            'process_type': $('.js-object-update-form').data().parameter1
+        },
+            success: function (data) {   // `data` is the return of the `load_parts` view function
+            $("#id_process_group_choice").html("");
+                $("#id_process_group_choice").html(data);  // replace the contents of the process group input with the data that came from the server
+
+            if (parseInt($("#id_idemat_database_choice").val()) !== 0) {
+                $('#id_process_group_choice').attr("disabled", false);
+            }
+            if (parseInt($("#id_idemat_database_choice").val()) ===0) {
+                $('#id_process_group_choice').attr("disabled", true);
+                $('#id_process_choice').attr("disabled", true);
+                }
+            }
+
+    });
+
+    });
+    $("#id_process_group_choice").change(function () {
+      var url = $("#modal-form").attr("data-process-url");  // get the url of the `load_idemat_processs` view
+      var groupId = $(this).val();  // get the selected process group ID from the HTML input
+        var databaseId = $("#id_idemat_database_choice").val();
+        var processId = $("#id_process_choice").val();
+        var quantity = $("#id_quantity").val();
+        var process_type  =$('.js-object-update-form').data().parameter1
+      $.ajax({                       // initialize an AJAX request
+        url: url,                    // set the url of the request (= localhost:8000/hr/ajax/load_idemat_processs/)
+          data: {
+            'trigger_id': this.id,
+            'group_id': groupId,      
+            'database_id': databaseId,
+            'process_id': processId,
+            'quantity': quantity,
+            'process_type': process_type,
+        },
+          success: function (data) {   // `data` is the return of the `load_parts` view function
+            $("#id_process_choice").html("");
+              $("#id_process_choice").html(data);  // replace the contents of the city input with the data that came from the server
+
+                if (parseInt($("#id_process_group_choice").val()) !== 0) {
+                    $('#id_process_choice').attr("disabled", false);
+
+                }
+                if (parseInt($("#id_process_group_choice").val()) === 0) {
+                    $('#id_process_choice').attr("disabled", true);
+                    document.querySelector('#submit_button').disabled =true
+                    }
+        }
+      });
+
+    });
+
+   $("#id_process_choice").change(function () {
+      var url = $("#modal-form").attr("data-process-url");  // get the url of the `load_idemat_processs` view
+      var processId = $(this).val();  // get the selected process group ID from the HTML input
+      var databaseId = $("#id_idemat_database_choice").val();
+      var groupId = $("#id_process_group_choice").val();
+      var quantity = $("#id_quantity").val();
+      var process_type  =$('.js-object-update-form').data().parameter1
+      $.ajax({                       // initialize an AJAX request
+        url: url,                    // set the url of the request (= localhost:8000/hr/ajax/load_idemat_processs/)
+          data: {
+            'trigger_id': this.id,
+            'database_id': databaseId,
+            'group_id': groupId,       
+            'process_id': processId,       
+            'quantity': quantity,
+            'process_type': process_type,
+        },
+          success: function (data) {   // `data` is the return of the `load_parts` view function
+            $("#process_preview").html(data);  // replace the contents of the process preview
+
+           
+                if (parseInt($("#id_process_choice").val()) !== 0) {
+                    document.querySelector('#submit_button').disabled =false
+
+                }
+                if (parseInt($("#id_process_choice").val()) === 0) {
+                    document.querySelector('#submit_button').disabled =true
+                    }
+        }
+      });
+
+    });
+
+      $(document).ready(refreshOptions)
+
+      function refreshOptions() {
+          $('#id_process_group_choice').attr("disabled", true);
+          $('#id_process_choice').attr("disabled", true);
+          document.querySelector('#submit_button').disabled =true
+      }
+
+
+
+  </script>
+</form>
+
+
+
+
+
+
+

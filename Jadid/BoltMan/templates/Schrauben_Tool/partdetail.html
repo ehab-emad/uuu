@@ -1,0 +1,71 @@
+{% extends 'website/base.html' %}
+
+{% block body %}
+
+<div class="container-fluid" id="parts-container">
+    <div class="row-no-gutters">
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <h3>Part Detail View</h3>
+                {% if error_message %}
+                    <p><strong>{{ error_message }}</strong></p>
+                {% endif %}
+                <table class="table table-hover">
+                    <thead>
+                        <tr>                                                                                 
+                            <th>ID:</th>
+                            <th>Name:</th>
+                            <th>Owner:</th>    
+                            <th>Creation date:</th>    
+                            <th>Last changed:</th>                                                                    
+                            <th>Thickness:</th>
+                            <th>Hole diameter:</th>
+                            <th>Joint diameter:</th> 
+                            <th>Part material:</th>                                                                                        
+                            <th>Action  </th>                                                                             
+                        </tr>
+                        </thead>
+                        <tbody>                                                                           
+                            <tr>
+                                <td>{{ part.id }}</td>
+                                <td>{{ part.name }}</td>
+                                <td>{{ part.user }}</td>    
+                                <td>{{ part.created_at }}</td>
+                                <td>{{ part.updated_at }}</td>                                                                   
+                                <td>{{ part.thickness }}</td>
+                                <td>{{ part.holediameter }}</td>
+                                <td>{{ part.jointdiameter }}</td>    
+                                <td>{{ part.partmaterial }}</td>                                                       
+                                <td>
+                                    <button type="button" 
+                                    class="btn btn-warning btn-sm js-part-update " 
+                                    data-url="{% url 'BoltMan:part_update' part.id %}">
+                                    Edit
+                                    </button>
+                    
+                                    <button type="button" 
+                                    class="btn btn-danger btn-sm js-part-delete " 
+                                    data-url="{% url 'BoltMan:part_delete' part.id %}">
+                                    Delete
+                                    </button>
+                                </td>  
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>                
+            </div>                
+        </div>
+    </div>
+</div>
+
+<div class="container-fluid">
+    <div class="col-md-12">
+        <h3>Part Used in Bolt Cases:</h3>
+        <div class="row">
+                {% include 'BoltMan/partdetail_boltcase_usage.html' %}
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}

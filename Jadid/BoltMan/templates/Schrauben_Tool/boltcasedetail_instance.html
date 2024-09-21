@@ -1,0 +1,125 @@
+<div class="container-fluid" id="boltcaseinstances-container">
+    <div class="row-no-gutters">
+
+        <div class="col-md-12">
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>ID: </th> 
+                    <th>Name: </th> 
+                    <th>Symmetry: </th>                                                                                                                                               
+                    <th>X pos(mm):</th>                                                                                    
+                    <th>Y pos(mm):</th>
+                    <th>Z pos(mm):</th>                    
+                    <th>Xn:</th>
+                    <th>Yn</th>
+                    <th>Zn</th>
+                    <th>Maximum External Axial Force (N):</th>      
+                    <th>Maximum External Shear Force (N):</th>  
+                    <th>Maximum Temperature (°C):</th>     
+                    <th>Minimum Temperature (°C):</th>    
+                    <th>Action </th>                                                                                      
+                </tr>
+                </thead>
+                <tbody>                                                                           
+                    <tr>
+                    {% if bolt_case.boltcaseinstance %} 
+                        {% for object in bolt_case.boltcaseinstance.all %}
+                                <td>{{ object.id }}</td>
+                                <td>{{ object.name}}</td>                                
+                                <td>{{ object.symmetric}}</td>
+                                <td>{{ object.x }}</td> 
+                                <td>{{ object.y }}</td>  
+                                <td>{{ object.z }}</td>                                                       
+                                <td>{{ object.xn }}</td>                                                                                    
+                                <td>{{ object.yn }}</td>    
+                                <td>{{ object.zn}}</td>                                                                              
+                                <td>{{ object.meaf }}</td>  
+                                <td>{{ object.mesf }}</td> 
+                                <td>{{ object.maxtemp }}</td>  
+                                <td>{{ object.mintemp }}</td>                                                          
+                                                                                        
+                                <td>
+                                <div class="btn-group d-flex" role="group" aria-label="...">
+                                        <button type="button" class="btn btn-primary btn-sm js-boltgeometry-update " data-url="{% url 'BoltMan:part_update' bolt_case.id %}">Usage</button>                              
+                                </div>
+                                </td>
+                                <td>
+                                <div class="btn-group d-flex" role="group" aria-label="...">                            
+                                        <button type="button" class="btn btn-warning btn-sm js-boltgeometry-update " data-url="#">Edit</button>
+                                </div>
+                                </td>   
+                            {% endfor %}                           
+                    {% else %}
+                            <td>test if empty</td>  
+                            <td></td>  
+                            <td></td>
+                            <td></td>
+                            <td></td>      
+                            <td></td>
+                            <td></td>                            
+                            <td></td>
+                            <td></td>   
+                            <td></td>                             
+                            <td></td>                           
+                            <td>
+                            <div class="btn-group d-flex" role="group" aria-label="...">
+                                    <button type="button" class="btn btn-primary btn-sm" data-url="#" disabled>Usage</button>                              
+                            </div>
+                            </td>
+                            <td>
+                            <div class="btn-group d-flex" role="group" aria-label="...">                            
+                                    <button type="button" class="btn btn-warning btn-sm" data-url="#" disabled>Edit</button>
+                            </div>
+                            </td>                       
+
+                        {% endif %}
+                    </tr>
+                    <tr>
+                            <td></td>  
+                            <td></td>
+                            <td></td>
+                            <td></td>   
+                            <td></td>
+                            <td></td> 
+                            <td></td>   
+                            <td></td> 
+                            <td></td>                             
+                            <td></td> 
+                            <td></td>
+                            <td></td>     
+                            <td></td>                                                                                                     
+                    <td>
+                     <div class="btn-group d-flex" role="group" aria-label="....">
+                    <button type="button" class="btn btn-danger btn-sm js-boltcase-update " data-url="{% url 'BoltMan:boltcase_select_boltcaseinstance' bolt_case.id %}"> Select </button>
+                    </div>
+                    <td>
+                    </tr>
+
+                </tbody>
+            </table>
+
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="row">
+                        <div class="col-md-2">
+                            <h3 class="align-middle">
+                                Description:
+                            </h3>
+                        </div>   
+                        <div class="col-md-8" >
+
+                            <p class="align-middle">
+                                All the places where boltcase is currently applied
+                            </p>  
+
+                        </div>   
+           
+                    </div>
+                </div>
+            </div>
+        </div> 
+    </div>                   
+</div>
+
+

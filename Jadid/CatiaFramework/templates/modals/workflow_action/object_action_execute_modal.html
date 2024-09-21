@@ -1,0 +1,92 @@
+
+{% load widget_tweaks %}
+<form method="post" id="modal-window-override-parameters-object-form" action="{% url 'CatiaFramework:workflow_object_action_execute_modal' %}" class = "override-parameters"
+      UUID_workflow = "{{UUID_workflow}}"
+      UUID_action = "{{UUID_action}}"
+      UUID_object = "{{UUID_object}}"
+      UUID_request ="{{UUID_request}}"
+      UUID_stage = "{{UUID_stage}}"
+      UUID_session = "{{UUID_session}}"
+      UUID_target_object ="{{UUID_target_object}}"
+      component_uuid = "{{component_uuid}}"
+      >
+  {% csrf_token %}
+        <div class="modal-header bg-warning text-white">
+          <h5 class="modal-title font-weight-bold text-black">New Instance, override parameters</h5>
+          <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+          </button>
+        </div> 
+        <div class="modal-body">
+          {% include 'modals/modal_template_form.html' %}
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+          <button type="button" id ="modal-window-override-parameters-object" class="btn btn-primary">Submit</button>
+        </div>
+</form>
+
+
+{% load widget_tweaks %}
+
+
+
+<script>
+
+        // Event listener for the override parameters form
+        $("#modal-window-override-parameters-object").on("click", function(event) {
+            console.log("Object action form submit event");
+            event.preventDefault(); // Prevent the default form submission
+            execute_object_action_with_override_submit($("#modal-window-override-parameters-object-form")[0]);// Pass the form element as `this`
+        });
+
+
+
+
+
+        function execute_object_action_with_override_submit(div) { 
+            debugger;
+            var editor_mode = {{ editor_mode|default:"false" }};
+            if (editor_mode === false) {
+                let formData = $(div).serializeArray();
+                formData = JSON.stringify(formData);
+
+                let o_data = {
+                formdata: formData
+                };
+
+                o_data['UUID_workflow'] = div.getAttribute('UUID_workflow')
+                o_data['UUID_action'] = div.getAttribute('UUID_action')
+                o_data['UUID_request'] = div.getAttribute('UUID_request')            
+                o_data['UUID_stage'] = div.getAttribute('UUID_stage')    
+                o_data['UUID_session']=div.getAttribute('UUID_session') 
+                o_data['UUID_object'] = div.getAttribute('UUID_object')  
+                o_data['UUID_target_object']=div.getAttribute('UUID_target_object')  ;  
+                o_data['editor_mode']="{{editor_mode}}";
+
+                const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+                var url = "{% url 'CatiaFramework:workflow_object_action_execute_modal'%}";
+                $.ajax({                       // initialize an AJAX request
+                    type:'POST',
+
+                    headers: { 'X-CSRFToken': csrftoken },
+                    url: url, //$(this).data('url'), 
+                    dataType: 'json',                  
+                    data: o_data,
+                    beforeSend: function () {
+
+                    },
+
+                    success: function (data) {   // `data` is the return of the `load_parts` view function
+                        $("#modal-window-override-parameters .modal-content").html("");   //modal content
+                        $("#modal-window-override-parameters").modal("hide");
+                    
+                    }, 
+                    complete: function() {
+
+                }
+                });
+            }
+            };  
+
+</script>

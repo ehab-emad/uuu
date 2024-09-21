@@ -1,0 +1,320 @@
+{% extends 'CatiaFramework/base.html' %}
+{% load static %}
+{% block Breadcrumb %}
+
+
+{% endblock Breadcrumb %}
+
+{% block Cards %}
+<style type="text/css">
+    div.card.playground {
+        border-radius: 7px;
+        box-shadow: 0 3px 3px rgba(0,0,0,.08), 0 0 3px rgba(50,50,0,.05);
+        padding-right: 0px;
+        padding-left: 0px;
+        padding-top: 0px;
+        margin-top: 10px;
+        background-color: rgba(240, 240, 240, 1)
+    }
+
+    div.card.playground:hover{
+        transform: none !important;
+        transition: none !important;
+        box-shadow: 0 5px 5px rgba(0,0,0,.7), 0 0 5px rgba(50,50,0,.7);
+        padding-right: 0px;
+        padding-left: 0px;
+        padding-top: 0px;
+        margin-top: 10px;
+    }
+    .stlviewer {
+        width: 100%;
+        height: 100%;
+        
+
+        overflow: hidden;
+      }
+      .progress-bar-container {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.8);
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+
+    #progress-bar {
+        width: 30%;
+        margin-top: 0.5%;
+        height: 6%;
+    }
+    .bgEDAGBraun{
+        background-color: rgb(184, 172, 165);
+    }
+    .bgEDAGBeige{
+        background-color: rgb(216, 207, 201);
+    }
+    .bgEDAGGrau{
+        background-color: rgb(208, 216, 223);
+    }
+    .bgEDAGHellgrau{
+        background-color: rgb(228, 229, 230);
+    }
+
+    .bgSuperHellgrau{
+        background-color: rgb(240, 240, 240);
+    }
+    .bgDebianRed{
+        background-color: #D71946;
+    }
+
+
+    .button-box {                                            
+            display: grid;
+            grid-template-columns: 60px 60px;
+            grid-template-rows: 60px ;
+            gap: 15px 15px;
+            width: 9rem; 
+            justify-content: center;
+            justify-items: center;
+            position:relative;
+            margin: 5px;
+        }
+
+        .button-box :first-child {
+            align-self: stretch;
+
+        }                            
+
+
+</style>
+<script>
+    function copyToClipboard(value) {
+        // Get the input element containing the text
+        var textToCopy = value;
+
+        navigator.clipboard.writeText(textToCopy)
+        .then(function() {
+            alert("Text copied to clipboard: " + textToCopy);
+            // Optionally, you can provide user feedback here
+        })
+        .catch(function(err) {
+            alert("Browser rejected to use your clipboard");
+            // Handle the error or provide user feedback
+        });                              
+    }
+</script> 
+<div class="container-fluid">
+    <div class="col-md-12 border-right">
+        <div class="row">
+            <div class="col-md-3">
+                <div class="card animationoff my-1">
+                </div>
+                <div class="card animationoff my-1">
+                    <div class="card-body " >                    
+                        <h3>Filter:</h3>
+                            <div class="row py-2">
+                                <span>
+                                    Name <input id="search_text_component" type="text" name="search_box" placeholder="Search..."> <button type="button" class="btn-secondary mr-auto" id="search_component_submit" target_url ="{% url 'CatiaFramework:load_content' %}">Search</button>
+                                  </span>
+                            </div>                                                 
+                    </div>
+                </div>                
+            </div>        
+
+            <div class="col-md-9">
+                <div class="container-fluid m-0 p-0" id="category-container" >
+                    {% include './list_shared_components/cards_category_group_children.html' %}
+                </div>                     
+                    <div class="card animationoff my-1">
+                        <div class="card-body " >                    
+                            <h3>Project Components:</h3> 
+
+                                <div class="row">
+                                    <div id="accordion" class="container-fluid">
+                                        {#Step:0  Libraries------------------------------------------------------------------------------------------------------------ #}
+                                        <div class="card playground" id="cardZero">
+                                            <div class="panel panel-default">
+                                                <div class="panel-body">
+                                                    <div class="card-header" id="headingZero" style="padding: 0; margin: 0" >
+                                                        <h5 class="mb-0">
+                                                            <button id="btnZero" style="color: black; padding: 0; " class="btn btn-link btn-block"  data-toggle="collapse" data-target="#collapseZero" aria-expanded="true" aria-controls="collapseZero">
+                                                                <div class="col-md-12">
+                                                                    <div class="row">
+                                                                        <div class="col-md-12   bgEDAGGrau">
+                                                                            <div class="d-flex text-left">
+                                                                                <div >
+                                                                                    <h5 id="vbdotnet_libraries_hits">1: VB.Net Libraries; hits: {{vbdotnet_libraries| length}}</h5>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>   
+                                                                    </div>
+                                                                </div>
+                                                            </button>
+                                                        </h5>
+                                                    </div>
+                                                    <div id="collapseZero" class="collapse" aria-labelledby="headingZero" data-parent="#accordion">
+                                                        <div class="card-body " id="vbdotnet_libraries" >
+                                                            <div class="panel panel-default">
+                                                                <div class="panel-body " >
+                                                                    {% include './list_shared_components/component_libraries.html' %}
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>                                        
+                                        {#Step:1  Modules------------------------------------------------------------------------------------------------------------ #}
+                                        <div class="card playground" id="cardOne">
+                                            <div class="panel panel-default">
+                                                <div class="panel-body">
+                                                    <div class="card-header" id="headingOne" style="padding: 0; margin: 0" >
+                                                        <h5 class="mb-0">
+                                                            <button id="btnOne" style="color: black; padding: 0; " class="btn btn-link btn-block"  data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                                                <div class="col-md-12">
+                                                                    <div class="row">
+                                                                        <div class="col-md-12   bgEDAGGrau">
+                                                                            <div class="d-flex text-left">
+                                                                                <div >
+                                                                                    <h5 id="vbdotnet_modules_hits">2: VB.Net Modules; hits: {{vbdotnet_modules| length}}</h5>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                        
+                                                                    </div>
+                                                                </div>
+                                                            </button>
+                                                        </h5>
+                                                    </div>
+                                                    <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordion">
+                                                        <div class="card-body " id="vbdotnet_modules" >
+                                                            <div class="panel panel-default">
+                                                                <div class="panel-body " >
+                                                                    {% include './list_shared_components/component_modules.html' %}
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        {#Step:2  Methods------------------------------------------------------------------------------------------------------------ #}
+                                        <div class="card playground" id="cardTwo">
+                                            <div class="panel panel-default">
+                                                <div class="panel-body">
+                                                    <div class="card-header" id="headingTwo" style="padding: 0; margin: 0" >
+                                                        <h5 class="mb-0">
+                                                            <button id="btnTwo" style="color: black; padding: 0; " class="btn btn-link btn-block"  data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseOne">
+                                                                <div class="col-md-12">
+                                                                    <div class="row">
+                                                                        <div class="col-md-12   bgEDAGGrau">
+                                                                            <div class="d-flex text-left">
+                                                                                <div >
+                                                                                    <h5 id="vbdotnet_methods_hits">2: VB.Net Methods; hits: {{vbdotnet_methods| length}}</h5>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                        
+                                                                    </div>
+                                                                </div>
+                                                            </button>
+                                                        </h5>
+                                                    </div>
+                                                    <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
+                                                        <div class="card-body " id="vbdotnet_methods" >
+                                                            <div class="panel panel-default">
+                                                                <div class="panel-body " >
+                                                                    {% include './list_shared_components/component_methods.html' %}
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>        
+                                        {#Step:2  Classes------------------------------------------------------------------------------------------------------------ #}
+                                        <div class="card playground" id="cardThree">
+                                            <div class="panel panel-default">
+                                                <div class="panel-body">
+                                                    <div class="card-header" id="headingThree" style="padding: 0; margin: 0" >
+                                                        <h5 class="mb-0">
+                                                            <button id="btnThree" style="color: black; padding: 0; " class="btn btn-link btn-block"  data-toggle="collapse" data-target="#collapseThree" aria-expanded="true" aria-controls="collapseOne">
+                                                                <div class="col-md-12">
+                                                                    <div class="row">
+                                                                        <div class="col-md-12   bgEDAGGrau">
+                                                                            <div class="d-flex text-left">
+                                                                                <div >
+                                                                                    <h5 id="vbdotnet_classes_hits">2: VB.Net Methods; hits: {{vbdotnet_methods| length}}</h5>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                        
+                                                                    </div>
+                                                                </div>
+                                                            </button>
+                                                        </h5>
+                                                    </div>
+                                                    <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordion">
+                                                        <div class="card-body " id="vbdotnet_classes" >
+                                                            <div class="panel panel-default">
+                                                                <div class="panel-body " >
+                                                                    {% include './list_shared_components/component_methods.html' %}
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>                                                                         
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+        </div>
+    </div>
+    {% include 'CatiaFramework/toaster.html'%}
+
+</div>
+<script type=text/javascript> 
+    $(function() {
+        $('#search_component_submit').click(function() {
+            var search_text = $("#search_text_component").val();
+            var current_category =  $("#current_category").attr('value');
+            $.ajax({                       // initialize an AJAX request
+                type:'GET',        
+                url: $(this).attr('target_url'),                  // set the url of the request (= localhost:8000/hr/ajax/load_idemat_processs/)
+                data: {
+                'trigger_id': "search_component_submit",      // trigger id help to identify which action was trigerred in modal window
+                'search_text': search_text,
+                'current_category': current_category 
+            },
+            success: function (data) {   // `data` is the return of the `load_parts` view function
+
+                $("#libraries").html(data.html_list_workflows);
+                $("#libraries_hits").html() ;
+                $("#libraries_hits").html('1: VB.Net Libraries; hits:' + data.libraries_hits) ;  
+
+                $("#libraries").html(data.html_list_workflows);
+                $("#libraries_hits").html() ;
+                $("#libraries_hits").html('1: VB.Net Libraries; hits:' + data.libraries_hits) ; 
+
+                $("#libraries").html(data.html_list_workflows);
+                $("#libraries_hits").html() ;
+                $("#libraries_hits").html('1: VB.Net Libraries; hits:' + data.libraries_hits) ; 
+
+                $("#classes").html(data.html_list_classes);
+                $("#classes_hits").html() ;
+                $("#classes_hits").html('1: VB.Net Classes; hits:' + data.classes_hits) ; 
+                }
+            });
+        });
+    });
+</script> 
+              
+{% endblock Cards%}  

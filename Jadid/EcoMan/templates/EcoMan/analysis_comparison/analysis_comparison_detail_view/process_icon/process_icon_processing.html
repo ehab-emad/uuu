@@ -1,0 +1,18 @@
+{% load static %}
+<button type="button"
+        class="btn btn-light btn-sm js-object-update"
+        id="#modal-window-xl"
+        data-toggle="popover"
+        data-trigger="hover"
+        title={{object.process_model.name|slugify}}
+        data-content={{object.process_quantity}}
+        data-url="{% url 'EcoMan:processing_process_instance_update' pk_instance=object.id  %}">
+        {% if object.status == "GREEN" %}
+            <img src="{% static '/website/images/Process_Green_Icon.png' %}" width="20" />
+        {% elif object.status == "RED" %}
+            <img src="{% static '/website/images/Process_Red_Icon.png' %}" width="20" />
+        {% else %}
+            <img src="{% static '/website/images/Process_Orange_Icon.png' %}" width="20" />
+        {% endif %}
+
+</button>

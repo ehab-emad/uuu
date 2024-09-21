@@ -1,0 +1,72 @@
+{% load static %}
+
+<div aria-live="polite" aria-atomic="true" style="position: relative; min-height: 200px;">
+    <!-- Position it -->  
+    <div class="position-fixed bottom-0 right-0 p-3" style="z-index: 5; right: 0; bottom: 0;" id="toaster">
+      
+      <!-- Then put toasts within -->
+      <div class="toast hide" role="alert" aria-live="assertive" aria-atomic="true" id="toast_one" data-state="hidden" data-delay="15000">
+        <div class="toast-header">
+          <img src="{% static '/website/images/favicon.png' %}" width="25" height="25" class="rounded mr-2" alt="...">
+          <strong class="mr-auto">Communication</strong>
+          <small id="time_stamp">just now</small>
+          <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="toast-body">
+          <strong class="mr-auto" id="content_text">Communication between Framework and Tool</strong>
+        </div>
+      </div>
+  
+      <div class="toast hide" role="alert" aria-live="assertive" aria-atomic="true" id="toast_zero" data-state="hidden" data-delay="15000">
+        <div class="toast-header">
+          <img src="{% static '/website/images/favicon.png' %}" width="25" height="25" class="rounded mr-2" alt="...">          
+          <strong class="mr-auto">Communication</strong>
+          <small id="time_stamp">just now</small>
+          <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="toast-body">          
+          <strong class="mr-auto" id="content_text">Communication between Framework and Tool</strong>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <script type="text/javascript">
+    $('#toast_zero').on('show.bs.toast', function () {
+      console.log('Showing item zero')      
+      console.log($(this)[0].hidden);
+      console.log($(this)[0].className);
+      $(this).attr("data-state","shown"); 
+      console.log($(this)[0].hidden);
+      // do something...
+    })
+    $('#toast_zero').on('hidden.bs.toast', function () {
+      console.log('Hiding item zero')
+      console.log($(this)[0].hidden);
+      console.log($(this)[0].className);
+      $(this).attr("data-state","hidden"); 
+      console.log($(this)[0].hidden);
+      // do something...
+    })  
+    $('#toast_one').on('show.bs.toast', function () {
+      console.log('Showing item One')
+      console.log($(this)[0].hidden);
+      console.log($(this)[0].className);
+      $(this).attr("data-state","shown"); 
+      console.log($(this)[0].hidden);
+      // do something...
+    })
+    $('#toast_one').on('hidden.bs.toast', function () {
+      console.log('hiding item one')
+      console.log($(this)[0].hidden);
+      console.log($(this)[0].className);
+      $(this).attr("data-state","hidden"); 
+      console.log($(this)[0].hidden);
+      // do something...
+    })
+  </script>

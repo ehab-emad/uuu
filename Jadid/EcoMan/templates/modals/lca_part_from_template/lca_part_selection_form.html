@@ -1,0 +1,13 @@
+{% load widget_tweaks %}
+
+<div class="container-fluid" id="process_selection">
+
+    <label for="id_id">Add to Analysis</label>
+    {{ form.id|add_class:"form-control"}}
+    <span class="text-danger">{{ form.id.errors|striptags }}</span>
+
+    <label for="id_part_name">New Part Name</label>
+    {{ form.part_name|add_class:"form-control"}}
+    <span class="text-danger">{{ form.part_name.errors|striptags }}</span>
+    
+</div>

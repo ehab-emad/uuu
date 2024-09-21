@@ -1,0 +1,200 @@
+{% load static %}
+{% load icon_status_filter %}
+    <div class="list-group clickable_tree" id="sortable-list">
+        {% if workflow_dict %}
+            {% for stage in workflow_dict %}
+                <div class="list-group-item list-group-item-action my-1 py-1 clickable-stage" UUID_stage= "{{ stage.UUID }}" onclick="workflow_tree(this)">
+                    <div class="row my-0 py-0">  
+                        <div class="col-md-2 center-block align-self-center">               
+                                <img  src="{% static '/CatiaFramework/images/workflow.png' %}" alt="Default" style="max-width: 50px;">                                                                                                                             
+                        </div>             
+                        <div class='col-md-6 align-self-center'>                                         
+                            <h5><b>{{ stage.name }}</b></h5>
+                        </div>
+                        <div class='col-md-4 align-self-center'>
+                            <div class="container">
+                                <div class="row justify-content-end ">                            
+                                    {% if editor_mode  %} 
+                                    <div class="btn-group" role="group"  aria-label=" " style="display: block; text-align: right">
+                                        <button type="button" class="btn btn-warning btn-sm btn-block m-1 p-0 js-object-update " id="#modal-window" data-url="{% url 'CatiaFramework:workflow_stage_update_modal' stage.UUID %}">Edit</button> 
+                                        <button type="button" class="btn btn-danger btn-sm  btn-block m-1 p-0 js-object-update " id="#modal-window" data-url="{% url 'CatiaFramework:workflow_stage_delete_modal' stage.UUID %}">Delete</button>                             
+                                    </div>
+                                    {% else %}
+                                            <img  src="{{stage|status_icon }}" alt="{% static '/CatiaFramework/Status_Icons/Status_Failed_icon.png' %}" style="max-width: 50px;">                                                             
+                                    {% endif %} 
+                                </div>
+                            </div>
+                        </div>
+                    </div>                                                
+                </div>
+            {% endfor %}
+        {% endif %}
+    </div>
+        {% if editor_mode  %}      
+            <button type="button" class="btn btn-warning btn-sm btn-block my-2 js-object-create " id="#modal-window"  data-url="{% url 'CatiaFramework:workflow_stage_create_modal' workflow.UUID %}"> Add New Stage</button>
+        {% endif %}
+    
+</div>     
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    // Disable buttons in all parent objects initially
+    document.querySelectorAll('.clickable-stage [type="button"]').forEach(function (button) {
+      button.disabled = true;
+    });
+});
+  </script>
+
+<script type="text/javascript">
+    function toggleSelection(div) {
+        // Get all div elements with the class "clickable"
+        let clickableDivs = document.getElementsByClassName("clickable-stage");
+        // Iterate through each div and remove the "selected" class
+        for (let i = 0; i < clickableDivs.length; i++) {
+            clickableDivs[i].classList.remove("selected");
+            // Deactivate buttons within the clicked div by adding the "disabled" attribute
+            clickableDivs[i].querySelectorAll('.btn').forEach(function (button) {
+                button.setAttribute("disabled", "");
+            });           
+        }
+
+        // Add the "selected" class to the clicked div
+        div.classList.add("selected");
+        sessionStorage.setItem("active_stage", div.getAttribute("UUID_stage"));
+        selectedCount = 1; // Set selectedCount to 1 as only one div is selected
+        // Activate buttons within the clicked div by removing the "disabled" attribute
+        div.querySelectorAll('.btn').forEach(function (button) {
+        button.removeAttribute("disabled");
+    });
+    }
+
+        function workflow_tree(div) { 
+            $('#spinner').show();
+            toggleSelection(div)
+            var o_data ={}
+            o_data['trigger_id'] = "workflow_tree_select"
+            o_data['workflow_id'] = "{{workflow.UUID}}"
+            o_data['stage_id'] = div.getAttribute('UUID_stage')           
+            o_data['editor_mode']="{{editor_mode}}";
+            o_data['session_id']="{{session.UUID}}";
+            const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+            var url = "{% url 'CatiaFramework:load_workflow_session_details' %}";
+            $.ajax({                       // initialize an AJAX request
+                type:'POST',
+                headers: { 'X-CSRFToken': csrftoken },
+                url: url, //$(this).data('url'), 
+                dataType: 'json',                  
+                data: o_data,
+                    success: function (data) {   // `data` is the return of the `load_parts` view function
+                        $("#stage").html() ;
+                        $("#stage").html(data.html_workflow_stage) ;                  
+                        $("#objects").html() ;
+                        $("#objects").html(data.html_workflow_object) ;    
+                        $("#instruction").html() ;
+                        $("#instruction").html(data.html_workflow_instruction) ;
+
+
+  
+                        },
+                    complete: function() {
+                        updateDivContentAndCheckSessionStorage();
+                        openAccordionFromSessionStorage();
+                            // Mark active objects instances
+
+                            // Get all div elements with the class "clickable"
+                            let clickableDivs = document.getElementsByClassName("clickable-instance");
+                            // Iterate through each div and remove the "selected" class
+                            for (let i = 0; i < clickableDivs.length; i++) {
+                                if (clickableDivs[i].getAttribute("is_active") === "True") {
+                                    clickableDivs[i].checked = true;                                
+                            }
+                            else{
+                                clickableDivs[i].checked = false;
+                            }
+                            }
+
+                         // Hide the spinner
+                         $('#spinner').hide();
+                    }
+            });
+        };
+    </script>
+    <script>
+        $('.clickable-stage').hover(
+            function(data){
+                // Get the button and card elements    
+                    var o_data ={}
+                    if (data.type == "mouseenter"){
+ 
+                        if ({{ editor_mode|yesno:"true,false" }}){ 
+                            $(this).css("cursor", "n-resize");   }
+                        else{
+                            $(this).css("cursor", "pointer");   }                        
+                    }
+                    else{               
+                                $(this).css("cursor", "initial");  
+                            }
+                        }
+        )
+    </script>   
+
+<script>
+
+    document.addEventListener('DOMContentLoaded', function () {
+        if ({{ editor_mode|yesno:"true,false" }}) {
+            var sortable = new Sortable(document.getElementById('sortable-list'), {
+                animation: 150,
+                onStart: function (evt) {
+                    // Add any custom code to execute when dragging starts
+                },
+                onUpdate: function (evt) {
+                    updateOrder(evt);
+                },
+                onEnd: function (evt) {
+                    // Add any custom code to execute when dragging ends
+                }
+            });
+        }
+
+        // Get the UUID_stage attribute value from the div
+        var activeStageId = sessionStorage.getItem('active_stage');
+        var clickableStage;
+
+        // Check if activeStageId is not empty and the element exists
+        if (activeStageId) {
+            clickableStage = document.querySelector('.clickable-stage[UUID_stage="' + activeStageId + '"]');
+        }
+
+        // If activeStageId is empty or the element does not exist, get the first .clickable-stage element
+        if (!clickableStage) {
+            clickableStage = document.querySelector('.clickable-stage');
+        }
+
+        // Pass the div element to the workflow_tree function
+        workflow_tree(clickableStage);
+    });
+
+
+    function updateOrder(evt) {
+        // Get the new order of items
+        var newOrder = Array.from(evt.from.children).map(item => item.getAttribute('UUID_stage'));
+        const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+        // Send the new order to the server using AJAX
+        $.ajax({
+            url: "{% url 'CatiaFramework:stage_tree_reorder' %}",
+            method: "POST",
+            headers: { 'X-CSRFToken': csrftoken },
+            data: { order: newOrder },
+            success: function(response) {
+                console.log("Order successfully updated on the server");
+            },
+            error: function(error) {
+                console.error("Error updating order on the server", error);
+            }
+        });
+    }
+
+
+
+
+</script>

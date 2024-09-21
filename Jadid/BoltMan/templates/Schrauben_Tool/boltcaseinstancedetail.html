@@ -1,0 +1,166 @@
+{% extends 'website/base.html' %}
+
+{% block body %}
+{% load static %}
+
+ <script src="print.js"></script>
+
+
+<div class="container-fluid " id="boltcases-container">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="row">
+                <div class="col-md-2">
+                    <!-- Car Card -->
+                    <div class="card" style="width: 22rem;">
+                        <img class="card-img-top img-responsive" src="{% static 'BoltMan/images/boltcaseinstance.svg' %}" >
+
+                        <div class="card-body">
+                            <h5 class="card-title"><b>Bolt case instance detail view</b></h5>
+                            <p class="card-text">Name:  {{ bolt_case_instance.name }}</p>
+                            <p class="card-text">ID:  {{ bolt_case_instance.id }}</p>    
+                            <p class="card-text">Owner:  {{ bolt_case_instance.user }}</p>                                                     
+                            <p class="card-text">Status: {{ bolt_case_instance.status }}</p>
+                            <p class="card-text">Vehicles: </p>
+                           <ul>
+                                {% for vehicle in vehicles %}
+                                    <li>{{vehicle.name}}</li>
+                                {% endfor %}      
+                            </ul>  
+            
+                            <div class="btn-group d-flex" role="group" aria-label="...">
+                                    <button type="button" 
+                                        class="btn btn-warning btn-sm js-boltcase-update " 
+                                        data-url="{% url 'BoltMan:boltcaseinstance_update' bolt_case_instance.id %}">
+                                        Edit
+                                    </button> 
+                                    <button type="button" 
+                                        class="btn btn-danger btn-sm js-boltcase-delete " 
+                                        data-url="{% url 'BoltMan:boltcaseinstance_delete' bolt_case_instance.id %}">
+                                        Delete
+                                    </button>
+
+                            </div>
+                            <div class="btn-group d-flex" role="group" aria-label="...vd" >
+
+    
+                                     
+                    <button type="button" onclick="printJS('printJS-form', 'html')" class="btn btn-info btn-sm ">
+                        Print Protocol
+                    </button>
+                            </div>  
+                                                                                      
+                          
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-10">     
+                    <div id="accordion">
+         {#Step:1 Vehicles------------------------------------------------------------------------------------------------------------ #}                     
+                        <div class="card">
+                            <div class="panel panel-default">
+                                <div class="panel-body">     
+                                    <div class="card-header" id="headingOne">
+                                        <h5 class="mb-0">
+                                            <button class="btn btn-link" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                            Step 1: Vehicles
+                                            </button>
+                                        </h5>
+                                    </div>
+                                        <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordion">
+                                    <div class="card-body">
+                                        <div class="panel panel-default"> 
+                                            <div class="panel-body">   
+                                                {% comment %} {% include 'BoltMan/boltcasedetail_part.html' %}  {% endcomment %}
+                                            </div>
+                                        </div>                    
+                                    </div>
+                                </div>
+                            </div>
+                        </div>                    
+                    </div>
+
+        {#Step:2 Position------------------------------------------------------------------------------------------------------------ #}  
+                    <div class="card">
+ 
+                        <div class="panel panel-default"> 
+                            <div class="panel-body">            
+                                <div class="card-header" id="headingThree">
+                                    <h5 class="mb-0">
+                                        <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                                        Step:2 Postion
+                                        </button>
+                                    </h5>
+                                </div>
+                                <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordion">
+                                    <div class="card-body">
+                                        <div class="panel panel-default"> 
+                                            <div class="panel-body">
+                                                {% comment %} {% include 'BoltMan/boltcasedetail_boltgeometry.html' %}   {% endcomment %}
+                                            </div>
+                                        </div>                                            
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+        {#Step 3: Load--------------------------------------------------------------------------------------------------------------------------- #}                                
+                    <div class="card">
+                        <div class="panel panel-default">
+                            <div class="panel-body">     
+                                <div class="card-header" id="headingTwo">
+                                    <h5 class="mb-0">
+                                        <button class="btn btn-link" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
+                                        Step 3: Load
+                                        </button>
+                                    </h5>
+                                </div>
+                                    <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
+                                <div class="card-body">
+                                    <div class="panel panel-default"> 
+                                        <div class="panel-body">   
+                                            {% comment %} {% include 'BoltMan/boltcasedetail_assembly.html' %}  {% endcomment %}
+                                        </div>
+                                    </div>                    
+                                </div>
+                            </div>
+                        </div>
+                    </div>                    
+                </div>
+
+       {#Step 4: Results------------------------------------------------------------------------------------------------------------ #}            
+                    <div class="card">
+                        <div class="panel panel-default"> 
+                            <div class="panel-body"  >   
+                                <div class="card-header" id="headingSix">
+                                    <h5 class="mb-0">
+                                        <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseSix" aria-expanded="false" aria-controls="collapseSix">
+                                        Step 6: Calculation
+                                        </button>
+                                    </h5>
+                                </div>
+                                <div id="collapseSix" class="collapse" aria-labelledby="headingSix" data-parent="#accordion">
+                                    <div class="card-body">
+                                        <div class="panel panel-default"> 
+                                            <div class="panel-body">   
+                                                 {% include 'BoltMan/boltcaseinstancedetail_results.html' %} 
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+        {#Step 6: End--------------------------------------------------------------------------------------------------------------------------- #} 
+
+</div>
+
+            </div>   
+        </div>  
+    </div>      
+</div>  
+
+</div> 
+
+{% endblock %}

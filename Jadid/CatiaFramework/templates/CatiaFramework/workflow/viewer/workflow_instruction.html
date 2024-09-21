@@ -1,0 +1,20 @@
+{% load static %}
+{% load icon_status_filter %}
+<div class="card animationoff my-1">
+    <div class="card-body center" >                    
+        <h3>Instruction:</h3>
+            
+            <strong>Name: </strong>  {{ instruction.name }} </br>         
+            <strong>Description: </strong>  {{ instruction.description }} </br>
+
+            <div class="container-fluid " style="margin-top: 20px; padding:0px">
+                <img class="card-img-top" src="{% if instruction.thumbnail %}{{ instruction.thumbnail.url }}{% else %}{% static 'CatiaFramework/images/Action.png' %}{% endif %}"  style="  object-fit: contain;"/>                
+            </div>
+            {% if editor_mode  %}     
+
+                <button type="button" class="btn btn-warning btn-block btn-sm  m-1 js-object-update "  id="#modal-window"  data-url="{% url 'CatiaFramework:workflow_instruction_update_modal' instruction.UUID %}"> Edit</button> 
+            {% endif %}           
+    </div>
+
+
+</div> 

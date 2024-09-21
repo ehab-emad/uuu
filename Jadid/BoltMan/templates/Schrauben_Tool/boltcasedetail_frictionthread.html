@@ -1,0 +1,110 @@
+<div class="container-fluid" id="fricitons-container">
+
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h5 class="align-middle">
+                                Friction model on thread:
+                            </h5>
+                        </div>    
+                    </div>
+                </div>
+            </div>
+
+
+    <div class="row-no-gutters">
+
+        <div class="col-md-12">
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>Id:</th>
+                    <th>Owner:</th>  
+                    <th>Friction Class:</th>                                   
+                    <th>Colour:</th>
+                    <th>Surface:</th>
+                    <th>Precision:</th>
+                    <th>Lubrication:</th>
+                    <th>Avarage friction:</th>
+                    <th>Minimum friction:</th>
+                    <th>Maximum friction:</th>
+                    <th>Source:</th>       
+                    <th>Info:</th>       
+                    <th>Action:</th>                                                                                     
+                </tr>
+                </thead>
+                <tbody>                                                                           
+                    <tr>
+                        {% if bolt_case.friction_thread %} 
+                            <td>{{ bolt_case.friction_thread.id }}</td>
+                            <td>{{ bolt_case.friction_thread.name }}</td>
+                            <td>{{ bolt_case.friction_thread.f_class }}</td>
+                            <td>{{ bolt_case.friction_thread.colour }}</td>
+                            <td>{{ bolt_case.friction_thread.surface }}</td>
+                            <td>{{ bolt_case.friction_thread.precision }}</td>
+                            <td>{{ bolt_case.friction_thread.lubrication }}</td>
+                            <td>{{ bolt_case.friction_thread.friction_av }}</td>
+                            <td>{{ bolt_case.friction_thread.friction_min }}</td>
+                            <td>{{ bolt_case.friction_thread.friction_max }}</td>
+                            <td>{{ bolt_case.friction_thread.source }}</td>                                                                                                                 
+                            <td>
+                            <div class="btn-group d-flex" role="group" aria-label="...">
+                                    <button type="button" class="btn btn-primary btn-sm js-boltmaterial-update " data-url="#">Usage</button>                              
+                            </div>
+                            </td>
+                            <td>
+                            <div class="btn-group d-flex" role="group" aria-label="...">                            
+                                    <button type="button" class="btn btn-warning btn-sm js-part-update " data-url="#">Edit</button>
+                            </div>
+                            </td>                            
+                        {% else %}
+
+                            <td></td>  
+                            <td></td>
+                            <td></td>
+                            <td></td>      
+                            <td></td>
+                            <td></td>  
+                            <td></td>
+                            <td></td>                                                        
+                            <td></td>
+                          
+                            <td></td>                            
+                            <td></td>                           
+                            <td>
+                            <div class="btn-group d-flex" role="group" aria-label="...">
+                                    <button type="button" class="btn btn-primary btn-sm" data-url="#" disabled>Usage</button>                              
+                            </div>
+                            </td>
+                            <td>
+                            <div class="btn-group d-flex" role="group" aria-label="...">                            
+                                    <button type="button" class="btn btn-warning btn-sm" data-url="#" disabled>Edit</button>
+                            </div>
+                            </td>                       
+
+                        {% endif %}
+                    <tr>
+                            <td></td>  
+                            <td></td>
+                            <td></td>
+                            <td></td>   
+                            <td></td>
+                            <td></td>
+                            <td></td>                             
+                            <td></td>  
+                            <td></td>     
+                            <td></td>
+                            <td></td>     
+                            <td></td>                                                                                                                                   
+                    <td>
+                     <div class="btn-group d-flex" role="group" aria-label="....">
+                    <button type="button" class="btn btn-danger btn-sm js-boltcase-update " data-url="{% url 'BoltMan:boltcase_select_frictionthread' bolt_case.id %}"> Select </button>
+                    </div>
+                    </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div> 
+    </div>                   
+</div>

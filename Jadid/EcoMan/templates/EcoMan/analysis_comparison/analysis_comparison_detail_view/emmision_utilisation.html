@@ -1,0 +1,180 @@
+<div class="container-fluid my-1">
+    <div class="row">
+                <style>
+                    #chart-wrapper {
+                        display: inline-block;
+                        position: relative;
+                        width: 20rem;
+                        height: 20rem;
+                    }
+                    #chart-wrapper-horizontal {
+                        display: inline-block;
+                        position: relative;
+                        width: 100%;
+
+                    }
+                </style>
+
+
+        <div class="col-md-12  d-flex align-items-stretch">
+            <div class="card  mx-1 my-1" style="width: 100%;">
+                <div class="card-body">
+                    <strong>Carbon Footprint - Break Even Point Indication </strong> <br>
+                    {% if break_even_point_X %}
+                    Break Even Point reached at {{break_even_point_X}}km with value of {{break_even_point_Y}} [kg] Co2 Equivalent  <br>
+                    {% else %}
+                    Break Even Point not reached within lifetime of the vehicle <br>
+                    {% endif %}
+                    Estimated emmisions for investigated vehicle {{vehicle.name}}:<br>
+                    <span style="padding-left: 20px; display:block">
+                    for left concept: {{engwpperkm_left|floatformat:2}} [g/km] Co2 Equivalent  <br>
+                    for right concept: {{engwpperkm_right|floatformat:2}} [g/km] Co2 Equivalent  <br>
+                        Concept is saving {{Co2saving|floatformat:2}} kg of Co2 equivalent
+                    </span>
+                    <div class="container-fluid my-1">
+                        <div class="row">
+                            <div class="col-md-12 text-center d-flex align-items-stretch">
+                                <div id="chart-wrapper-horizontal">
+                                    <canvas id="line_chart_carbon_footprint_bepi_log"></canvas> {#break even point indication#}
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card-footer">
+                    <div class="container-fluid my-3">
+                        <div class="row">
+                            <div class="col-md-6 text-center">
+                                <form>
+                                    <button type="button" class="btn btn-warning btn-sm js-vehicle-update " data-url="#" disabled>Get Table Data</button>
+                                </form>
+                            </div>
+                            <div class="col-md-6 text-center">
+                                <form>
+                                    <button type="button" class="btn btn-warning btn-sm js-vehicle-update " data-url="#"  disabled>Get Picture</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card  mx-1 my-1" style="width: 100%;">
+                <div class="card-body">
+                    <strong>Carbon Footprint - Break Even Point Indication </strong> <br>
+                    {% if break_even_point_X %}
+                    Break Even Point reached at {{break_even_point_X}}km with value of {{break_even_point_Y}} [kg] Co2 Equivalent  <br>
+                    {% else %}
+                    Break Even Point not reached within lifetime of the vehicle <br>
+                    {% endif %}
+                    Estimated emmisions for investigated vehicle {{vehicle.name}}:<br>
+                    <span style="padding-left: 20px; display:block">
+                    for left concept: {{engwpperkm_left|floatformat:2}} [g/km] Co2 Equivalent  <br>
+                    for right concept: {{engwpperkm_right|floatformat:2}} [g/km] Co2 Equivalent  <br>
+                        Concept is saving {{Co2saving|floatformat:2}} kg of Co2 equivalent
+                    </span>
+                    <div class="container-fluid my-1">
+                        <div class="row">
+                            <div class="col-md-12 text-center d-flex align-items-stretch">
+                                <div id="chart-wrapper-horizontal">
+                                    <canvas id="line_chart_carbon_footprint_bepi_lin"></canvas> {#break even point indication#}
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card-footer">
+                    <div class="container-fluid my-3">
+                        <div class="row">
+                            <div class="col-md-6 text-center">
+                                <form>
+                                    <button type="button" class="btn btn-warning btn-sm js-vehicle-update " data-url="#" disabled>Get Table Data</button>
+                                </form>
+                            </div>
+                            <div class="col-md-6 text-center">
+                                <form>
+                                    <button type="button" class="btn btn-warning btn-sm js-vehicle-update " data-url="#"  disabled>Get Picture</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>     
+    </div>
+</div>
+<script type="text/javascript">
+  var config_utilisation_bepi_log = {
+        type: 'line',
+        data: {{ break_even_point_utilisation_json|safe }},
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    display: true,
+                    position: "bottom",
+                    align: "middle",
+                    }
+            },
+            title: {
+                display: true,
+                text: 'Carbon footpring [kg]'
+                },
+            scales: {
+                  x: {
+                    display: true,
+                  },
+                  y: {
+                    display: true,
+                    type: 'logarithmic',
+                  }
+                },
+            elements: {
+                point:{
+                    radius: 0
+                }
+            }
+        }
+    };
+
+    var config_utilisation_bepi_lin = {
+        type: 'line',
+        data: {{ break_even_point_utilisation_json|safe }},
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    display: true,
+                    position: "bottom",
+                    align: "middle",
+                    }
+            },
+            title: {
+                display: true,
+                text: 'Carbon footpring [kg]'
+                },
+            elements: {
+                point:{
+                    radius: 0
+                }
+            }
+        }
+    };
+
+     //utilisation phase
+        var ctx_bepi = document.getElementById('line_chart_carbon_footprint_bepi_log').getContext('2d');
+        window.myPLineBepiLog = new Chart(ctx_bepi, config_utilisation_bepi_log);
+
+        var ctx_bepi = document.getElementById('line_chart_carbon_footprint_bepi_lin').getContext('2d');
+        window.myPLineBepiLin = new Chart(ctx_bepi, config_utilisation_bepi_lin);
+  
+
+   
+</script>
+
+

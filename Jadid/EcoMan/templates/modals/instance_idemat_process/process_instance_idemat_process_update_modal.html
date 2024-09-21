@@ -1,0 +1,86 @@
+{% load widget_tweaks %}
+{% load weight_unit_switch  %}
+<form method="post" id="#modal-window-xl" action="{% url 'EcoMan:processing_process_instance_update' form.instance.pk weight_unit weight_decimals%}" class="js-object-update-form">
+    {% csrf_token %}
+
+            <div class="modal-header bg-warning text-white">
+                <h5 class="modal-title" id="exampleModalLongTitle"><b>Update Manufacturing Process</b></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+
+		        <div class="col-md-12">
+	                <div class="row">
+                		<div class="col-md-6">
+                            <h3> LCA Process Model:</h3>
+                            <label for="id_id">ID</label>
+                            {{ form.id|add_class:"form-control"}}
+                            <span class="text-danger">{{ form.id.errors|striptags }}</span>
+
+                            <label for="id_process_name">Used Lca Process Name</label>
+                            {{ form.process_name|add_class:"form-control"}}
+                            <span class="text-danger">{{ form.process_name.errors|striptags }}</span>
+
+                            <label for="id_process_unit">Process Unit</label>
+                            {{ form.process_unit|add_class:"form-control"}}
+                            <span class="text-danger">{{ form.process_unit.errors|striptags }}</span>
+                            {% if form.weight_unit == 'GRAMS' %}
+                                <p class="warning" style="color:red"> Warning: The analysis unit is set to {% weight_unit form.weight_unit %}, but the process unit is [{{ form.initial.process_unit }}]. Please ensure the units of your inputs match the labels.</p>
+                            {% endif %}
+
+                        </div>
+                		<div class="col-md-6">
+                            <div class="container-fluid">
+                                {% include './part_info_process_update.html' %}
+
+                                <label for="id_is_active">Is Active?</label>
+                                {{ form.is_active|add_class:"form-control"}}
+                                <span class="text-danger">{{ form.is_active.errors|striptags }}</span> 
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+		        <div class="col-md-12">
+                    <h3> My Manufacturing Process:</h3>
+                		<div class="col-md-6">
+	                <div class="row">
+                            <label for="id_name">Custom Process Name</label>
+                            {{ form.name|add_class:"form-control"}}
+                            <span class="text-danger">{{ form.name.errors|striptags }}</span>
+
+                            <label for="id_process_quantity">Process Quantity in [{{ form.instance.process_model.unit }}]</label>
+                            {{ form.process_quantity|add_class:"form-control"}}
+                            <span class="text-danger">{{ form.name.errors|striptags }}</span>
+
+                            <label for="id_meq">Material Usage rate [%] a.k.a MEQ</label>
+                            {{ form.meq|add_class:"form-control"}}
+                            <span class="text-danger">{{ form.meq.errors|striptags }}</span>
+
+                            <label for="id_notes">Notes</label>
+                            {{ form.notes|add_class:"form-control"}}
+                    </div>
+                    </div>
+                </div>
+            </div>
+
+
+               <div class="modal-footer">
+                    <a class="btn btn-danger mr-auto " href="{% url 'EcoMan:instance_idemat_process_delete'  form.instance.pk %}"
+                        onclick="return confirm('Do you really want to delete the process?');">
+                        <i class="fas fa-trash-alt"></i> Delete
+                    </a>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="fas fa-ban"></i> Cancel</button>
+                    <button type="submit" class="btn btn-warning" ><i class="fas fa-database"></i> Update Process</button>
+                </div>
+
+
+
+
+</form>
+
+
+
+

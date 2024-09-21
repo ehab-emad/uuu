@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="eng">
+    <head>
+        <meta charset="UTF-8">
+        <title>{% block title %} EDAG VE Connected Engineering Platform{% endblock %}</title>
+        {% load static %}
+
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+        <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+        <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.2.1/themes/default/style.min.css" />
+        <script src="{% static 'js/modalwindowtemplate.js' %}"></script>
+
+        <link href='https://fonts.googleapis.com/css?family=Satisfy' rel='stylesheet' type='text/css'>
+        <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}" />
+        <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css'>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.5.3/jspdf.debug.js"></script>
+
+        <link rel="icon" href="{% static 'website/images/favicon.png' %}"/>
+
+    {% block javascript %}
+
+    {% endblock %}
+
+        </head>
+
+   <body>
+        <script>
+
+            function openNav() {
+              console.log(document.getElementById("mySidenav").style.width)
+              if (document.getElementById("mySidenav").style.width.length === 0){
+                document.getElementById("mySidenav").style.width = "250px";
+                return; 
+              }
+              if (document.getElementById("mySidenav").style.width == "250px"){
+                  document.getElementById("mySidenav").style.width = "";
+                  return; 
+                }
+              }
+
+
+        </script>
+
+       <div id="mySidenav" class="sidenav">
+          <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+		  <br>
+          <a href="/home/">Home</a>
+          <a href="{% url 'EcoMan:index' %}">QLCA</a>
+          <a href="{% url 'NormMan:shared_components_dashboard' %}">Norm Parts</a>
+          <a href="{% url 'CatiaFramework:index' %}">Catia Framework</a>
+        </div>
+          <div class="brightness">
+              <nav class="navbar fixed-top navbar-custom navbar-expand-sm d-flex ">
+                <style>
+                      .nav-link img.nav-icon {
+                        display: block;           /* Ensures the image behaves like a block element */
+                        height: 100px;             /* Set the height as needed */
+                        width: auto;              /* Automatically adjust width to maintain aspect ratio */
+                        margin: 0 auto;           /* Center the image horizontally within the nav-link */
+                      }
+                </style>
+                      <li class="nav-item p-0 d-flex align-items-center">
+                        <a class="nav-link p-0" ><img src="{% static 'website/images/grid-3x3-gap-fill.svg' %}" alt="QLCA" onclick="openNav()" class="nav-icon" style=" height: 50px;"></a>
+                      </li>
+                      <li class="nav-item p-0 d-flex align-items-center">
+                        <a class="nav-link p-0" href="{% url 'home' %}"><img src="{% static 'website/images/Website_Ico.png' %}" alt="QLCA" class="nav-icon"></a>
+                      </li>
+                          {% block AppIcon %}
+                          {% endblock AppIcon %}
+
+                  <button class="navbar-toggler ml-auto hidden-sm-up float-xs-right" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
+                      <span class="navbar-toggler-icon"></span>
+                  </button>
+                  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                      <ul class="nav navbar-nav bd-navbar-nav flex-row">
+                          {% block NavItems %}
+                          {% endblock NavItems %}
+                        </ul>
+                      <ul class="nav navbar-nav flex-row ml-md-auto d-none d-md-flex">
+                          {% include 'website/help_navbar.html'%}
+                          {% include 'website/login_navbar.html'%}
+                      </ul>
+                  </div>
+              </nav>
+          </div>
+
+       {% block Apps %}
+       {% endblock Apps %}
+
+       {% include 'website/messages.html' %}
+
+        <div id="bottom-bar">
+          <div class="left-text">
+            {% if DEBUG_INFORMATION_SHOW %}
+              <p>Build number: {{BUILD_NUMBER}} Database: {{DATABASE_NAME}} Django Debug: {{DJANGO_DEBUG}} Django Version: {{DJANGO_VERSION}} Python Version: {{PYTHON_VERSION}} Current Organisation: {{CURRENT_ORGANISATION}} </p>
+            {% endif %}
+            <div class="expirationWatermark">
+              <p>Session expires in:</p>
+            </div>
+          </div>
+          <div class="center-link">
+            <a href="https://www.edag.com/de/rechtliches/impressum">Impressum</a>
+          </div>
+        </div>
+
+        {% if DEMO_VERSION_WATERMARK %}
+          <div id="demo">DEMO</div>
+        {% endif %}
+
+      <style>
+          #bottom-bar {
+            z-index: 100;
+            position: fixed;
+            background-color: rgb(53, 74, 95);
+            width: 100%;
+            bottom: 0px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 5px 0;
+
+            box-sizing: border-box;
+          }
+
+          .left-text {
+            position: absolute;
+            left: 10px; /* Adjust for desired distance from the left edge */
+            text-align: left;
+            margin: 0;
+            font-weight:normal;
+            font-size:xx-small;
+            color: rgb(180, 180, 180);
+          }
+
+          .left-text p {
+            margin: 0;
+            padding: 0;
+            line-height: 1.2; /* Adjust line height for a flatter layout */
+          }
+
+          .center-link {
+            text-align: center;
+            font-weight: bold;
+            font-size: small;
+            color: white;
+          }
+
+          #demo {
+            position: fixed;
+            bottom: 10px; /* Distance from the bottom of the page */
+            right: 10px;  /* Distance from the right side */
+            font-size: 5rem; /* Adjust size as needed */
+            font-weight: bold; /* Make it bold */
+            color: rgba(0, 0, 0, 0.1); /* Semi-transparent black */
+            z-index: 1000;
+            pointer-events: none; /* Non-interactive */
+            user-select: none; /* Prevent selection */
+            white-space: nowrap; /* Prevent wrapping */
+          }
+
+
+
+
+      </style>
+
+
+       {% block Breadcrumb %}
+       {% endblock Breadcrumb %}
+
+      
+    <style>  
+    .base-spinner {
+        position: absolute; /* Position relative to the parent */
+        top: 50%; /* Center vertically */
+        left: 50%; /* Center horizontally */
+        transform: translate(-50%, -50%); /* Adjust to truly center the spinner */
+        width: 200px; /* Fixed width for the spinner container */
+        height: 150px; /* Fixed height for the spinner container */
+        display: none; /* Flexbox for centering the spinner and text */
+        flex-direction: column; /* Arrange items vertically */
+        justify-content: center; /* Center spinner vertically */
+        align-items: center; /* Center spinner horizontally */
+        background-color: white; /* White background */
+        border-radius: 10px; /* Rounded corners */
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1); /* Small shadow */
+        padding: 15px; /* Padding inside the wrapper */
+        text-align: center; /* Center text */
+
+    }
+    .modal-spinner {
+        position: absolute; /* Position relative to the parent */
+        top: 50%; /* Center vertically */
+        left: 50%; /* Center horizontally */
+        transform: translate(-50%, -50%); /* Adjust to truly center the spinner */
+        width: 200px; /* Fixed width for the spinner container */
+        height: 150px; /* Fixed height for the spinner container */
+        display: none; /* Flexbox for centering the spinner and text */
+        flex-direction: column; /* Arrange items vertically */
+        justify-content: center; /* Center spinner vertically */
+        align-items: center; /* Center spinner horizontally */
+        background-color: rgb(245, 244, 244); /* White background */
+        border-radius: 10px; /* Rounded corners */
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1); /* Small shadow */
+        padding: 15px; /* Padding inside the wrapper */
+        text-align: center; /* Center text */
+
+    }
+    .spinner-text {
+        margin-top: 10px; /* Space between spinner and text */
+        color: #333; /* Dark text color */
+    }
+  </style>
+
+<div class="base-spinner">
+  <div class="spinner-border text-danger" >
+  </div>
+  <div class="spinner-text">Loading...</div>
+</div>   
+  <!-- Styles for modal windows -->
+      <style>
+
+        .has-error .form-control {
+            border-color: #a94442;
+            box-shadow: none;
+        }
+    
+        .has-error label {
+            color: #a94442;
+        }
+        .help-block {
+            color: #a94442;
+            margin-top: 5px;
+            margin-bottom: 5px;
+        }
+    </style>
+  <!-- UNIVERSAL MODAL WINDOW DIV -->
+
+  <div class="modal fade" id="modal-window">
+    <div class="modal-dialog">
+      <div class="modal-content">
+      </div>
+    </div>
+    </div>
+
+  <!-- UNIVERSAL MODAL WINDOW DIV XL -->
+  <div class="modal fade" id="modal-window-xl">
+    <div class="modal-dialog modal-xl">
+      <div class="modal-content">
+      </div>
+    </div>
+    </div>
+
+  <!-- UNIVERSAL MODAL WINDOW DIV LG -->
+  <div class="modal fade" id="modal-window-lg">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+      </div>
+    </div>
+    </div>
+
+ 
+  </body>
+  </html>
+
+
+

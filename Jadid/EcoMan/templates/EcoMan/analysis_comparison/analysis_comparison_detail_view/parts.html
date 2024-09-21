@@ -1,0 +1,278 @@
+{% load static %}
+{% load weight_unit_switch  %}
+
+
+
+
+<div class="container-fluid p-1" >
+   
+    <div class="row m-0 p-1">
+ 
+        <div class="col-md-6  m-0 p-0  bgSuperHellgrau" style="border-right: 2px solid">
+            <div class="col-md-12  border-right border-dark m-0 p-0 ">
+                    <div class="row ">
+                        <div class="col-md-12  m-2 p-2">
+                            <p><strong>Left Concept</strong></p> 
+                            <button type="button" class="btn btn-primary btn-sm    js-object-update " 
+                                    id="#modal-window" 
+                                    data-url="{% url 'EcoMan:lca_part_create_modal' pk_analysis=analysis_left.id is_automotive=current_analysis.analysis_settings.is_automotive weight_unit=current_analysis.analysis_settings.weight_units %}">Add LCA Part</button>
+
+                            <button type="button" class="btn btn-secondary btn-sm  js-object-update " 
+                                    id="#modal-window-xl"
+                                    data-url="{% url 'EcoMan:lca_part_add_from_template' pk_analysis=analysis_left.id %}">
+                                    Add Template Part
+                            </button>
+                        </div> 
+                    </div>
+                    <div class="row border-bottom border-dark" style="margin-left: 0px; margin-right: 0px;">
+                        <div class="col-md-2">
+                            <b>Image:</b>    <br>                                 
+                        </div>   
+                        <div class="col-md-3">
+                            <b>Part Name:</b>    <br> 
+                        </div>    
+                        <div class="col-md-4">
+                            <b>Properties:</b>    <br>     
+                        </div>                    
+                        <div class="col-md-3">
+                            <b>Actions: </b>   <br>  
+                        </div> 
+                    </div>                                        
+                {% for object in lca_parts_left_all_list %} 
+
+                {% if object.commodity %}
+                        <div class="row border-bottom border-dark" style="margin-left: 0px; margin-right: 0px; height: 150px; background-color:rgba(20,180,20,0.08)" >
+                    {% else %}
+ 
+                        <div class="row border-bottom border-dark" style="margin-left: 0px; margin-right: 0px; height: 150px;" >
+                    {% endif %}  
+
+                        {% if error_message %}
+                        <p><strong>{{ error_message }}</strong></p>
+                        {% endif %}
+                        <div class="col-md-2 center-block align-self-center">
+                            <div class="container-fluid p-1"  >
+                                {% if object.part_model.logo %}
+                                    <img class="card-img-top" src='{{ object.part_model.logo.url }}' alt="Error: 404" style="max-height: 145px;">     
+                                {% else %}
+                                    <img class="card-img-top" src="{% static '/website/images/Part_Icon.png' %}" alt="Default" style="max-height: 145px;">
+                                {% endif %}      
+                            </div>                                                     
+                        </div>
+                        <div class="col-md-3">
+                            {{ object.part_model.name }}
+                        </div>                        
+                            <div class="col-md-4">     
+                                <table>
+                                    <tbody>
+                                        <tr>
+                                            <td><small>Id:</small></td>
+                                            <td><small>{{ object.part_model.id }}</small></td>
+                                        </tr>
+                                        <tr>
+                                            <td><small>Weight:</small></td>
+                                            
+                                            <td><small>{% weight_conversion object.part_model.weight weight_unit weight_decimals %} </small></td>
+                                        </tr>
+                                        <tr>
+                                            <td><small>Multiplier:</small></td>
+                                            <td><small>{{ object.multiplier }}</small></td>
+                                        </tr>
+                                        <tr>
+                                            {% if analysis_comparison.analysis_settings.is_automotive %}
+                                                <td colspan="2"><small>{{ object.get_vehicle_weight_participation_display}}</small></td>
+                                            {% endif %} 
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>  
+             
+                        <div class="col-md-3 d-flex  p-2 ">
+                            <style>
+                                .vertical_{{object.id}} {
+                                  border-right: 30px solid {{object.color}};
+                                  margin: 1px;
+                                  width: 100%;
+                                }
+
+                                .button-box {
+                                    display: grid;
+                                    grid-template-columns: 40px 40px ;
+                                    grid-template-rows: 40px 40px 40px;
+                                    gap: 5px 2em;
+                                  }
+                                  
+                                  .button-box :first-child {
+                                      align-self: center;
+                                  }                            
+                            </style>                              
+                            <div class="button-box">
+                                <button type="button" class="btn btn-light js-object-update" id="#modal-window" data-toggle="tooltip" data-placement="top" title="Edit" data-url="{% url 'EcoMan:lca_part_update' pk=object.id is_automotive=current_analysis.analysis_settings.is_automotive weight_unit=current_analysis.analysis_settings.weight_units  %}" style="padding: 0px; height: 35px; width: 35px; " >
+                                    <img src="{% static '/website/images/Edit_Icon.png' %}" width="35" style="margin-left: auto; margin-right: auto; display: block;">
+                                </button>
+
+
+                                <a href="{% url 'EcoMan:lca_part_move' pk_source_analysis=analysis_left.id pk_target_analysis=analysis_right.id pk_lca_part=object.id%}" class="btn btn-light" data-toggle="tooltip" data-placement="top" title="Move part to concept on the right"  style="padding: 0px; height: 35px; width: 35px;">
+                                    <img src="{% static '/website/images/Move_Right_Icon.png' %}" width="35" style="margin-left: auto; margin-right: auto; display: block;" >
+                                </a>
+
+
+                                <button type="button" class="btn btn-light js-object-delete" id="#modal-window" data-toggle="tooltip" data-placement="top" title="Remove" data-url="{% url 'EcoMan:lca_part_delete' object.id %}" style="padding: 0px; height: 35px; width: 35px;" >
+                                    <img src="{% static '/website/images/Trash_Icon.png' %}" width="35" style="margin-left: auto; margin-right: auto; display: block;" >
+                                </button>
+
+
+                                <a href="{% url 'EcoMan:lca_part_add_mirror' pk_source_analysis=analysis_left.id pk_target_analysis=analysis_right.id pk_lca_part=object.id%}" class="btn btn-light" data-toggle="tooltip" data-placement="top" title="Copy part to the concept on the right" style="padding: 0px; height: 35px; width: 35px;">
+                                    <img src="{% static '/website/images/Copy_Right_Icon.png' %}" width="35" style="margin:0 auto;  display: block;" >
+                                </a>
+
+                                <a href="{% url 'EcoMan:quick_part_clone' pk_analysis=analysis_left.id pk_lca_part=object.id%}" class="btn btn-light" data-toggle="tooltip" data-placement="top" title="Clone part and its process inventory" style="padding: 0px; height: 35px; width: 35px;">
+                                    <img src="{% static '/website/images/File_Duplicate_Icon.png' %}" width="35" >
+                                </a>                              
+                            </div>
+                                <div class="vertical_{{object.id}}"> </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+        <div class="col-md-6  m-0 p-0  bgSuperHellgrau">
+            <div class="col-md-12 m-0 p-0 ">
+
+                    <div class="row ">
+                        <div class="col-md-12  m-2 p-2">
+                            <p><strong>Right Concept</strong></p> 
+                            <button type="button" class="btn btn-primary btn-sm    js-object-update "
+                                    id="#modal-window" 
+                                    data-url="{% url 'EcoMan:lca_part_create_modal' pk_analysis=analysis_right.id is_automotive=current_analysis.analysis_settings.is_automotive weight_unit=current_analysis.analysis_settings.weight_units %}">Add LCA Part</button>
+
+                            <button type="button" class="btn btn-secondary btn-sm  js-object-update "
+                                    id="#modal-window-xl"
+                                    data-url="{% url 'EcoMan:lca_part_add_from_template' pk_analysis=analysis_right.id %}">
+                                    Add Template Part
+                            </button>
+                        </div> 
+                    </div>
+
+
+                    <div class="row border-bottom border-dark" style="margin-left: 0px;margin-right: 0px;">
+                        <div class="col-md-2">
+                            <b>Image:</b>    <br>                                 
+                        </div>   
+                        <div class="col-md-3">
+                            <b>Part Name:</b>    <br> 
+                        </div>    
+                        <div class="col-md-4">
+                            <b>Properties:</b>    <br>     
+                        </div>                    
+                        <div class="col-md-3">
+                            <b>Actions: </b>   <br>  
+                        </div> 
+                    </div>                                        
+                {% for object in lca_parts_right_all_list %}   
+                {% if object.commodity %}
+                <div class="row border-bottom border-dark" style="margin-left: 0px; margin-right: 0px; height: 150px; background-color:rgba(20,180,20,0.08)" >
+            {% else %}
+                <div class="row border-bottom border-dark" style="margin-left: 0px; margin-right: 0px; height: 150px;" >
+            {% endif %}  
+
+                {% if error_message %}
+                <p><strong>{{ error_message }}</strong></p>
+                {% endif %}
+                <div class="col-md-2 enter-block align-self-center">
+                    <div class="container-fluid p-1"  >
+                        {% if object.part_model.logo %}
+                            <img class="card-img-top" src='{{ object.part_model.logo.url }}' alt="Error: 404" style="max-height: 145px;">     
+                        {% else %}
+                            <img class="card-img-top" src="{% static '/website/images/Part_Icon.png' %}" alt="Default" style="max-height: 145px;">
+                        {% endif %}      
+                    </div>                                                     
+                </div>
+                <div class="col-md-3">
+                    {{ object.part_model.name }}
+                </div>                        
+                    <div class="col-md-4">     
+                        <table>
+                            <tbody>
+                                <tr>
+                                    <td><small>Id:</small></td>
+                                    <td><small>{{ object.part_model.id }}</small></td>
+                                </tr>
+                                <tr>
+                                    <td><small>Weight:</small></td>
+                                    <td><small>{% weight_conversion object.part_model.weight weight_unit weight_decimals %} </small></td>
+                                </tr>
+                                <tr>
+                                    <td><small>Multiplier:</small></td>
+                                    <td><small>{{ object.multiplier }}</small></td>
+                                </tr>
+                                {% if analysis_comparison.analysis_settings.is_automotive %}
+                                    <tr>
+                                        <td colspan="2"><small>{{ object.get_vehicle_weight_participation_display}}</small></td>                
+                                    </tr>
+                                {% endif %}   
+                            </tbody>
+                        </table>
+                    </div>                
+                <div class="col-md-3 d-flex   center-block align-self-center">
+                    <style>
+                        .vertical_{{object.id}} {
+                          border-right: 30px solid {{object.color}};
+                          margin: 1px;
+                          width: 100%;
+                        }
+
+                        .button-box {
+                            display: grid;
+                            grid-template-columns: 40px 40px ;
+                            grid-template-rows: 40px 40px 40px;
+                            gap: 5px 2em;
+                          }
+                          
+                          .button-box :first-child {
+                              align-self: center;
+                          }                            
+                    </style>                              
+                    <div class="button-box">
+                        <button type="button" class="btn btn-light js-object-update" id="#modal-window" data-toggle="tooltip" data-placement="top" title="Edit" data-url="{% url 'EcoMan:lca_part_update' pk=object.id is_automotive=current_analysis.analysis_settings.is_automotive weight_unit=current_analysis.analysis_settings.weight_units %}" style="padding: 0px; height: 35px; width: 35px; " >
+                            <img src="{% static '/website/images/Edit_Icon.png' %}" width="35" style="margin-left: auto; margin-right: auto; display: block;">
+                        </button>
+
+
+                        <a href="{% url 'EcoMan:lca_part_move' pk_source_analysis=analysis_right.id pk_target_analysis=analysis_left.id pk_lca_part=object.id%}" class="btn btn-light" data-toggle="tooltip" data-placement="top" title="Move part to concept on the right"  style="padding: 0px; height: 35px; width: 35px;">
+                            <img src="{% static '/website/images/Move_Left_Icon.png' %}" width="35" style="margin-left: auto; margin-right: auto; display: block;" >
+                        </a>
+
+
+                        <button type="button" class="btn btn-light js-object-delete" id="#modal-window" data-toggle="tooltip" data-placement="top" title="Remove" data-url="{% url 'EcoMan:lca_part_delete' object.id %}" style="padding: 0px; height: 35px; width: 35px;" >
+                            <img src="{% static '/website/images/Trash_Icon.png' %}" width="35" style="margin-left: auto; margin-right: auto; display: block;" >
+                        </button>
+
+
+                        <a href="{% url 'EcoMan:lca_part_add_mirror' pk_source_analysis=analysis_right.id pk_target_analysis=analysis_left.id pk_lca_part=object.id%}" class="btn btn-light" data-toggle="tooltip" data-placement="top" title="Copy part to the concept on the right" style="padding: 0px; height: 35px; width: 35px;">
+                            <img src="{% static '/website/images/Copy_Left_Icon.png' %}" width="35" style="margin:0 auto;  display: block;" >
+                        </a>
+
+                        <a href="{% url 'EcoMan:quick_part_clone' pk_analysis=analysis_right.id pk_lca_part=object.id%}" class="btn btn-light" data-toggle="tooltip" data-placement="top" title="Clone part and its process inventory" style="padding: 0px; height: 35px; width: 35px;">
+                            <img src="{% static '/website/images/File_Duplicate_Icon.png' %}" width="35" >
+                        </a>
+                        </div>
+                        <div class="vertical_{{object.id}}"> </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+    </div>              
+
+
+                                 
+
+    </div>
+
+</div>
+
+<script type="text/javascript">
+$('#popoverData').popover();
+$('#popoverOption').popover({ trigger: "hover" });
+
+</script>

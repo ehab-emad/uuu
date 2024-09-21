@@ -1,0 +1,16 @@
+{% load static %}
+{% if user.is_authenticated %}
+<div class="card  mx-1 my-3 w-100">
+    <div class="card-body">
+        <strong> Current User </strong>
+    </div>
+    <div class="card-footer">
+        {% if user.username %}
+        <strong></strong> <br>{{ user.username }}
+        {% else %}
+        <strong></strong> <br>Anonymous
+        {% endif %}
+    </div>
+
+</div>
+{% endif %}

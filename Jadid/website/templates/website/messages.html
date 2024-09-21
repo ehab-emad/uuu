@@ -1,0 +1,32 @@
+ <div class="messages" id="timedMessages">
+    {% include 'website/messages_content.html' %}
+</div>
+        
+    <script>
+        $(document).ready(function () {
+            let messagesDiv = $('#timedMessages');
+            // success-messages timeout for 5 sec 
+            setTimeout(function () {
+                messagesDiv.find('.alert-success').removeClass("show");
+                setTimeout(function () {
+                    messagesDiv.find('.alert-success').addClass("hidden");
+                }, 100);
+            }, 5000); // <!-- time in milliseconds -->
+
+            // info-messages timeout for 7 sec 
+            setTimeout(function () {
+                messagesDiv.find('.alert-info').removeClass("show");
+                setTimeout(function () {
+                    messagesDiv.find('.alert-info').addClass("hidden");
+                }, 100);
+            }, 7000); // <!-- time in milliseconds-->
+
+            // warning-messages timeout for 15 sec 
+            setTimeout(function () {
+                messagesDiv.find('.alert-warning').removeClass("show");
+                setTimeout(function () {
+                    messagesDiv.find('.alert-warning').addClass("hidden");
+                }, 100);
+            }, 15000); 
+        });
+    </script>

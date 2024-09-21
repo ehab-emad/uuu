@@ -1,0 +1,445 @@
+{% load static %}
+{% load filters %}
+
+<div class="card animationoff my-1">
+    <div class="card-body ">                   
+        <h3>Objects:</h3>
+            {% if object_details %}
+            {% for key, value in object_details.objects.items %}
+            {% if request|check_parent:value %}                      
+            <div class="card mx-3 my-1" style="width: max; cursor: pointer" >
+                <div class="d-flex">                 
+                    <div class="card-body" >
+                        <div class="container-fluid m-0 p-0">
+                            <div class="row">                             
+                            <div class="col-md-3">                     
+                                <img class="card-img-left" src="{{value.gui.icon}}" style="height: 7rem; object-fit: contain;"/>    
+                            </div>
+                            <div class="col-md-9">
+                                <div class="row">                    
+                                    {% for key2, value2 in value.methods.items %}
+                                        <div class="card mx-3 my-1" style="width: 7rem; cursor: pointer" >
+                                            <div class="d-flex align-items-center"> 
+                                                {% if "Selected" in value.properties and value2.gui.text == "Activate"%}
+                                                    {% if value.properties.Selected.value %}
+                                                        <img class="card-img-top" src="{% static '/website/images/done.png' %}" style="object-fit: contain;"/>
+                                                    {% else %}
+                                                        <img class="card-img-top" src="{% static '/website/images/failed.png' %}" style="object-fit: contain;"/>
+                                                    {% endif %}
+                                                {% else %}
+                                                    <div class="card-body" >                                                    
+                                                        <img class="card-img-top" src="{{value2.gui.icon}}" style="object-fit: contain;"/>
+                                                    </div>
+                                                {% endif %}
+                                                                                            
+
+
+                                            </div>
+                                            <div class="card-footer p-1 " style="font-size: 12px; height:100%">
+                                                {% if "Selected" in value.properties and value.gui.text == "Activate"%}
+                                                    {% if value.properties.Selected.value %}                                                    
+                                                        Activated
+                                                    {% else %}   
+                                                        Deactivated                                                 
+                                                    {% endif %}
+                                                {% else %}
+                                                    {{ value2.gui.text }}         
+                                                {% endif %}                                                
+                                            </div>                                        
+                                            <a  class="stretched-link obj_action" 
+                                                        id = "obj_action" 
+                                                        object_uid="{{value.uid}}" 
+                                                        norm_part_uuid="{{value.object.uuid}}"
+                                                        properties='{{ value.properties_as_string}}'
+                                                        config = '{{value.object.config}}'
+                                                        method_id="{{value2.id}}" 
+                                                        master_id="{{master_id}}" 
+                                                        object_type ="{{object_details.gui.type}}" 
+                                                        object_id ="{{object_details.id}}">  </a>                         
+                                        </div> 
+                                    {% endfor %}   
+                                    
+                                    
+                                    <div class="card mx-3 my-1" style="width: 7rem; cursor: pointer" >
+                                        <div class="d-flex align-items-center">                 
+                                            <div class="card-body" >                                                
+                                                <img class="card-img-top" src="{% static '/website/images/remove.png' %}" style="object-fit: contain;"/>
+                                            </div>
+                                        </div>
+                                        <div class="card-footer p-1 " style="font-size: 12px; height:100%">
+                                            Force Remove
+                                        </div>                                        
+                                        <a  class="stretched-link obj_remove_action" 
+                                                    id = "obj_remove_action" 
+                                                    object_uid="{{value.uid}}" 
+                                                    norm_part_uuid="{{value.object.uuid}}"
+                                                    properties='{{ value.properties_as_string}}'
+                                                    config = '{{value.object.config}}'
+                                                    master_id="{{master_id}}" 
+                                                    object_type ="{{object_details.gui.type}}" 
+                                                    object_id ="{{object_details.id}}"> </a>                         
+                                    </div> 
+
+
+
+                                    <div class="card mx-3 my-1" style="width: 7rem; cursor: pointer">                
+                                        <div class="d-flex align-items-center position">
+                                            <div class="card-body" id="content_controls_{{value.uid}}">                                                
+                                                <img class="card-img-top" src="{% static '/website/images/Project_Icon.png' %}" style="object-fit: contain;"/>
+                                            </div>
+                                        </div>
+                                        <div class="card-footer p-1 " style="font-size: 12px; height:100%">                                            
+                                            <a class="link start_position"
+                                                id = "{{value.uid}}">
+                                                Start Interactive Positioning (BETA)
+                                            </a>
+                                        </div>
+                                    </div>  
+                                    
+
+
+                                    <div class="card mx-3 my-1" style="width: 7rem; cursor: pointer" >
+                                        <div class="d-flex align-items-center">                 
+                                            <div class="card-body" >
+                                                
+                                                <img class="card-img-top" src="{% static '/website/images/Project_Icon.png' %}" style="object-fit: contain;"/>
+                                            </div>
+                                        </div>
+                                        <div class="card-footer p-1 " style="font-size: 12px; height:100%">                                        
+                                            {% comment %} modify values for future {% endcomment %}
+                                            <button type="button" 
+                                                id="#modal-window-xl" 
+                                                style="height: 100%; width: 100%"
+                                                class="btn btn-warning btn-sm js-object-update " 
+                                                object_uid="{{value.uid}}" 
+                                                method_id="{{value2.id}}" 
+                                                master_id="{{master_id}}" 
+                                                object_type ="{{object_details.gui.type}}" 
+                                                object_id ="{{object_details.id}}"                                                
+                                                data-url="{% url 'NormMan:norm_part_select_modal' object_details.id value.uid master_id%}">
+                                                Select
+                                            </button>
+                                        </div>
+                                    </div> 
+
+
+                                    <!-- <div class="card mx-3 my-1" style="width: 7rem; cursor: pointer" >
+                                        <div class="d-flex align-items-center">                 
+                                            <div class="card-body" >
+                                                
+                                                <img class="card-img-top" src="{% static '/website/images/Project_Icon.png' %}" style="object-fit: contain;"/>
+                                            </div>
+                                        </div>
+                                        <div class="card-footer p-1 " style="font-size: 12px; height:100%">                                        
+                                            {% comment %} modify values for future {% endcomment %}
+                                            <button type="button" 
+                                                id="#modal-window-xl" 
+                                                style="height: 100%; width: 100%"
+                                                class="btn btn-warning btn-sm js-object-update " 
+                                                object_uid="{{value.uid}}" 
+                                                method_id="{{value2.id}}" 
+                                                master_id="{{master_id}}" 
+                                                object_type ="{{object_details.gui.type}}" 
+                                                object_id ="{{object_details.id}}"                                                
+                                                data-url="{% url 'NormMan:norm_part_select_modal' object_details.id value.uid master_id%}">
+                                                Activate
+                                            </button>
+                                        </div>
+                                    </div>  -->
+<!-- 
+                                    <div class="card mx-3 my-1" style="width: 7rem; cursor: pointer" >
+                                        <div class="d-flex align-items-center">                 
+                                            <div class="card-body" >
+                                                {% if "Selected" in value.properties %}
+                                                    {% if value.properties.Selected.value %}
+                                                        <img class="card-img-top" src="{% static '/website/images/done.png' %}" style="object-fit: contain;"/>
+                                                    {% else %}
+                                                        <img class="card-img-top" src="{% static '/website/images/failed.png' %}" style="object-fit: contain;"/>
+                                                    {% endif %}
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                        <div class="card-footer p-1 " style="font-size: 12px; height:100%">
+                                            {% if "Active" in value.properties %}
+                                                {% if value.properties.Active.value %}                                                    
+                                                    Activated
+                                                {% else %}   
+                                                    Deactivated                                                 
+                                                {% endif %}
+                                            {% endif %}
+                                        </div>                                                     
+                                        <a  class="stretched-link obj_action" 
+                                                    id = "obj_action" 
+                                                    object_uid="{{value.uid}}" 
+                                                    norm_part_uuid="{{value.object.uuid}}"
+                                                    properties='{{ value.properties_as_string}}'
+                                                    config = '{{value.object.config}}'
+                                                    method_id="{{value2.id}}"
+                                                    master_id="{{master_id}}" 
+                                                    object_type ="{{object_details.gui.type}}"
+                                                    parent_uid = "{{ value.properties.ParentUID.value }}"
+                                                    object_id ="{{object_details.id}}"> </a>                         
+                                    </div>  -->
+
+
+
+                                </div>                                
+                            </div>
+                        </div>
+                        </div>                              
+                    </div>
+                </div>
+                <div class="card-footer p-1 " style="font-size: 12px; height:100%">
+                    {% if 'UUID' in value.properties %}
+                        Name: {{ value.properties.Name.value }} | UUID: {{ value.properties.UUID.value }} 
+                    {% else %}
+                        Name: {{ value.properties.Name.value }}
+                    {% endif %} 
+                </div>   
+                
+                 {% comment %}"{% url 'NormMan:NormPartsCategoryListView' object.pk%}" {% endcomment %}
+            </div> 
+            {% endif %}
+            {% endfor %}            
+
+
+            {% else %}
+                No actions
+            {% endif %}              
+    </div>
+</div> 
+
+
+
+
+
+
+
+<script  type=text/javascript>
+dragElement(document.getElementById("mydiv"));
+
+function dragElement(elmnt) {
+  var pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
+  if (document.getElementById(elmnt.id + "header")) {
+    // if present, the header is where you move the DIV from:
+    document.getElementById(elmnt.id + "header").onmousedown = dragMouseDown;
+  } else {
+    // otherwise, move the DIV from anywhere inside the DIV:
+    elmnt.onmousedown = dragMouseDown;
+  }
+
+  function dragMouseDown(e) {
+    e = e || window.event;
+    e.preventDefault();
+    // get the mouse cursor position at startup:
+    pos3 = e.clientX;
+    pos4 = e.clientY;
+    document.onmouseup = closeDragElement;
+    // call a function whenever the cursor moves:
+    document.onmousemove = elementDrag;
+  }
+
+  function elementDrag(e) {
+    e = e || window.event;
+    e.preventDefault();
+    // calculate the new cursor position:
+    pos1 = pos3 - e.clientX;
+    pos2 = pos4 - e.clientY;
+    pos3 = e.clientX;
+    pos4 = e.clientY;
+    // set the element's new position:
+    elmnt.style.top = (elmnt.offsetTop - pos2) + "px";
+    elmnt.style.left = (elmnt.offsetLeft - pos1) + "px";
+  }
+
+  function closeDragElement() {
+    // stop moving when mouse button is released:
+    document.onmouseup = null;
+    document.onmousemove = null;
+  }
+}
+    </script>
+
+
+
+
+
+
+
+
+<script type="text/javascript">   
+    $('.toast').toast()         
+
+    $(".start_position").click(function(){
+        var WebGLrenderer = new THREE.WebGLRenderer().getContext();
+        var id = $(this).attr('id');
+        console.log(WebGLrenderer)
+        WebGLrenderer.forceContextLoss
+        var objects = document.getElementsByClassName('d-flex align-items-center position')
+        for (obj of objects) {
+            var pic = '<img class="card-img-top" src="{% static "/website/images/Project_Icon.png" %}" style="object-fit: contain;"/>';
+            pic = $.parseHTML( pic);
+            $("#".concat(obj.children[0].id)).html(pic);
+
+        }
+        var part1 =  '<div class="stlviewer" id = "stlviewer_';
+        var part2 = '" style="display:block; position:relative; width: 100%; height: auto;   ; " data-src="stl_file_list"> </div>';
+        var html = part1.concat(id, part2)
+        var name = "#content_controls_";            
+        html = $.parseHTML( html);
+        $(name.concat(id)).html(html);
+        var obj = document.getElementById("stlviewer_".concat(id))
+        position(obj);
+    });
+
+
+
+    $('.obj_action').click(function(data){
+        console.log($('#toaster').find("#toast_zero")[0].hidden); 
+        console.log($('#toaster').find("#toast_one")[0].hidden); 
+
+        var currentdate = new Date(); 
+        var datetime = currentdate.getHours() + ":"  + currentdate.getMinutes() + ":" + currentdate.getSeconds();
+        if($('#toaster').find("#toast_zero")[0].className.includes("show")){
+            console.log('I am shown');  
+            if($('#toaster').find("#toast_one")[0].className.includes("show")){
+                console.log('I am shown as well'); 
+                // use the first one - overwrite                
+                $('#toaster').find("#toast_zero").find('#time_stamp')[0].innerHTML = datetime;
+                $('#toaster').find("#toast_zero").find('#content_text')[0].innerHTML = "Description: " 
+                                                                + $(this).attr('description') + ' <br>'
+                                                                + "Hint: "
+                                                                + $(this).attr('hint');
+                $('#toaster').find("#toast_zero").toast('show');
+            } else {
+                console.log('I am hidden and can be shown')    
+                // use the second one
+                $('#toaster').find("#toast_one").find('#time_stamp')[0].innerHTML = datetime;
+                $('#toaster').find("#toast_one").find('#content_text')[0].innerHTML = "Description: " 
+                                                                + $(this).attr('description') + ' <br>'
+                                                                + "Hint: "
+                                                                + $(this).attr('hint');
+                $('#toaster').find("#toast_one").toast('show');
+            }
+
+        } else {
+            console.log('I am hidden and can be shown')
+            console.log($('#toaster').find("#toast_zero"))
+            console.log($('#toaster').find("#toast_zero").find('#time_stamp')[0])
+            console.log($('#toaster').find("#toast_zero").find('#time_stamp')[0].innerHTML)
+            // just write to first one
+            $('#toaster').find("#toast_zero").find('#time_stamp')[0].innerHTML = datetime;
+            $('#toaster').find("#toast_zero").find('#content_text')[0].innerHTML ="Description: " 
+                                                                + $(this).attr('description') + ' <br>'
+                                                                + "Hint: "
+                                                                + $(this).attr('hint');
+            $('#toaster').find("#toast_zero").toast('show');
+        }
+                
+        trigger_id = "object_utilisation"
+        method_id = $(this).attr('method_id');
+        master_id = $(this).attr('master_id');
+        object_id = $(this).attr('object_id');
+        object_uid = $(this).attr('object_uid');
+        shared_component_uuid = $(this).attr('norm_part_uuid');
+        parameters = $(this).attr('properties');   
+        config = $(this).attr('config');    
+        console.log(config);
+        // var newstring = config.replace(/'/g, '"');
+        // newstring = newstring.replace(/True/g, "true");
+        // newstring = newstring.replace(/False/g, "false");
+        // console.log(JSON.parse(newstring));
+
+        const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+        var url = "{% url 'NormMan:MethodSendToFramework' %}";
+        var o_data = { 
+            "command": trigger_id,
+            "trigger_id": object_id, 
+            'method_id': method_id,
+            'master_id': master_id,
+            'object_uid': object_uid, 
+            'session_id': sessionStorage.getItem("session_id"),            
+            'session_type': sessionStorage.getItem("session_type"),
+            'shared_component_uuid' : shared_component_uuid,
+            'shared_component_type' : null,
+            'parameters': parameters,
+            'config': config
+            }
+        $.ajax({                       // initialize an AJAX request
+        type:'POST',
+        headers: { 'X-CSRFToken': csrftoken },
+        url: url, //$(this).data('url'), 
+        dataType: 'json',                  
+        data: o_data,
+    
+            success: function (data) {   // `data` is the return of the `load_parts` view function   
+        } }
+        );
+
+    });
+
+
+    $('.obj_remove_action').click(function(data){
+        // Here is a remove operation to go - meaning, clicked object 
+        // has to be removed through
+        trigger_id = "object_creation"
+        method_id = $(this).attr('method_id');
+        master_id = $(this).attr('master_id');
+        object_id = $(this).attr('object_id');
+        object_uid = $(this).attr('object_uid');
+        const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+        var url = "{% url 'NormMan:RemoveObject' %}";
+        var o_data = { 
+            "command": "object_utilisation",
+            "trigger_id": object_id, 
+            'method_id': method_id,
+            'master_id': master_id,
+            'object_uid': object_uid, 
+            'session_id': sessionStorage.getItem("session_id"),            
+            'session_type': sessionStorage.getItem("session_type"),
+            'shared_component_uuid' : null,
+            'shared_component_type' : null,
+            'parameters': null   
+            };        
+        // $.ajax({
+        //     type:'POST',
+        //     headers: { 'X-CSRFToken': csrftoken },
+        //     url: url,
+        //     dataType: 'json',                  
+        //     data: o_data,
+        //     success: function (data) {}}
+        // );
+        // url = "{% url 'NormMan:MethodSendToFramework' %}";        
+        $.ajax({
+            type:'POST',
+            headers: { 'X-CSRFToken': csrftoken },
+            url: url,
+            dataType: 'json',                  
+            data: o_data,
+            success: function (data) {
+                $("#actions").html() ;
+                $("#actions").html(data.html_object_actions) ;                  
+                $("#step_details").html() ;
+                $("#step_details").html(data.html_object_details) ;    
+                $("#details").html() ;
+                $("#details").html(data.html_workflow_details) ;
+            }}
+        );
+    });
+</script>  
+
+<script type=text/javascript> 
+	// var myObjects = new THREE.Object3D();
+	// var mesh_shared_object = new THREE.Object3D();      
+	// var scene = new THREE.Scene();
+	// var schrink = false;
+    var objects = document.getElementsByClassName('stlviewer')
+    console.log(objects)
+    for (obj of objects) {
+        // code block to be executed
+        console.log(obj)
+        position(obj);
+    }
+    // position(document.getElementById('stlviewer_EDAG_hey'));    
+
+</script>

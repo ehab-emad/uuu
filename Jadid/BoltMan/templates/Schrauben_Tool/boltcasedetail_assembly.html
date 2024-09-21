@@ -1,0 +1,167 @@
+<div class="container-fluid" id="washer-container">
+    <div class="row-no-gutters">
+
+        <div class="col-md-12">
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>Washers:</th>                                                                                    
+                    <th>Id:</th>
+                    <th>Name:</th>
+                    <th>Norm:</th>
+                    <th>Type:</th>                    
+                    <th>Outer Diameter:</th>     
+                    <th>Inner Diameter:</th>                                                            
+                    <th>Thickness:</th>
+                    <th>Material:</th>
+                    <th>Info:</th>                                                                                                        
+                    <th>Action </th>                                                                                      
+                </tr>
+                </thead>
+                <tbody>                                                                           
+                    <tr>
+                        {% if bolt_case.washer_head %}
+                            <td>on bolt head:</td>
+                            <td>{{ bolt_case.washer_head.id }}</td>
+                            <td>{{ bolt_case.washer_head.name }}</td>
+                            <td>{{ bolt_case.washer_head.norm }}</td> 
+                            <td>{{ bolt_case.washer_head.washer_type }}</td>                                                                                    
+                            <td>{{ bolt_case.washer_head.odiameter }}</td>
+                            <td>{{ bolt_case.washer_head.idiameter }}</td>                                                     
+                            <td>{{ bolt_case.washer_head.thickness }}</td>   
+                            <td>
+                            <div class="btn-group d-flex" role="group" aria-label="...">
+                            <button type="button" class="btn btn-light btn-sm js-boltcase-update "  data-url="{% url 'BoltMan:boltcase_update_part' bolt_case.id %}">{{ bolt_case.washer_head.material.name }}</button>                            
+                            </div>
+                            </td>                                                                                               
+                            <td>
+                            <div class="btn-group d-flex" role="group" aria-label="...">
+                                    <button type="button" class="btn btn-primary btn-sm js-boltmaterial-update " data-url="{% url 'BoltMan:part_update' bolt_case.id %}">Usage</button>                              
+                            </div>
+                            </td>
+                            <td>
+                            <div class="btn-group d-flex" role="group" aria-label="...">                            
+                                    <button type="button" class="btn btn-warning btn-sm js-part-update " data-url="{% url 'BoltMan:part_update' bolt_case.id %}">Edit</button>
+                            </div>
+                            </td>                            
+                        {% else %}
+                            <td>
+                                on bolt head:
+                            </td>  
+                            <td></td>  
+                            <td></td>
+                            <td></td>
+                            <td></td>      
+                            <td></td>
+                            <td></td>                            
+                            <td></td>
+                            <td></td>                           
+                            <td>
+                            <div class="btn-group d-flex" role="group" aria-label="...">
+                                    <button type="button" class="btn btn-primary btn-sm" data-url="#" disabled>Usage</button>                              
+                            </div>
+                            </td>
+                            <td>
+                            <div class="btn-group d-flex" role="group" aria-label="...">                            
+                                    <button type="button" class="btn btn-warning btn-sm" data-url="#" disabled>Edit</button>
+                            </div>
+                            </td>                       
+
+                        {% endif %}
+                    </tr>
+
+                    <tr>
+                        {% if bolt_case.washer_nut %}
+                            <td>on bolt nut:</td>
+                            <td>{{ bolt_case.washer_nut.id }}</td>
+                            <td>{{ bolt_case.washer_nut.name }}</td>
+                            <td>{{ bolt_case.washer_nut.norm }}</td> 
+                            <td>{{ bolt_case.washer_nut.washer_type }}</td>                                                                                    
+                            <td>{{ bolt_case.washer_nut.odiameter }}</td>
+                            <td>{{ bolt_case.washer_nut.idiameter }}</td>                                                     
+                            <td>{{ bolt_case.washer_nut.thickness }}</td>   
+                            <td>
+                            <div class="btn-group d-flex" role="group" aria-label="...">
+                            <button type="button" class="btn btn-light btn-sm js-boltcase-update "  data-url="{% url 'BoltMan:boltcase_update_part' bolt_case.id %}">{{ bolt_case.washer_nut.material.name }}</button>                            
+                            </div>
+                            </td>                                                                                               
+                            <td>
+                            <div class="btn-group d-flex" role="group" aria-label="...">
+                                    <button type="button" class="btn btn-primary btn-sm js-boltmaterial-update " data-url="{% url 'BoltMan:part_update' bolt_case.id %}">Usage</button>                              
+                            </div>
+                            </td>
+                            <td>
+                            <div class="btn-group d-flex" role="group" aria-label="...">                            
+                                    <button type="button" class="btn btn-warning btn-sm js-part-update " data-url="{% url 'BoltMan:part_update' bolt_case.id %}">Edit</button>
+                            </div>
+                            </td>                            
+                        {% else %}
+                            <td>
+                                Washer on bolt nut:
+                            </td>  
+                            <td></td>  
+                            <td></td>
+                            <td></td>
+                            <td></td>      
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>                           
+                            <td>
+                            <div class="btn-group d-flex" role="group" aria-label="...">
+                                    <button type="button" class="btn btn-primary btn-sm" data-url="#" disabled>Usage</button>                              
+                            </div>
+                            </td>
+                            <td>
+                            <div class="btn-group d-flex" role="group" aria-label="...">                            
+                                    <button type="button" class="btn btn-warning btn-sm" data-url="#" disabled>Edit</button>
+                            </div>
+                            </td>                       
+
+                        {% endif %}
+                    </tr>
+                    <tr>
+                            <td></td>  
+                            <td></td>
+                            <td></td>
+                            <td></td>   
+                            <td></td>
+                            <td></td> 
+                            <td></td>   
+                            <td></td>
+                            <td></td>     
+                            <td></td>                                                                                                     
+                    <td>
+                     <div class="btn-group d-flex" role="group" aria-label="....">
+                    <button type="button" class="btn btn-danger btn-sm js-boltcase-update " data-url="{% url 'BoltMan:boltcase_select_washer' bolt_case.id %}"> Select </button>
+                    </div>
+                    <td>
+                    </tr>
+
+                </tbody>
+            </table>
+
+
+ 
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="row">
+                        <div class="col-md-2">
+                            <h3 class="align-middle">
+                                Description:
+                            </h3>
+                        </div>   
+                        <div class="col-md-8" >
+
+                            <p class="align-middle">
+                                Washer on the nut will be ignored when bolt case type: "Screw Joint"
+                            </p>  
+
+                        </div>   
+           
+                    </div>
+                </div>
+            </div>
+        </div> 
+    </div>                   
+</div>

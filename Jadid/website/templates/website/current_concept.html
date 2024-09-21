@@ -1,0 +1,37 @@
+{% load static %}
+
+
+<div class="card  mx-1 my-3 w-100">
+    <div class="card-body">
+        {% if concept.logo == 'Default Concept Logo' %}
+        <img class="card-img-top" src="{% static '/website/images/Concept_Icon.png' %}" alt="Concept image not available1">
+        {% else %}
+        <img class="card-img-top" src="{{ concept.logo }}" alt="Concept image not available">
+        {% endif %}
+    </div>
+    <div class="card-footer">
+        <strong> Current concept </strong>
+        {% if concept %}
+        Name: <br>{{ concept.name }}
+        {% endif %}
+        {% if concept %}
+        Weight: <br>{{ concept.weight|floatformat:3 }}
+        {% endif %}
+
+    </div>
+    <div class="container-fluid" id="concepts-container">
+        <div class="row">
+
+                <button type="button" class="btn btn-warning btn-sm btn-block js-concept-update " data-url=#>
+                    Edit
+                </button>
+
+                <button type="button" class="btn btn-danger btn-sm btn-block js-concept-delete " data-url=#>
+                    Delete
+                </button>
+
+        </div>
+    </div>
+</div>
+
+

@@ -1,0 +1,85 @@
+{% load widget_tweaks %}
+<style type="text/css">
+    label{
+        display: block; /* add this */
+        padding-top: 20px;
+    }    
+</style>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group{% if field.errors %} has-error{% endif %}" >
+
+                        <label for="id_UUID">Component UUID</label>
+                        {{ form.UUID|add_class:"form-control"}}
+                        <span class="text-danger">{{ form.UUID.errors|striptags }}</span>
+
+                        <label for="id_name">Name</label>
+                        {{ form.name|add_class:"form-control"}}
+                        <span class="text-danger">{{ form.name.errors|striptags }}</span>
+
+                        <label for="id_type">Shared Component Type</label>
+                        {{ form.type|add_class:"form-control"}}
+                        <span class="text-danger">{{ form.type.errors|striptags }}</span>
+
+                        <label for="id_accessibility">Accessibility</label>
+                        {{ form.accessibility|add_class:"form-control"}}
+                        <span class="text-danger">{{ form.accessibility.errors|striptags }}</span>
+ 
+                        <label for="id_project_model">Project</label>
+                        {{ form.project_model|add_class:"form-control"}}
+                        <span class="text-danger">{{ form.project_model.errors|striptags }}</span>
+
+                        <label for="id_supplier_name">Supplier Name</label>
+                        {{ form.supplier_name|add_class:"form-control"}}
+                        <span class="text-danger">{{ form.supplier_name.errors|striptags }}</span>
+
+                        <label for="id_name">Supplier Part Number</label>
+                        {{ form.supplier_part_number|add_class:"form-control"}}
+                        <span class="text-danger">{{ form.supplier_part_number.errors|striptags }}</span>
+
+                        <label for="id_oem_reference_name">OEM Reference Name</label>
+                        {{ form.oem_reference_name|add_class:"form-control"}}
+                        <span class="text-danger">{{ form.oem_reference_name.errors|striptags }}</span>
+
+                        <label for="id_oem_reference_name">OEM Reference Name</label>
+                        {{ form.oem_reference_name|add_class:"form-control"}}
+                        <span class="text-danger">{{ form.oem_reference_name.errors|striptags }}</span>
+
+                        <label for="id_oem_reference_part_number">OEM Reference Part Number</label>
+                        {{ form.oem_reference_part_number|add_class:"form-control"}}
+                        <span class="text-danger">{{ form.oem_reference_part_number.errors|striptags }}</span>
+
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <label for="id_thumbnail">Thumbnail File</label>
+                    {{ form.thumbnail|add_class:"form-control"}}
+                    <span class="text-danger">{{ form.thumbnail.errors|striptags }}</span>
+
+                    <label for="id_stl_thumbnail">3D Thumbnail (.stl) FIle</label>
+                    {{ form.stl_thumbnail|add_class:"form-control"}}
+                    <span class="text-danger">{{ form.stl_thumbnail.errors|striptags }}</span>
+                    
+                    <label for="id_file_workflow_json">Workflow .JSON File</label>
+                    {{ form.file_workflow_json|add_class:"form-control"}}
+                    <span class="text-danger">{{ form.file_workflow_json.errors|striptags }}</span>
+
+                    <label for="id_file_catia_part">Catia .CatPart File</label>
+                    {{ form.file_catia_part|add_class:"form-control"}}
+                    <span class="text-danger">{{ form.file_catia_part.errors|striptags }}</span>
+
+                    <label for="id_file_configuration">Configuration .XLSX File</label>
+                    {{ form.file_configuration|add_class:"form-control"}}
+                    <span class="text-danger">{{ form.file_configuration.errors|striptags }}</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+

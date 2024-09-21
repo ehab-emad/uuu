@@ -1,0 +1,37 @@
+
+{% extends 'BoltMan/index_vehicle.html' %}
+{% block Cards %}
+    <div class="container-fluid" id="vehicles-container">
+        <div class="row">
+        {% if vehicles %}
+            {% for vehicle in vehicles %}
+                <div class="card" style="width: 18rem;" >
+                    <img class="card-img-top" src="{{ vehicle.logo }}"  alt="Card image cap">
+                    <div class="card-body" >
+                        <h5 class="card-title">{{ vehicle.name }}</h5>
+                        <p class="card-text">{{ vehicle.project }}</p>
+                        <div class="container-fluid">
+                            <div class="row"  >
+                                <div class="col-md-4 text-center">
+                                                            {% comment %} <a href="{% url 'BoltMan:vehicledetailview_boltcase' vehicle.id %}" class="btn btn-info btn-sm">Details</a> {% endcomment %}
+                                </div>
+                                <div class="col-md-4 text-center">
+                                                            {% comment %} <button type="button" class="btn btn-warning btn-sm js-vehicle-update " data-url="{% url 'BoltMan:vehicle_update' vehicle.id %}">
+                                                                Edit
+                                                                </button> {% endcomment %}
+                                </div>
+                                <div class="col-md-4 text-center">
+                                                            {% comment %} <button type="button" class="btn btn-danger btn-sm js-vehicle-delete " data-url="{% url 'BoltMan:vehicle_delete' vehicle.id %}">
+                                                                Delete
+                                                                </button> {% endcomment %}
+                                </div>
+                            </div>
+                            </div> 
+                    </div>
+                </div>
+
+            {% endfor %}
+        {% endif %}
+        </div>
+    </div> 
+{% endblock Cards %}

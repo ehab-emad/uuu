@@ -1,0 +1,122 @@
+{% load static %}
+<style>
+    .stlviewer {
+        width: 100%;
+        height: 100%;
+        background: #f0f0f0;
+        overflow: hidden;
+    }
+</style>
+
+
+<div class="row">     
+    <div class="col-md-12">     
+        {% if instance %}
+            <div class="container-fluid">
+                <div class="row"> 
+                    <div class='col-md-5'>
+                        <div class="col-md-12 center-block align-self-center">
+                            <div class="container-fluid p-1"  >
+                                <div class="stlviewer"
+                                    id='stlviewer_EDAG_LightCocoon'
+                                    style="display: block;
+                                        position: relative;
+                                        width: 100%;
+                                        height: 0;
+                                        padding-bottom: 100%"
+                                    data-src='{{ stl_file_list | safe }}'>
+                                </div>
+
+
+
+                                {% if instance.wrl_representation %}
+                                {% endif %}
+                                    <div 
+                                            class="btn btn-light"
+                                            id="preview_3D_visualisation"
+                                            aria-pressed="true"
+                                            data-toggle="tooltip"
+                                            data-placement="top"
+                                            title="Add object to the viewer"
+                                            style="padding: 0px;
+                                                height: 60px;
+                                                width: 60px">
+                                    <img src="{% static '/website/images/Preview_3D_Visualisation.png' %}"
+                                        width="60px"
+                                        style="margin-left: auto;
+                                                margin-right: auto;
+                                                display: block">
+                                </div>
+                                                              
+                                
+                            </div>                                                     
+                        </div> 
+                    </div> 
+                    <div class='col-md-7'>
+                        Description: <strong> {{ instance.description}} </strong><br>
+                        Owner: <strong> {{ instance.owner}} </strong><br>
+                        Created: <strong> {{ instance.created_at}} </strong><br>
+                        Modified: <strong> {{ instance.updated_at}} </strong><br>      
+                    </div>                        
+                </div>
+            </div>
+            {% else%}
+            <h1> Please Select an Instance</h1>
+            {% endif %}    
+    </div>
+</div>  
+
+<script type="importmap">
+    {
+      "imports": {
+        "three": "{% static 'js/part_visualiser/three.js/build/three.module.min.js' %}",
+        "three/addons/": "{% static 'js/part_visualiser/three.js/examples/' %}"
+      }
+    }
+</script>
+
+<script type="module">
+    console.log("Accessing module imports ...")
+    import {StlViewer} from "{% static 'js/part_visualiser/StlViewer.js' %}";
+    import {CocoonAnimator} from "{% static 'js/part_visualiser/ModelViewerInternals/ModelViewerAnimators.js' %}"
+    window.stlviewer_EDAG_LightCocoon = new StlViewer('stlviewer_EDAG_LightCocoon', new CocoonAnimator(), "{% static 'js/part_visualiser/' %}");
+</script>
+
+
+<script>
+
+
+    $(document).on('click', '#preview_3D_visualisation', function (event)
+    {
+        event.preventDefault();
+        window.stlviewer_EDAG_LightCocoon = new StlViewer('stlviewer_EDAG_LightCocoon', new CocoonAnimator(), "{% static 'js/part_visualiser/' %}");
+        stlviewer_EDAG_LightCocoon.loadWRML('{{ instance.wrl_representation }}')
+
+    });
+
+
+</script>
+
+
+  
+  <script type=text/javascript>
+    function set_preview_3D_visualisation(id) {
+      document.getElementById('set_preview_picture_screenshot_' + id).classList.remove('active');                                                
+      document.getElementById('set_preview_3D_visualisation_' + id).classList.add('active');  ;
+      document.getElementById('thumbnail_' + id).style.display = "none";
+      document.getElementById('stlviewer_' + id).style.display = "block";                                       
+      // animate(document.getElementById('stlviewer_' + id));
+    };
+
+    function set_preview_picture_screenshot(id) {
+      document.getElementById('set_preview_3D_visualisation_' + id).classList.remove('active');                                                
+      document.getElementById('set_preview_picture_screenshot_' + id).classList.add('active');  ;              
+      document.getElementById('stlviewer_' + id).style.display = "none";                                                  
+      document.getElementById('thumbnail_' + id).style.display = "block";
+    };
+
+    function set_preview_technical_drawing(id) {
+      //document.getElementById('stlviewer_' + id).style.display = "none";                                                  
+      //document.getElementById('thumbnail_' + id).style.display = "block";
+    };                                            
+  </script>

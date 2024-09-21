@@ -1,0 +1,182 @@
+{% extends 'CatiaFramework/base.html' %}
+{% load widget_tweaks %}
+{% load static %}
+{% block Breadcrumb %}
+{% csrf_token %}
+{% load icon_status_filter %}
+{% endblock Breadcrumb %}
+
+{% block Cards %}
+
+<style type="text/css">
+        .stages {
+        border-radius: 7px;
+        box-shadow: 0 3px 3px rgba(0,0,0,.08), 0 0 3px rgba(50,50,0,.05);
+        margin: 10px;
+        background-color: rgba(240, 240, 240, 1)
+    }
+        .selected {
+        transform: none !important;
+        transition: none !important;
+        box-shadow: 0 5px 5px rgba(0,0,0,.7), 0 0 5px rgba(50,50,0,.7);
+        background-color: rgb(200, 240, 200)
+   }
+   .selected:hover {
+
+        background-color: rgb(200, 240, 200)
+   }
+
+
+
+    .stlviewer {
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+      }
+      .progress-bar-container {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.8);
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+
+    #progress-bar {
+        width: 30%;
+        margin-top: 0.5%;
+        height: 6%;
+    }
+    .bgEDAGBraun{
+        background-color: rgb(184, 172, 165);
+    }
+    .bgEDAGBeige{
+        background-color: rgb(216, 207, 201);
+    }
+    .bgEDAGGrau{
+        background-color: rgb(208, 216, 223);
+    }
+    .bgEDAGHellgrau{
+        background-color: rgb(228, 229, 230);
+    }
+
+    .bgSuperHellgrau{
+        background-color: rgb(240, 240, 240);
+    }
+    .bgDebianRed{
+        background-color: #D71946;
+    }
+</style>
+
+
+
+
+<style>
+    #spinner_gif {
+        position: fixed; /* Fixed positioning to stay in place while scrolling */
+        top: 50%; /* Center vertically */
+        left: 50%; /* Center horizontally */
+        transform: translate(-50%, -50%); /* Offset the positioning to truly center */
+        z-index: 1000; /* High z-index to ensure it is on top */
+        background-color: rgba(255, 255, 255, 0.8); /* Optional: semi-transparent background */
+        padding: 20px; /* Optional: padding around the spinner */
+        border-radius: 10px; /* Optional: rounded corners */
+        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1); /* Optional: shadow effect */
+    }
+    #overlay {
+    position: fixed; /* Fixed positioning to stay in place while scrolling */
+    top: 0; /* Cover the entire screen from the top */
+    left: 0; /* Cover the entire screen from the left */
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+    z-index: 999; /* Ensure it is below the spinner but above other content */
+    display: flex; /* Flexbox to center the spinner */
+    justify-content: center; /* Center horizontally */
+    align-items: center; /* Center vertically */
+}
+    </style>
+    
+
+<div id="spinner" style="display:none;">
+    <div id="spinner_gif">
+        <img src="{% static 'CatiaFramework/gokraken.gif' %}" alt="Loading...">
+    </div>
+</div>
+
+
+
+<!-- SortableJS and its Bootstrap theme -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.15.2/Sortable.min.js"></script>
+
+<div class="container-fluid ">
+        <div class="row">
+            <div class="col-md-3">
+                <div class="container-fluid m-0 p-0" id="workflow_tree">
+                    <div class="card  animationoff my-1">
+                        <div class="card-body"  >       
+                            {%if workflow.type == "USER_SESSION" %}
+                                <h3>Workflow Session: 
+                                </h3>   
+                        
+                            {%else%}
+                                {%if session.UUID  %}
+                                <a href="{% url 'CatiaFramework:dashboard_switch_edit_configure' uuid_workflow=workflow.UUID  uuid_session=session.UUID editor_mode=editor_mode %}" class="btn btn-secondary btn-sm btn-block">Switch Edit/Review</a>
+                                {%endif%}
+                                    <h3>Workflow Viewer: </h3> 
+                            {%endif%}                         
+                                {% include './viewer/workflow_tree.html' %}                                                 
+                        </div>   
+                    </div>  
+                
+                    <div class="container-fluid m-0 p-0" id="instruction">
+                        <div class="card animationoff my-1">
+                            <div class="card-body " >                    
+                                <h3> Instruction:</h3>
+                                    Select Item or point Element with mouse                  
+                            </div>
+                        </div>   
+                    </div> 
+            </div> 
+                                                          
+            <div class="col-md-9 align-items-stretch">
+                <div class="container-fluid m-0 p-0" id="stage">
+                    <div class="card animationoff my-1">
+                        <div class="card-body " >  
+                            <h3> Actions: </h3>
+                                {% comment %} this content will be dynamic based on Workflow meta.json  {% endcomment %}                                               
+                        </div>
+                    </div>                   
+            </div>     
+            <div class="container-fluid m-0 p-0" id="objects">
+                <div class="card animationoff my-1">
+                    <div class="card-body " >  
+                        <h3> Objects: </h3>
+                            {% comment %} this content will be dynamic based on Workflow meta.json  {% endcomment %}                                               
+                    </div>
+                </div>                   
+            </div>
+        </div>                                       
+    </div>
+
+         {% include 'NormMan/toaster.html'%}
+</div>
+
+  <!-- MODAL WINDOW DIV -->
+
+  <div class="modal fade" id="modal-window-override-parameters">
+    <div class="modal-dialog">
+      <div class="modal-content">
+      </div>
+    </div>
+    </div>
+
+
+
+
+{% endblock Cards %}

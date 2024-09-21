@@ -1,0 +1,73 @@
+{% extends 'website/base.html' %}
+{% block title %}{{ album }}{% endblock %}
+{% block albums_active %}active{% endblock %}
+
+{% block body %}
+
+<div class="container-fluid">
+	<div class="row">
+		<div class="col-md-12">
+			<div class="row">
+				<div class="col-md-2">
+                    <!-- Car Card -->
+                    <div class="card" >
+                        <img class="card-img-top img-responsive" src="{{ vehicle.logo }}"  alt="Card image cap">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ vehicle.name }}</h5>
+                            <p class="card-text">{{ vehicle.project }}</p>                                                 
+                            <p>PM: {{ vehicle.project.project_manager }}</p>
+                             <p class="card-text">Owner: {{ vehicle.user }}</p>                           
+                            <p class="card-text">Created: {{ vehicle.created_at }}</p>
+                            <p class="card-text">Database ID: {{ vehicle.id }}</p>       
+                        </div>
+                    </div>
+				</div>
+				<div class="col-md-10">
+					<div class="row">
+						<div class="col-md-12">
+                            <!-- Tabs-->
+                            <ul class="nav nav-tabs">
+                            <li class="nav-item">
+                            {% if boltinstance %} 
+                                <a class="nav-link active" href="{% url 'BoltMan:vehicledetailview_boltcaseinstance' vehicle.id %}">">Bolt instances</a>
+                             {% else %}   
+                                <a class="nav-link " href="{% url 'BoltMan:vehicledetailview_boltcaseinstance' vehicle.id %}">Bolt instances</a>
+                            {% endif %}
+
+
+                            </li>
+                            <li class="nav-item">
+                            {% if boltcase %} 
+                                <a class="nav-link active" href="{% url 'BoltMan:vehicledetailview_boltcase' vehicle.id %}">Bolt cases</a>
+                             {% else %}   
+                                <a class="nav-link " href="{% url 'BoltMan:vehicledetailview_boltcase' vehicle.id %}">Bolt cases</a>
+                            {% endif %}
+
+
+                            </li>
+                            <li class="nav-item">
+                            {% if part %}                             
+                                <a class="nav-link active" href="{% url 'BoltMan:vehicledetailview_part' vehicle.id %}">Parts</a>
+                             {% else %}   
+                                 <a class="nav-link" href="{% url 'BoltMan:vehicledetailview_part' vehicle.id %}">Parts</a>                            
+                            {% endif %}
+                            </li>
+
+                            </ul>
+						</div>
+					</div>
+
+                    {% block details %}
+
+
+                    {% endblock %}
+
+
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+{% endblock %}

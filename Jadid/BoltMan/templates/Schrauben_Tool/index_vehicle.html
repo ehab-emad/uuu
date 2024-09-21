@@ -1,0 +1,78 @@
+{% extends 'BoltMan/base.html' %}
+
+{% load static %}
+
+{% block cards %}
+<div class="container-fluid" id="vehicles-container">
+    <div class="row">
+        <div class="col-md-10 border-right">
+            <div class="row">
+                {% if vehicles %}
+                {% for vehicle in vehicles %}
+                <div class="card  mx-3 my-3" style="width: 18rem;">
+                    <div class="card-body">
+                        {% if vehicle.logo == 'Default Vehicle Logo' %}
+                            <img class="card-img-top" src="{% static '/website/images/Vehicle_Icon.png' %}"  alt="Vehicle image not available1">
+                        {% else %}
+                            <img class="card-img-top" src="{{ vehicle.logo }}" alt="Vehicle image not available">
+                        {% endif %}
+                    </div>
+                    <div class="card-footer">
+                       <h5 class="card-title">{{ vehicle.name }}</h5>
+                        <p class="card-text">{{ vehicle.project }}</p>
+                        <div class="container-fluid">
+                            <div class="row">
+                                <div class="col-md-4 text-center">
+                                    <a href="{% url 'ConceptMan:index_concept' vehicle.id %}" class="btn btn-info btn-sm">Concepts</a>
+                                </div>
+                                <div class="col-md-4 text-center">
+                                    <button type="button" class="btn btn-warning btn-sm js-vehicle-update " data-url="{% url 'vehicle_update' vehicle.id %}">
+                                        Edit
+                                    </button>
+                                </div>
+                                <div class="col-md-4 text-center">
+                                    <button type="button" class="btn btn-danger btn-sm js-vehicle-delete " data-url="{% url 'vehicle_delete' vehicle.id %}">
+                                        Delete
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+                {% endif %}
+
+            </div>
+        </div>
+
+        <div class="col-md-2">
+            <div class="position-fixed" >
+                <div class="card mx-3 my-3" style="width: 12rem;">
+                      {% if user.current_project.logo == 'Default Project Logo' %}
+                            <img class="card-img-top" src="{% static '/website/images/Project_Icon.png' %}"  alt="Project image not available1">
+                      {% else %}
+                            <img class="card-img-top" src="{{ user.current_project.logo }}" alt="Project image not available">
+                      {% endif %}
+
+                    <div class="card-body">
+
+                    </div>
+                    <div class="card-footer">
+                        {% if user.current_project %}
+                            Name: {{ user.current_project.name }}
+                        {% endif %}
+                    </div>
+                    <h5 class="card-header">
+                        {% if user.username %}
+                        User: {{ user.username }}
+                        {% else %}
+                        User: Anonymous
+                        {% endif %}
+                    </h5>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+{% endblock cards %}

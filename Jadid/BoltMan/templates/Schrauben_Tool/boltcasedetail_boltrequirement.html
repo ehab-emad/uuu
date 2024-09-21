@@ -1,0 +1,51 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-12">
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>Maximum External Axial Force (N):</th>
+                    <th>Maximum External Axial Force (N):</th>
+                    <th>Maximum Temperature (°C):</th>
+                    <th>Minimum Temperature (°C):</th>
+                    <th>External loading:</th>
+                    <th>Tightening method:</th>
+
+                    <th>
+
+                    
+                    </th>   
+                </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>{{ bolt_case.meaf }}</td>
+                        <td>{{ bolt_case.mesf }}</td>
+                        <td>{{ bolt_case.maxtemp }}</td>
+                        <td>{{ bolt_case.mintemp }}</td>
+                        <td>{{ bolt_case.elc }}</td>
+                        <td>{{ bolt_case.tightening_method }}</td>
+
+                        <td>
+                                        <button type="button" 
+                                            class="btn btn-warning btn-sm js-boltcase-update " 
+                                            data-url="{% url 'BoltMan:boltcase-requirementsview' bolt_case.id %}">
+                                            Edit
+                                        </button>
+                        </td>       
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <h2>
+                    Description:
+                </h2>
+                <p>
+                    Tip: Alex? Alex need tips!
+                </p>
+            </div>
+        </div>
+    </div>
+</div>

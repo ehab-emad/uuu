@@ -1,0 +1,79 @@
+{% load widget_tweaks %}
+
+<form id="filter_form_object" >
+    {% csrf_token %}
+    <div class="panel panel-default overflow-auto" style="max-height: 450px">
+        {% for field in filter_form %}
+            <div class="form-group{% if field.errors %} has-error{% endif %}">
+            <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+            {% render_field field class="form-control" %}
+            {% for error in field.errors %}
+                <p class="help-block">{{ error }}</p>
+            {% endfor %}
+            </div>
+        {% endfor %}
+        <button type="submit" class="btn btn-primary">Search</button>
+    </div>
+</form>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+    const form = document.getElementById('filter_form_object');
+
+    if (form) {
+        form.addEventListener('submit', function(event) {
+            event.preventDefault(); // Prevent the default form submission
+            // Create FormData object from the form
+            const formData = new FormData(form);
+
+            // Convert FormData to a plain object (optional)
+            const dataObject = {};
+            formData.forEach((value, key) => {
+                dataObject[key] = value;
+            });
+
+            // Example: Log the data object
+            console.log(dataObject);
+
+            // You can also send the form data using fetch or XMLHttpRequest
+            var url = "{% url 'NormMan:filter_shared_component' %}";
+            const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+            $.ajax({                       // initialize an AJAX request
+                type:'POST',
+                headers: { 'X-CSRFToken': dataObject['csrfmiddlewaretoken'] },
+                url: url, //$(this).data('url'), 
+                dataType: 'json',                  
+                data: dataObject,
+                beforeSend: function() {$('#spinner').show()},
+                success: function (data) {                                        
+                    $('#modal-window-xl').html(data.html_form);
+                    $('#modal-window-xl').modal('show');
+                    $('#spinner').hide();
+                } 
+            });
+        });
+    }
+    }),
+
+    function pass_further() { 
+        event.preventDefault();
+        const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+        debugger;
+        const formData = new FormData(document.getElementById('filter_form_object'));
+        var url = "{% url 'NormMan:filter_shared_component' %}";
+        $.ajax({                       // initialize an AJAX request
+            type:'POST',
+            headers: { 'X-CSRFToken': csrftoken },
+            url: url, //$(this).data('url'), 
+            dataType: 'json',                  
+            data: formData,
+            beforeSend: function() {$('#spinner').show()},
+            success: function (data) {                                        
+                $('#modal-window-xl').html(data.html_form);
+                $('#modal-window-xl').modal('show');
+                $('#spinner').hide();
+            } 
+        });
+    }
+
+</script>

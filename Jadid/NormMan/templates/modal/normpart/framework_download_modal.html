@@ -1,0 +1,105 @@
+{% load static %}
+{% load widget_tweaks %}
+
+
+<form method="post"       
+      id="modal-form"
+      class="js-object-update-form" 
+      command = "no_command"
+      action="{% url 'NormMan:framework_download_modal' %} " 
+      propagate-url="{% url 'NormMan:FrameworkDownload' %}"
+      data-configurations-url="{% url 'NormMan:framework_download_modal' %}"
+      novalidate >
+      {% csrf_token %} 
+      <div class="modal-dialog modal-xl" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+  
+                <h5 class="modal-title" id="exampleModalLongTitle"><b>Download a framework</b></h5>
+  
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button> 
+          </div>
+          <div class="modal-body" >
+              <!-- So we want to have gif and two download buttons -->
+
+              <div class="table-responsive mb-0">
+                <table class="table table-hover  " style="font-size: 12px;">
+                  <tr >   
+                    <td style='width:30%'>
+                      Functionality of a website or commands of selected parts respectively is conditioned to running framework instance. 
+                      It is a relative low-leveled (not in terms of machine code) program, that serves as an executor of tasks requested by a website. 
+                      Thus, it is required for proper functionality. please download a file and run a batch file included. Everything will be configured automatically. 
+                      If it handles of newer version release, serveci will be updated and restarted.
+                    </td>          
+                      <td>
+                        <div class="container-fluid " style="margin-top: 20px; padding:0px">                          
+                          <img class="card-img-top"  src="/media/norm_parts/static_files/framework/framework_download.gif" style="max-width: 50rem;  ">     
+                        </div>
+                      </td>
+                  </tr>
+                  <tr >    
+                    <!-- <td>
+                      <div class="col-md-12">
+                        <div class="row">
+                          <div class="form-group{% if field.errors %} has-error{% endif %}" >
+                            <label for="check">Required to accept</label>
+                              {{ form.check|add_class:"form-control"}}
+                            <span class="text-danger">{{ form.check.errors|striptags }}</span>
+                          </div>
+                        </div>
+                      </div>                      
+                    </td> -->
+                    <td>
+                      <!-- <button type="submit" class="btn btn-success">Download</button> -->
+                      <!-- <button type="button" onclick="download()" class="btn btn-success">Download</button> -->
+                      <!-- <a href="{% url 'NormMan:FrameworkDownload' %}" onclick="close()" class="btn btn-block btn-success btn-sm " role="button" aria-pressed="true">Download</a> -->
+                    </td>         
+                </tr>
+
+                </table>                
+              </div>
+            </div>
+            <a href="{% url 'NormMan:FrameworkDownload' %}" onclick="close()" class="btn btn-block btn-success btn-sm " role="button" aria-pressed="true">Download</a>
+        </div>
+      </div>
+</form>
+
+
+<script type=text/javascript> 
+
+function close() {
+    var matchedEle = document.querySelectorAll(".modal.fade.show")[0].id; //find the div name of the modal
+    var modalwindow = document.getElementById(matchedEle);
+    $(modalwindow).modal("hide");
+};
+
+function download() {
+    var matchedEle = document.querySelectorAll(".modal.fade.show")[0].id; //find the div name of the modal
+    var modalwindow = document.getElementById(matchedEle);
+    var url = $("#modal-form").attr("propagate-url");   
+    console.log(url)                             
+    const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+    $.ajax({              
+      url: url, 
+      type: 'POST',         
+      data: {},
+      headers: { 'X-CSRFToken': csrftoken },
+      contentType: false,
+      processData: false,
+      xhrFields:{
+            responseType: 'blob'
+        },
+      success: function (html) {
+        $(modalwindow).modal("hide");
+        var link = document.createElement('a');
+            link.href = window.URL.createObjectURL(html)
+            link.download = 'kraken.zip';
+            document.body.appendChild(link);
+            link.click();
+      }
+    });
+};
+
+</script>

@@ -1,0 +1,24 @@
+
+{% load widget_tweaks %}
+
+<form method="post" id="#modal-window" action="{% url 'EcoMan:lca_db_import_excel' form.instance.pk %}" enctype="multipart/form-data" class="js-object-update-form">
+  {% csrf_token %}
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLongTitle"><b>Import Processes from an Excel File</b></h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+        </div>
+        <div class="modal-body">
+          {% include 'modals/modal_template_form.html' %}
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+          <button type="submit" class="btn btn-primary">Submit</button>
+        </div>
+      </div>
+    </div>
+</form>
+

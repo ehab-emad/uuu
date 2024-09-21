@@ -1,0 +1,181 @@
+<div class="container-fluid" id="parts-container">
+    <div class="row-no-gutters">
+        <div class="col-md-12">
+        <div class="table-hover">        
+            <table class="table w-full">
+                <thead>
+                <tr>
+                    <th>Parts in assembly:</th>                                                                                    
+                    <th>Part number:</th>
+                    <th>Part name:</th>
+                    <th>Thickness:</th>
+                    <th>Part material:</th>    
+                    <th>Info:</th>                                                                                                        
+                    <th>Action </th>                                                                                      
+                </tr>
+                </thead>
+                <tbody>                                                                           
+                    <tr>
+                        {% if bolt_case.part1 %}
+                            <td>Part 1:</td>
+                            <td>{{ bolt_case.part1.id }}</td>
+                            <td>{{ bolt_case.part1.name }}</td>
+                            <td>{{ bolt_case.part1.thickness }}</td>   
+                            <td>
+                            <div class="btn-group d-flex" role="group" aria-label="...">
+                            <button type="button" class="btn btn-light btn-sm js-boltcase-update "  data-url="{% url 'BoltMan:boltcase_update_part' bolt_case.id %}">{{ bolt_case.part1.partmaterial.name }}</button>                            
+                            </div>
+                            </td>                                                                                               
+                            <td>
+                            <div class="btn-group d-flex" role="group" aria-label="...">
+                                    <button type="button" class="btn btn-primary btn-sm js-boltmaterial-update " data-url="{% url 'BoltMan:part_update' bolt_case.id %}">Usage</button>                              
+                            </div>
+                            </td>
+                            <td>
+                            <div class="btn-group d-flex" role="group" aria-label="...">                            
+                                    <button type="button" class="btn btn-warning btn-sm js-part-update " data-url="{% url 'BoltMan:part_update' bolt_case.part1.id %}">Edit</button>
+                            </div>
+                            </td>                            
+                        {% else %}
+                            <td>
+                                Part 1:
+                            </td>  
+                            <td></td>  
+                            <td></td>
+                            <td></td>
+                            <td></td>                            
+                            <td>
+                            <div class="btn-group d-flex" role="group" aria-label="...">
+                                    <button type="button" class="btn btn-primary btn-sm" data-url="#" disabled>Usage</button>                              
+                            </div>
+                            </td>
+                            <td>
+                            <div class="btn-group d-flex" role="group" aria-label="...">                            
+                                    <button type="button" class="btn btn-warning btn-sm" data-url="#" disabled>Edit</button>
+                            </div>
+                            </td>                       
+
+                        {% endif %}
+                    </tr>
+                    <tr>
+                        {% if bolt_case.part2 %}
+                            <td>Part 2:</td>
+                            <td>{{ bolt_case.part2.id }}</td>
+                            <td>{{ bolt_case.part2.name }}</td>
+                            <td>{{ bolt_case.part2.thickness }}</td>   
+                            <td>
+                            <div class="btn-group d-flex" role="group" aria-label="...">
+                            <button type="button" class="btn btn-light btn-sm js-boltcase-update "  data-url="{% url 'BoltMan:boltcase_update_part' bolt_case.id %}">{{ bolt_case.part2.partmaterial.name }}</button>                            
+                            </div>
+                            </td>                                                                                               
+                            <td>
+                            <div class="btn-group d-flex" role="group" aria-label="...">
+                                    <button type="button" class="btn btn-primary btn-sm js-boltmaterial-update " data-url="{% url 'BoltMan:part_update' bolt_case.id %}">Usage</button>                              
+                            </div>
+                            </td>
+                            <td>
+                            <div class="btn-group d-flex" role="group" aria-label="...">                            
+                                    <button type="button" class="btn btn-warning btn-sm js-part-update " data-url="{% url 'BoltMan:part_update' bolt_case.part2.id %}">Edit</button>
+                            </div>
+                            </td>   
+                        {% else %}
+                            <td>
+                                Part 2:
+                            </td>  
+                            <td></td>  
+                            <td></td>
+                            <td></td>
+                            <td></td>     
+                            <td>
+                            <div class="btn-group d-flex" role="group" aria-label="...">
+                                    <button type="button" class="btn btn-primary btn-sm" data-url="#" disabled>Usage</button>                              
+                            </div>
+                            </td>
+                            <td>
+                            <div class="btn-group d-flex" role="group" aria-label="...">                            
+                                    <button type="button" class="btn btn-warning btn-sm" data-url="#" disabled>Edit</button>
+                            </div>
+                            </td>         
+                        {% endif %}                                                                                        
+                    </tr>
+                    <tr>
+                        {% if bolt_case.part3 %}   
+                            <td>Part 3:</td>
+                            <td>{{ bolt_case.part2.id }}</td>
+                            <td>{{ bolt_case.part2.name }}</td>
+                            <td>{{ bolt_case.part2.thickness }}</td>  
+                            <td>
+                            <div class="btn-group d-flex" role="group" aria-label="...">
+                            <button type="button" class="btn btn-light btn-sm js-boltcase-update "  data-url="{% url 'BoltMan:boltcase_update_part' bolt_case.id %}">{{ bolt_case.part3.partmaterial.name }}</button>                            
+                            </div>
+                            </td>                                                                                               
+                            <td>
+                            <div class="btn-group d-flex" role="group" aria-label="...">
+                                    <button type="button" class="btn btn-primary btn-sm js-boltmaterial-update " data-url="{% url 'BoltMan:part_update' bolt_case.id %}">Usage</button>                              
+                            </div>
+                            </td>
+                            <td>
+                            <div class="btn-group d-flex" role="group" aria-label="...">                            
+                                    <button type="button" class="btn btn-warning btn-sm js-part-update " data-url="{% url 'BoltMan:part_update' bolt_case.part3.id %}">Edit</button>
+                            </div>
+                            </td>    
+                        {% else %}
+                            <td>
+                                Part 3:
+                            </td>  
+                            <td></td>  
+                            <td></td>
+                            <td></td>
+                            <td></td>     
+                            <td>
+                            <div class="btn-group d-flex" role="group" aria-label="...">
+                                    <button type="button" class="btn btn-primary btn-sm" data-url="#" disabled>Usage</button>                              
+                            </div>
+                            </td>
+                            <td>
+                            <div class="btn-group d-flex" role="group" aria-label="...">                            
+                                    <button type="button" class="btn btn-warning btn-sm" data-url="#" disabled>Edit</button>
+                            </div>
+                            </td>                                   
+                        {% endif %}      
+                    </tr>
+
+                    <tr>
+                            <td></td>  
+                            <td></td>
+                            <td></td>
+                            <td></td>   
+                            <td></td>
+                            <td></td>                                                
+                    <td>
+                     <div class="btn-group d-flex" role="group" aria-label="....">
+                    <button type="button" class="btn btn-danger btn-sm js-boltcase-update " data-url="{% url 'BoltMan:boltcase_update_part' bolt_case.id %}"> Select </button>
+                    </div>
+                    <td>
+                    </tr>
+                </tbody>
+            </table>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="row">
+                        <div class="col-md-2">
+                            <h3 class="align-middle">
+                                Description:
+                            </h3>
+                        </div>   
+                        <div class="col-md-8" >
+
+                            <p class="align-middle">
+                                First two parts are obligatory. Third one is optional.
+                            </p>  
+
+                        </div>   
+           
+                    </div>
+                </div>
+            </div>      
+        </div>
+    </div>
+</div>
+</div>

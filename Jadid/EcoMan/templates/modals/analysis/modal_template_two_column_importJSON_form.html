@@ -1,0 +1,46 @@
+{% load widget_tweaks %}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group{% if field.errors %} has-error{% endif %}">
+
+                        <label for="id_JSON_file">Source JSON File</label>
+                        {{ form.JSON_file|add_class:"form-control"}}
+                        <span class="text-danger">{{ form.JSON_file.errors|striptags }}</span>
+
+
+                        <label for="id_name">Name</label>
+                        {{ form.name|add_class:"form-control"}}
+                        <span class="text-danger">{{ form.name.errors|striptags }}</span>
+
+                        <label for="id_tosandbox">To Sandbox (playground will be imported to user sandbox project) </label>
+                        {{ form.tosandbox|add_class:"form-control"}}
+                        <span class="text-danger">{{ form.tosandbox.errors|striptags }}</span>
+
+                        <label for="id_is_public">Is Public</label>
+                        {{ form.is_public|add_class:"form-control"}}
+                        <span class="text-danger">{{ form.is_public.errors|striptags }}</span>
+
+                        <label for="id_project_model">Project</label>
+                        {{ form.project_model|add_class:"form-control"}}
+                        <span class="text-danger">{{ form.project_model.errors|striptags }}</span>
+
+                    </div>
+                </div>
+
+                <div class="col-md-6" id="json_import_preview" data-process-url="{% url 'EcoMan:load_json_preview' %}">
+
+                </div>
+
+
+            </div>
+            <div class="row" id="json_import_diff"></div>
+        </div>
+    </div>
+</div>
+
+
+

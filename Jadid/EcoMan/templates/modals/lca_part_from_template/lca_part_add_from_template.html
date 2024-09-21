@@ -1,0 +1,159 @@
+{% load widget_tweaks %}
+
+  <form method="post" action="{% url 'EcoMan:lca_part_add_from_template'  form.instance.id %} " 
+                        class="js-object-update-form" 
+                        id="modal-form" 
+
+                        data-process-url="{% url 'EcoMan:load_templates' %}"
+                        >
+  {% csrf_token %}
+    <div class="modal-dialog modal-xl" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+
+              <h5 class="modal-title" id="exampleModalLongTitle"><b>Add LCA Part from a template</b></h5>
+
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button> 
+        </div>
+        <div class="modal-body" >
+		<div class="col-md-12">
+	        <div class="row">
+                <div class="col-md-4 border-right">
+                    {% include 'modals/lca_part_from_template/lca_part_selection_form.html' %} 
+                </div>
+                <div class="col-md-8">
+                  <div class="row">
+                    <div class="col-md-6">                                        
+                        <label for="id_lca_part_source">LCA Template Source</label>
+                        {{ form.lca_part_source|add_class:"form-control"}}
+                        <span class="text-danger">{{ form.lca_part_source.errors|striptags }}</span>
+                    </div>
+                      <div class="col-md-6"> 
+                        <label>Search Template</label></br>
+                        <span>
+                          <input id="search_text_template" type="text" name="search_box" placeholder="Search..."> <button type="button" class="btn-secondary mr-auto" id="search_template_submit">Search</button>
+                        </span>
+                      </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-md-6">                                        
+                      <label for="id_selected_template_name">Selected Template Name</label>
+                      {{ form.selected_template_name|add_class:"form-control"}}
+                      <span class="text-danger">{{ form.selected_template_name.errors|striptags }}</span>
+                    </div>
+                      <div class="col-md-6"> 
+                          <label for="id_selected_template_id">Selected Template ID</label>
+                          {{ form.selected_template_id|add_class:"form-control"}}
+                          <span class="text-danger">{{ form.selected_template_id.errors|striptags }}</span>
+                      </div>
+                  </div>                
+                  <div class="row">
+                    <div class="col-md-12">     
+                        <label for="id_selected_template_notes">Selected Template Notes</label>
+                        {{ form.selected_template_notes|add_class:"form-control"}}
+                        <span class="text-danger">{{ form.selected_template_notes.errors|striptags }}</span>
+
+                        <div class="container-fluid" id="search_form">
+                            <div class="container-fluid" id="templates_preview">
+                                {% include 'modals/lca_part_from_template/lca_part_preview_modal_content.html' %} 
+                            </div>
+                        </div>
+
+                      </div>
+                    </div>                       
+                  </div>
+                </div>
+        </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type ="button" class = "btn btn-warning mr-auto" id="reset_modal" >Reset</button>
+          <button type="submit" id="submit_button" class="btn btn-success">Submit</button>
+        </div>
+      </div>
+    </div>
+</form>
+
+  <script>
+      $(function() {
+         $('#reset_modal').click(function() {
+                var url = $("#modal-form").attr("data-process-url");  // get the url of the `load_idemat_processs` view
+                var databaseId = 0;
+                var categoryId = 0;
+                var groupId = 0;
+                var subgroupId = 0;
+                var processId = 0;  // get the selected process group ID from the HTML input
+                var quantity = $("#id_quantity").val();
+                var form = $('.js-object-update-form')
+                var search_text = $("#search_box").val();
+                $.ajax({                       // initialize an AJAX request
+                url: url,                    // set the url of the request (= localhost:8000/hr/ajax/load_idemat_processs/)
+                    data: {
+                    'trigger_id': "reset_modal",      // trigger id help to identify which action was trigerred in modal window
+
+                    'database_id': databaseId,
+                    'category_id': categoryId,
+                    'group_id': groupId,
+                    'subgroup_id': subgroupId,
+                    'process_id': processId,
+
+                    'quantity': quantity,
+
+                    'search_text': search_text,
+                },
+                    success: function (data) {   // `data` is the return of the `load_parts` view function
+                        $('#id_lca_database_choice').attr("disabled", false);
+                        $("#id_lca_database_choice").html("");
+                        $("#id_lca_database_choice").html(data.lca_databases); // update preview window for selected item
+                        $("#id_lca_category_choice").html("");
+                        $("#id_lca_category_choice").html(data.lca_categories); // update preview window for selected item
+                        $("#id_lca_subgroup_choice").html("");
+                        $("#id_lca_subgroup_choice").html(data.lca_subgroups);  // replace the contents of the process group input with the data that came from the server
+                        $("#id_lca_group_choice").html("");
+                        $("#id_lca_group_choice").html(data.lca_groups);  // replace the contents of the process group input with the data that came from the server
+                        $("#id_lca_process_choice").html("");
+                        $("#id_lca_process_choice").html(data.lca_processes);  // replace the contents of the process group input with the data that came from the server
+                        $("#process_preview").html(data.html_process_preview);  // replace the contents of the process preview
+
+                        $('#search_form').hide();
+
+                        if (parseInt($("#id_lca_database_choice").val()) === 0) {
+                        $('#id_lca_database_choice').attr("disabled", false);
+                        $('#id_lca_category_choice').attr("disabled", true);
+                        $('#id_lca_group_choice').attr("disabled", true);
+                        $('#id_lca_subgroup_choice').attr("disabled", true);
+                        $('#id_lca_process_choice').attr("disabled", true);
+                        }
+                    }
+                });
+          });
+        });
+
+
+
+
+
+      $(document).ready(refreshOptions)
+
+      function refreshOptions() {
+          $('#id_lca_category_choice').attr("disabled", true);
+          $('#id_lca_group_choice').attr("disabled", true);
+          $('#id_lca_subgroup_choice').attr("disabled", true);
+          $('#id_lca_process_choice').attr("disabled", true);
+          $('#search_form').show();
+          document.querySelector('#submit_button').disabled = true
+
+
+      }
+
+
+
+  </script>
+
+
+
+
+
+

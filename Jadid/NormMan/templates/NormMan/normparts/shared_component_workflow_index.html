@@ -1,0 +1,73 @@
+{% extends 'NormMan/base.html' %}
+{% load static %}
+{% block Breadcrumb %}
+
+{% endblock Breadcrumb %}
+
+{% block Apps %}
+<div class="container-fluid" id="objects-container">
+    <div class="col-md-12">
+        <div class="row">
+            <div class="col-md-10 border-right">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div href="#" class="list-group-item list-group-item-secondary my-1" onclick="toggleSelection(this)">
+                            <div class="container-fluid" id="objects-container">
+                                <div class="row"> 
+                                    <div class='col-md-10'>
+                                        <h3> Workflow sessions</h3>
+                                    </div>                      
+                                </div>   
+                            </div>                              
+                        </div> 
+                        <div class="list-group">
+                            {% if objects_user %}
+                            {% for object in objects_user %}
+                            <div href="#" class="list-group-item list-group-item-action my-1" onclick="toggleSelection(this)">
+                                <div class="row">                
+                                    <div class='col-md-9 w-auto ms-auto'> 
+                                        <div class="row">                                            
+                                            <div class='col-md-3 w-auto ms-auto'>                  
+                                                Session name: <br><strong>
+                                                {%if object.name %}
+                                                    {{ object.name }}
+                                                {%else%}
+                                                    Anonymous
+                                                {%endif%}
+                                                </strong><br> 
+                                            </div>
+                                            <div class='col-md-2 w-auto ms-auto'>                 
+                                                Owner: <br>{{ object.owner.nickname }} <br>  
+                                            </div>  
+                                            <div class='col-md-4 w-auto ms-auto'>  
+                                                Created: {{ object.created_at }}    <br>             
+                                                Updated: {{ object.updated_at }}
+                                            </div>    
+                                        </div>                                                                                                                                     
+                                    </div>
+                                    <div class='col-md-3 w-auto ms-auto'>
+                                        <div class="btn-group" role="group" aria-label=" " style="display: block; text-align: right">
+                                            <a href="{% url 'NormMan:shared_component_workflow_session' object.UUID %}" class="btn btn-info btn-sm">Continue</a>
+                                            <button type="button" class="btn btn-warning btn-sm my-1 js-object-update " id="#modal-window" data-url="{% url 'NormMan:shared_component_workflow_index_update' object.UUID %}">Edit</button>
+                                            <button type="button" class="btn btn-danger btn-sm my-1 js-object-delete " id="#modal-window" data-url="{% url 'NormMan:shared_component_workflow_index_delete' object.UUID %}">Delete</button>
+                                        </div>
+                                    </div>
+                                </div>                
+                            </div>
+                            {% endfor %}
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-2">
+                {% include "website/current_project.html" %}
+                {% include "website/idemat_licence_badge.html" %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock Apps %}
+
+
+

@@ -1,0 +1,48 @@
+{% load static %}
+{% load icon_status_filter %}
+
+<style type="text/css">
+
+ div.card.object_card {
+     border-radius: 7px;
+     box-shadow: 0 3px 3px rgba(0,0,0,.08), 0 0 3px rgba(50,50,0,.05);
+     padding-right: 0px;
+     padding-left: 0px;
+     padding-top: 0px;
+     margin-top: 10px;
+     background-color: rgb(250, 250, 250)
+ }
+
+ div.card.object_card:hover{
+     transform: none !important;
+     transition: none !important;
+     box-shadow: 0 5px 5px rgba(0,0,0,.7), 0 0 5px rgba(50,50,0,.7);
+     padding-right: 0px;
+     padding-left: 0px;
+     padding-top: 0px;
+     margin-top: 10px;
+ }
+ </style>
+<div class="card animationoff my-1">
+    <div class="card-body overflow-auto" style="max-height: 2000px" >          
+        <div class="row"> 
+            <div class="col-md-12">           
+                <h3>Objects:</h3>
+            {% if editor_mode  %} 
+                <div class="btn-group ml-auto" role="group"  aria-label=" " style="display: block; text-align: right">                       
+                    <button type="button" class="btn btn-warning btn-sm my-1 js-object-create " id="#modal-window" data-url="{% url 'CatiaFramework:workflow_object_create_modal' stage.UUID %}">Add new object</button>  
+                </div> 
+            {% endif %}
+                <div id="accordion">
+                    {% include './object/object_template.html' %}  
+                </div>    
+
+            </div>
+        </div>
+    </div>
+</div> 
+
+
+
+
+

@@ -1,0 +1,32 @@
+
+{% load widget_tweaks %}
+
+<form method="post" id="#modal-form" action="{% url 'EcoMan:lca_support_ticket_create_modal' %}" class="js-object-create-form" novalidate>
+    
+  {% csrf_token %}
+    <div class="modal-dialog modal-xl" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLongTitle"><b>Issue a Ticket</b></h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+        </div>
+        <div class="modal-body">
+          <div class="alert alert-info" role="alert">
+            <pre>
+            Before you click "Send" button:
+            1. Check if your ticket is correct (further edits are not possible).
+            2. It is currently not possible to track the ticket status, we will contact you according to our capacity.
+            3. Store your ticket id for later reference.
+            </pre>
+        </div>
+            {% include 'modals/modal_template_form.html' %}
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+          <button type="submit" class="btn btn-primary">Send</button>
+        </div>
+      </div>
+    </div>
+</form>

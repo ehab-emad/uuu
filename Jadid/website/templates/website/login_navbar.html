@@ -1,0 +1,35 @@
+
+                    {% if user.is_authenticated %}
+                    <li class="nav-item dropdown">
+
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            {% if request.session.user_givenName %}
+                                <span>
+                                    <i class="fas fa-user-circle"></i>
+                                    {{ request.session.user_givenName }}
+                                    ({{ user.username }})
+                                </span>
+                            {% else %}
+                                <span><i class="fas fa-user-circle"></i> {{ user.username }}</span>
+                            {% endif %}
+                        </a>
+
+                        <div class="dropdown-menu dropdown-menu-right animate slideIn" aria-labelledby="navbarDropdown">
+                            <form id="logoutForm" method="post" action="{% url 'keycloak_logout' %}">
+                                {% csrf_token %}
+                                <button type="button"  class="btn btn-warning btn-sm btn-block" onclick="submitLogoutForm()">Logout</button>
+                              </form>
+                        </div>
+                    </li>
+                    {% else %}
+                    <li class="nav-item">
+
+                    </li>
+                    {% endif %}
+
+
+                    <script>
+                        function submitLogoutForm() {
+                          document.getElementById("logoutForm").submit();
+                        }
+                        </script>

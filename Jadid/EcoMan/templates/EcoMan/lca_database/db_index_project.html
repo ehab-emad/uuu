@@ -1,0 +1,142 @@
+{% extends 'EcoMan/base.html' %}
+
+{% load static %}
+
+{% block Apps %}
+<div class="container-fluid" id="objects-container">
+    <div class="col-md-12">
+        <div class="row">
+            <div class="col-md-10 border-right">
+                <div class="row">
+                    <div class="col-md-12 border-right">
+
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div href="#" class="list-group-item list-group-item-secondary my-1" onclick="toggleSelection(this)">
+                                    <div class="container-fluid" id="objects-container">
+                                        <div class="row"> 
+                                            <div class='col-md-10'>
+                                                <h3> LCA Databases for current project:</h3>
+                                            </div>                      
+                                        </div>   
+                                    </div>                              
+                                </div> 
+                                <div class="list-group">
+
+                                        {% if object_list %}
+                                        {% for object in object_list %}
+                                        {% if object.is_archive == False %}                                          
+                                        <div href="#" class="list-group-item list-group-item-action my-1" onclick="toggleSelection(this)">
+                                            <div class="row">                
+                                                <div class='col-md-10 w-auto ms-auto'> 
+                                                    <div class="row">          
+                                                        <div class='col-md-1 w-auto ms-auto'>  
+                                                            {% if object.logo %}
+                                                            <img class="card-img-top" src="{{ object.logo.url }}" alt="Database image not available" >
+                                                            {% else %}
+                                                                <img class="card-img-top" src="{% static 'EcoMan/images/LCA_Database_Idemat.png' %}" alt="Database image not available">
+                                                            {% endif %}
+                                                        </div>
+                                                        <div class='col-md-3 w-auto ms-auto'>                  
+                                                            Name: {{ object.name }} <br> 
+                                                            Accessibility: {{ object.accessibility }}
+                                                        </div>
+                                                        <div class='col-md-3 w-auto ms-auto'>                 
+                                                            Owner: {{ object.owner.nickname }} <br>  
+                                                            ID: {{ object.id}}
+                                                        </div>  
+                                                        <div class='col-md-2 w-auto ms-auto'>  
+                                                            Created: {{ object.created_at }}    <br>             
+                                                            Updated: {{ object.updated_at }}
+                                                        </div>    
+                                                    </div>                                                                                                                                     
+                                                </div>
+                                                <div class='col-md-2 w-auto ms-auto'>
+                                                    <div class="btn-group" role="group" aria-label=" " style="display: block; text-align: right">
+                                                        <a href="{% url 'EcoMan:lca_process_list' object.id %}" class="btn btn-info btn-sm mr-auto">Review</a>
+                                                        <button type="button" class="btn btn-danger btn-sm js-object-delete " id="#modal-window" data-url="{% url 'EcoMan:lca_db_delete' object.id %}">Send to Archive</button>    
+                                                    </div>                                                        
+                                                </div>
+                                            </div>                
+                                        </div>
+                                    {% endif %}                                        
+                                    {% endfor %}
+                                    {% endif %}
+                                </div>
+
+                                <div href="#" class="list-group-item list-group-item-secondary my-1" onclick="toggleSelection(this)">
+                                    <div class="container-fluid" id="objects-container">
+                                        <div class="row"> 
+                                            <div class='col-md-10'>
+                                                <h3> Archived (Depreciated) LCA Databases for current project</h3>
+                                            </div>                      
+                                        </div>   
+                                    </div>                              
+                                </div> 
+                                <div class="list-group">
+
+                                        {% if object_list %}
+                                        {% for object in object_list %}
+                                        {% if object.is_archive == True %}                                          
+                                        <div href="#" class="list-group-item list-group-item-action my-1" onclick="toggleSelection(this)">
+                                            <div class="row">                
+                                                <div class='col-md-10 w-auto ms-auto'> 
+                                                    <div class="row">          
+                                                        <div class='col-md-1 w-auto ms-auto'>  
+                                                            {% if object.logo %}
+                                                            <img class="card-img-top" src="{{ object.logo.url }}" alt="Database image not available" >
+                                                            {% else %}
+                                                                <img class="card-img-top" src="{% static 'EcoMan/images/LCA_Database_Idemat.png' %}" alt="Database image not available">
+                                                            {% endif %}
+                                                        </div>
+                                                        <div class='col-md-3 w-auto ms-auto'>                  
+                                                            Name: {{ object.name }} <br> 
+                                                            Accessibility: {{ object.accessibility }}
+                                                        </div>
+                                                        <div class='col-md-3 w-auto ms-auto'>                 
+                                                            Owner: {{ object.owner.nickname }} <br>  
+                                                            ID: {{ object.id}}
+                                                        </div>  
+                                                        <div class='col-md-2 w-auto ms-auto'>  
+                                                            Created: {{ object.created_at }}    <br>             
+                                                            Updated: {{ object.updated_at }}
+                                                        </div>    
+                                                    </div>                                                                                                                                     
+                                                </div>
+                                                <div class='col-md-2 w-auto ms-auto'>
+                                                    <div class="btn-group" role="group" aria-label=" " style="display: block; text-align: right">
+                                                        <a href="{% url 'EcoMan:lca_process_list' object.id %}" class="btn btn-info btn-sm mr-auto">Review</a>
+                                                        <button type="button" class="btn btn-danger btn-sm js-object-delete " id="#modal-window" data-url="{% url 'EcoMan:lca_db_restore' object.id %}">Restore to active</button>    
+                                                    </div>                                                        
+                                                </div>
+                                            </div>                
+                                        </div>
+                                    {% endif %}                                        
+                                    {% endfor %}
+                                    {% endif %}
+                                </div>
+
+
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="row">
+                    {% include "website/current_project.html" %}
+                    {% include "website/current_user.html" %}                    
+                    {% include "website/idemat_licence_badge.html" %}
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+{% endblock Apps %}
+
+
+

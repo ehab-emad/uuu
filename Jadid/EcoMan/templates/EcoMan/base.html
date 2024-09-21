@@ -1,0 +1,59 @@
+{% extends 'website/base.html' %}
+{% load static %}
+<link rel="stylesheet" type="text/css" href="{% static '/EcoMan/css/processes_container.css' %}" />
+{% block AppIcon %}
+    <li class="nav-item p-0 d-flex align-items-center">
+        <a class="nav-link p-0" href="{% url 'EcoMan:index' %}"><img src="{% static 'EcoMan/images/QLCA_Icon_Trimmed.png' %}" alt="QLCA" class="nav-icon"></a>
+      </li>
+{% endblock AppIcon %}
+
+
+{% block NavItems %}
+
+    <li class="nav-item dropdown active">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            QLCA Single Concept
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <a class="dropdown-item js-object-create" id="#modal-window-xl"  href=# data-url="{% url 'EcoMan:analysis_create_and_edit' %}">Start new job</a>
+            <a class="dropdown-item" href="{% url 'EcoMan:continue_analysis_detail_view'%}">Continue your last job</a>
+            <a class="dropdown-item" href="{% url 'EcoMan:analysis_index_view' %}">Select job to continue</a>
+            {% comment %} <a class="dropdown-item js-object-create" id="#modal-window-xl"  href=# data-url="{% url 'EcoMan:json_import_analysis_comparison_create_new'  %}">New from JSON File</a> {% endcomment %}
+        </div>
+    </li>
+    <li class="nav-item dropdown active">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            QLCA A-B Concept
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <a class="dropdown-item js-object-create" id="#modal-window-xl"  href=# data-url="{% url 'EcoMan:analysis_comparison_create_and_edit' %}">Start new job</a>
+            <a class="dropdown-item" href="{% url 'EcoMan:continue_analysis_comparison_detail_view'%}">Continue your last job</a>
+            <a class="dropdown-item" href="{% url 'EcoMan:analysis_comparison_index_view' %}">Select job to continue</a>
+            {% comment %} <a class="dropdown-item js-object-create" id="#modal-window-xl"  href=# data-url="{% url 'EcoMan:json_import_analysis_comparison_create_new'  %}">New from JSON File</a> {% endcomment %}
+        </div>
+    </li>
+
+    <li class="nav-item dropdown active">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            LCA Database
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <a class="dropdown-item js-object-create" id="#modal-window-xl" href=# data-url="{% url 'EcoMan:lca_db_create' %}">Create New</a>
+            <a class="dropdown-item" href="{% url 'EcoMan:open_database_index_view'%}">List of Open Source DB</a>
+            <a class="dropdown-item" href="{% url 'EcoMan:edag_database_index_view'%}">List of Organisation DB</a>
+            <a class="dropdown-item" href="{% url 'EcoMan:project_database_index_view'%}">List of Project DB</a>
+            <a class="dropdown-item" href="{% url 'EcoMan:lca_database_template_download' %}">Download Import Template</a>
+        </div>
+    </li>
+    <li class="nav-item active">
+        <a class="nav-link js-object-create" id="#modal-window-xl" href="#" data-url="{% url 'project_create' %}">Add new project </a>
+      
+      </li>
+{% endblock NavItems %}
+
+
+
+
+
+
+

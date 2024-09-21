@@ -1,0 +1,62 @@
+{% load static %}
+<div class="card animationoff my-1">
+    <div class="card-body " >                    
+        <h3>Process Actions:</h3>
+        <div class="row">          
+            {% if process_details %}
+            {% for key, value in process_details.methods.items %}
+            <div class="card mx-3 my-1" style="width: 7rem; cursor: pointer" >
+                <div class="d-flex align-items-center">                 
+                    <div class="card-body" >
+                
+                        <img class="card-img-top" src="{% static '/website/images/remove.png' %}" style="height:50px;  object-fit: contain;"/> 
+                    </div>
+                </div>
+                <div class="card-footer p-1 " style="font-size: 12px; height:100%">
+                    {{ value.MethodName }}               
+                </div>
+                 <a  class="stretched-link action" id = "action" method_id="{{value.id}}" workflow_id="{{workflow_id}}">  </a>
+                 {% comment %}"{% url 'NormMan:NormPartsCategoryListView' object.pk%}" onclick="Start_Framework_Action('{{value.id}}', '{{workflow_id}}')"  {% endcomment %}
+                </div> 
+            </div> 
+            {% endfor %}
+            {% else %}
+                No actions
+            {% endif %}
+
+            
+    </div>
+</div> 
+
+
+<script type="text/javascript">
+
+    $('.action').click(function(data){
+        trigger_id = "object_creation"
+        workflow_id = $(this).attr('workflow_id');
+        method_id = $(this).attr('method_id');
+        session_id = sessionStorage.getItem("workflow_session");
+        const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+        var url = "{% url 'NormMan:load_workflow_details' %}";
+        var o_data = { "trigger_id": trigger_id,
+                       "method_id": method_id, 
+                       "session_id": sessionStorage.getItem("workflow_session"), 
+                       "workflow_id": workflow_id
+                     }
+        $.ajax({                       // initialize an AJAX request
+        type:'POST',
+        headers: { 'X-CSRFToken': csrftoken },
+        url: url, //$(this).data('url'), 
+        dataType: 'json',                  
+        data: o_data,
+    
+            success: function (data) {   // `data` is the return of the `load_parts` view function   
+                $("#norm_parts_hits").html() ;
+                $("#norm_parts_hits").html('1: Norm Parts; hits: ' + data.norm_parts_hits) ;
+        } }
+        );
+
+    });
+
+
+</script>  

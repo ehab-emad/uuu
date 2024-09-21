@@ -1,0 +1,30 @@
+{% load static %}
+
+
+<div class="card  mx-1 my-3 w-100">
+    <div class="card-body">
+        {% if object.logo == 'Default Part Logo' %}
+        <img class="card-img-top" src="{% static '/website/images/Part_Icon.png' %}" alt="Part image not available1">
+        {% else %}
+        <img class="card-img-top" src="{{ object.logo }}" alt="Part image not available">
+        {% endif %}
+    </div>
+    <div class="card-footer">
+        <h5 class="card-title">{{ object.name }}</h5>
+    </div>
+    <div class="container-fluid" id="parts-container">
+        <div class="row">
+
+                <button type="button" class="btn btn-warning btn-sm btn-block js-part-update " data-url="{% url 'ConceptMan:part_update' object.id %}">
+                    Edit
+                </button>
+
+                <button type="button" class="btn btn-danger btn-sm btn-block js-part-delete " data-url="{% url 'ConceptMan:part_delete' object.id %}">
+                    Delete
+                </button>
+
+        </div>
+    </div>
+</div>
+
+

@@ -1,0 +1,245 @@
+{% load widget_tweaks %}
+
+<form method="post" id="#modal-form" action="{% url 'EcoMan:energysource_update' form.instance.pk %}" class="js-object-update-form" nonvalidate>
+    {% csrf_token %}
+
+    <div class="modal-dialog modal-xl" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle"><b>Update Vehicle Energy Source</b></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                {% include 'modals/energy_source/modal_template_form.html' %}
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="fas fa-ban"></i> Cancel</button>
+                <button type="submit"  class="btn btn-warning"><i class="fas fa-database"></i> Update</button>
+            </div>
+        </div>
+    </div>
+
+<script>
+    var energysource_1 = $("#id_energysource_1");
+    var energysource_2 = $("#id_energysource_2");
+
+    function refreshOptions() {
+
+        //var filter_es2 = "[value=" + energysource_1.val() + "]" 
+        //var tempstring = "#id_energysource_2 option" + filter_es2;
+        //$(tempstring).remove();
+
+
+        // activate all fields 
+            $('#id_estimated_energy_consumption_source_1').show();
+            $('#id_estimated_energy_consumption_source_1, label[for="id_estimated_energy_consumption_source_1"]').show()
+            $('#id_battery_type_source_1').show();
+            $('#id_battery_type_source_1, label[for="id_battery_type_source_1"]').show()
+
+            $('#id_battery_capacity_source_1').show();
+            $('#id_battery_capacity_source_1, label[for="id_battery_capacity_source_1"]').show()
+            $('#id_battery_weight_source_1').show();
+            $('#id_battery_weight_source_1, label[for="id_battery_weight_source_1"]').show()
+
+            $('#id_estimated_energy_consumption_source_2').show();
+            $('#id_estimated_energy_consumption_source_2, label[for="id_estimated_energy_consumption_source_2"]').show()
+            $('#id_battery_type_source_2').show();
+            $('#id_battery_type_source_2, label[for="id_battery_type_source_2"]').show()
+            $('#id_battery_capacity_source_2').show();
+            $('#id_battery_capacity_source_2, label[for="id_battery_capacity_source_2"]').show()
+            $('#id_battery_weight_source_2').show();
+            $('#id_battery_weight_source_2, label[for="id_battery_weight_source_2"]').show()
+
+            $('#id_efficiency_source_1').show();
+            $('#id_efficiency_source_1, label[for="id_efficiency_source_1"]').show()
+            $('#id_utilisation_ratio_source_1').show();
+            $('#id_utilisation_ratio_source_1, label[for="id_utilisation_ratio_source_1"]').show()
+
+            $('#id_efficiency_source_2').show();
+            $('#id_efficiency_source_2, label[for="id_efficiency_source_2"]').show()
+            $('#id_utilisation_ratio_source_2').show();
+            $('#id_utilisation_ratio_source_2, label[for="id_utilisation_ratio_source_2"]').show()
+
+
+        //deactivate batteryfields if Energy source not electric in either two energy source fields
+        if (energysource_1.val() !== "ES1") {
+            $('#id_estimated_energy_consumption_source_1').attr("disabled", true);
+            $('#id_battery_weight_source_1').attr("disabled", true);
+            $('#id_battery_capacity_source_1').attr("disabled", true);
+            $('#id_battery_type_source_1').attr("disabled", true);
+
+            document.getElementById('errortext_estimated_energy_consumption_source_1').style.visibility = "hidden";
+            document.getElementById('errortext_battery_weight_source_1').style.visibility = "hidden";
+            document.getElementById('errortext_battery_capacity_source_1').style.visibility = "hidden";
+            document.getElementById('errortext_battery_type_source_1').style.visibility = "hidden";
+        } else {
+            $('#id_estimated_energy_consumption_source_1').attr("disabled", false);
+            $('#id_battery_weight_source_1').attr("disabled", false);
+            $('#id_battery_capacity_source_1').attr("disabled", false);
+            $('#id_battery_type_source_1').attr("disabled", false);
+
+            document.getElementById('errortext_estimated_energy_consumption_source_1').style.visibility = "visible";
+            document.getElementById('errortext_battery_weight_source_1').style.visibility = "visible";
+            document.getElementById('errortext_battery_capacity_source_1').style.visibility = "visible";
+            document.getElementById('errortext_battery_type_source_1').style.visibility = "visible";
+        }
+        if (energysource_2.val() !== "ES1") {
+            $('#id_estimated_energy_consumption_source_2').attr("disabled", true);
+            $('#id_battery_weight_source_2').attr("disabled", true);
+            $('#id_battery_capacity_source_2').attr("disabled", true);
+            $('#id_battery_type_source_2').attr("disabled", true);
+
+            document.getElementById('errortext_estimated_energy_consumption_source_2').style.visibility = "hidden";
+            document.getElementById('errortext_battery_weight_source_2').style.visibility = "hidden";
+            document.getElementById('errortext_battery_capacity_source_2').style.visibility = "hidden";
+            document.getElementById('errortext_battery_type_source_2').style.visibility = "hidden";
+        } else {
+            $('#id_estimated_energy_consumption_source_2').attr("disabled", false);
+            $('#id_battery_weight_source_2').attr("disabled", false);
+            $('#id_battery_capacity_source_2').attr("disabled", false);
+            $('#id_battery_type_source_2').attr("disabled", false);
+
+            document.getElementById('errortext_estimated_energy_consumption_source_2').style.visibility = "visible";
+            document.getElementById('errortext_battery_weight_source_2').style.visibility = "visible";
+            document.getElementById('errortext_battery_capacity_source_2').style.visibility = "visible";
+            document.getElementById('errortext_battery_type_source_2').style.visibility = "visible";
+        }
+
+
+        //deactivate fuel consumption and capacity  source  electric 
+        if (energysource_1.val() === "ES1") {
+
+            $('#id_capacity_source_1').hide();
+            $('#id_capacity_source_1, label[for="id_capacity_source_1"]').hide()
+            $('#id_estimated_fuel_consumption_source_1').hide();
+            $('#id_estimated_fuel_consumption_source_1, label[for="id_estimated_fuel_consumption_source_1"]').hide()
+
+            $('#id_estimated_energy_consumption_source_1').show();
+            $('#id_estimated_energy_consumption_source_1, label[for="id_estimated_energy_consumption_source_1"]').show()
+            $('#id_battery_type_source_1').show();
+            $('#id_battery_type_source_1, label[for="id_battery_type_source_1"]').show()
+            $('#id_battery_capacity_source_1').show();
+            $('#id_battery_capacity_source_1, label[for="id_battery_capacity_source_1"]').show()
+            $('#id_battery_weight_source_1').show();
+            $('#id_battery_weight_source_1, label[for="id_battery_weight_source_1"]').show()
+
+
+        } else {
+
+            $('#id_capacity_source_1').show();
+            $('#id_capacity_source_1, label[for="id_capacity_source_1"]').show()
+            $('#id_estimated_fuel_consumption_source_1').show();
+            $('#id_estimated_fuel_consumption_source_1, label[for="id_estimated_fuel_consumption_source_1"]').show()
+
+
+            $('#id_estimated_energy_consumption_source_1').hide();
+            $('#id_estimated_energy_consumption_source_1, label[for="id_estimated_energy_consumption_source_1"]').hide()
+            $('#id_battery_type_source_1').hide();
+            $('#id_battery_type_source_1, label[for="id_battery_type_source_1"]').hide()
+            $('#id_battery_capacity_source_1').hide();
+            $('#id_battery_capacity_source_1, label[for="id_battery_capacity_source_1"]').hide()
+            $('#id_battery_weight_source_1').hide();
+            $('#id_battery_weight_source_1, label[for="id_battery_weight_source_1"]').hide()
+
+        }
+        if (energysource_2.val() === "ES1") {
+
+            $('#id_capacity_source_2').hide();
+            $('#id_capacity_source_2, label[for="id_capacity_source_2"]').hide()
+            $('#id_estimated_fuel_consumption_source_2').hide();
+            $('#id_estimated_fuel_consumption_source_2, label[for="id_estimated_fuel_consumption_source_2"]').hide()
+
+            $('#id_estimated_energy_consumption_source_2').show();
+            $('#id_estimated_energy_consumption_source_2, label[for="id_estimated_energy_consumption_source_2"]').show()
+            $('#id_battery_type_source_2').show();
+            $('#id_battery_type_source_2, label[for="id_battery_type_source_2"]').show()
+            $('#id_battery_capacity_source_2').show();
+            $('#id_battery_capacity_source_2, label[for="id_battery_capacity_source_2"]').show()
+            $('#id_battery_weight_source_2').show();
+            $('#id_battery_weight_source_2, label[for="id_battery_weight_source_2"]').show()
+
+        } else {
+
+            $('#id_capacity_source_2').show();
+            $('#id_capacity_source_2, label[for="id_capacity_source_2"]').show()
+            $('#id_estimated_fuel_consumption_source_2').show();
+            $('#id_estimated_fuel_consumption_source_2, label[for="id_estimated_fuel_consumption_source_2"]').show()
+
+
+            $('#id_estimated_energy_consumption_source_2').hide();
+            $('#id_estimated_energy_consumption_source_2, label[for="id_estimated_energy_consumption_source_2"]').hide()
+            $('#id_battery_type_source_2').hide();
+            $('#id_battery_type_source_2, label[for="id_battery_type_source_2"]').hide()
+            $('#id_battery_capacity_source_2').hide();
+            $('#id_battery_capacity_source_2, label[for="id_battery_capacity_source_2"]').hide()
+            $('#id_battery_weight_source_2').hide();
+            $('#id_battery_weight_source_2, label[for="id_battery_weight_source_2"]').hide()
+
+        }
+
+        //hide fields if set energy source 2 set to none
+        if (energysource_2.val() === "ES10") {
+            $('#id_capacity_source_2').hide();
+            $('#id_capacity_source_2, label[for="id_capacity_source_2"]').hide()
+            $('#id_estimated_fuel_consumption_source_2').hide();
+            $('#id_estimated_fuel_consumption_source_2, label[for="id_estimated_fuel_consumption_source_2"]').hide()
+            $('#id_efficiency_source_2').hide();
+            $('#id_efficiency_source_2, label[for="id_efficiency_source_2"]').hide()
+            $('#id_utilisation_ratio_source_2').hide();
+            $('#id_utilisation_ratio_source_2, label[for="id_utilisation_ratio_source_2"]').hide()
+
+        } 
+
+
+    }
+    refreshOptions();
+
+    energysource_1.on("change", refreshOptions);
+    energysource_2.on("change", refreshOptions);
+
+    $( "formgroup" ).on( "change", "#id_energysource_1", refreshOptions);
+
+    //$(modal-body).on("change", energysource_1, refreshOptions);
+    //$(modal-body).on("change", energysource_2, refreshOptions);
+    $(document).ready(refreshOptions)
+
+    var utilisation_source_1 = $("#id_utilisation_ratio_source_1");
+    var utilisation_source_2 = $("#id_utilisation_ratio_source_2");
+
+
+
+    function refreshUtilisation_source_1() {
+        utilisation_source_2.val(100 - utilisation_source_1.val());
+    }
+    refreshOptions();
+
+    utilisation_source_1.on("change", refreshUtilisation_source_1);
+    $(document).ready(refreshUtilisation_source_1)
+
+    function refreshUtilisation_source_2() {
+        utilisation_source_1.val(100 - utilisation_source_2.val());
+    }
+    refreshOptions();
+
+    utilisation_source_2.on("change", refreshUtilisation_source_2);
+    $(document).ready(refreshUtilisation_source_2)
+
+</script>
+</form>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

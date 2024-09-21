@@ -1,0 +1,53 @@
+{% extends 'ConceptMan/base.html' %}
+
+{% load static %}
+
+{% block Apps %}
+    <div class="container-fluid" id="concepts-container">
+        <div class="row">
+            <div class="col-md-10">
+                <div class="row">
+                    {% if concepts %}
+                    {% for concept in concepts %}
+                    <div class="card  mx-3 my-3" style="width: 18rem;">
+                        {% if concept.logo == 'Default Concept Logo' %}
+                            <img class="card-img-top" src="{% static '/website/images/Concept_Icon.png' %}"  alt="Concept image not available">
+                        {% else %}
+                            <img class="card-img-top" src="{{ vehicle.logo }}" alt="Concept image not available">
+                        {% endif %}
+                        <div class="card-body">
+                            <h5 class="card-title">{{ concept.name }}</h5>
+                       
+                            <div class="container-fluid">
+                                <div class="row">
+                                    <div class="col-md-4 text-center">
+                                        <a href="{% url 'ConceptMan:conceptdetail_part' concept.id %}" class="btn btn-info btn-sm">Details</a>
+                                    </div>
+                                    <div class="col-md-4 text-center">
+                                        <button type="button" class="btn btn-warning btn-sm js-concept-update " data-url="{% url 'ConceptMan:concept_update' concept.id %}">
+                                            Edit
+                                        </button>
+                                    </div>
+                                    <div class="col-md-4 text-center">
+                                        <button type="button" class="btn btn-danger btn-sm js-concept-delete "  data-url="{% url 'ConceptMan:concept_delete' concept.id %}">
+                                            Delete
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    {% endfor %}
+                    {% endif %}
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="row">
+                        {% include "website/current_project.html" %}
+                        {% include "website/current_vehicle.html" %}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock Apps %}

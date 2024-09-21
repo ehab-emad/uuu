@@ -1,0 +1,228 @@
+﻿{% load widget_tweaks %}
+{% load humanize %}
+{% load weight_unit_switch  %}
+<style>
+    #customers {
+      font-family: Arial, Helvetica, sans-serif;
+      border-collapse: collapse;
+      width: 100%;
+    }
+
+    #customers td, #customers th {
+      border: 1px solid #ddd;
+      padding: 8px;
+    }
+
+    #customers tr:nth-child(even){background-color: #f2f2f2;}
+
+    #customers tr:hover {background-color: #ddd;}
+
+    #customers th {
+      padding-top: 12px;
+      padding-bottom: 12px;
+      text-align: left;
+      background-color: #04AA6D;
+      color: white;
+    }
+</style>
+
+
+
+         
+
+    {% if selected_process_preview %}
+
+        <b>EDAG Process ID: </b>{{ selected_process_preview.process_id}} <br />
+        <b>Name: </b>{{ selected_process_preview.name}}<br />
+        <b>Owner: </b>{{ selected_process_preview.owner}}<br />
+        <b>Source: </b>{{ selected_process_preview.source}}<br /><br />
+        <table id="customers">
+            <thead>
+                <tr>
+                    <th >Name</th>
+                    <th >Value/Unit</th>
+                    <th >Value</th>
+                    <th >Unit</th>
+                </tr>
+            </thead>
+            <tbody>
+
+
+                <tr>
+                    <td >Unit</td>
+                    <td > </td>
+                    <td > </td>
+                    <td >{{ selected_process_preview.unit}}</td>
+                </tr>
+                <tr>
+                    <td >GWP (Global Warming Potential) </td>
+                    <td > {{ selected_process_preview.carbon_footprint|stringformat:".2e"}}</td>
+                    <td > {{ selected_process_result.carbon_footprint|stringformat:".2e"}}</td>
+                    <td >[kg] (Co2 equivalent) </td>
+                </tr>
+                <tr>
+                    <td >Ced-Total (embedded energy)</td>
+                    <td >{{ selected_process_preview.ced_total|stringformat:".2e"}}</td>
+                    <td >{{ selected_process_result.ced_total|stringformat:".2e"}}</td>
+                    <td >[MJ]</td>
+                </tr>
+                <tr>
+                    <td >Environmental Footprint </td>
+                    <td >{{ selected_process_preview.environmental_footprint|stringformat:".2e"}}</td>
+                    <td >{{ selected_process_result.environmental_footprint|stringformat:".2e"}}</td>
+                    <td >['pts'] (points)</td>
+                </tr>
+            </tbody>
+        </table>
+
+
+                {% if target_unit == 'GRAMS' and selected_process_preview.unit == 'kg' %}
+                    <p class="warning" style="color:red"> Warning: The analysis unit is set to {% weight_unit target_unit %}, but the process unit is [{{ selected_process_preview.unit }}]. Please ensure the units of your inputs match the units in units definition.</p>
+                {% endif %}
+   
+            <button type = "button" class = "btn-secondary mr-auto" id="refresh_table" >Refresh</button>
+        {% else %}
+
+       <style>
+            .select ul li.option {
+              background-color: #DEDEDE;
+              box-shadow: 0px 1px 0 #DEDEDE, 0px -1px 0 #DEDEDE;
+              -webkit-box-shadow: 0px 1px 0 #DEDEDE, 0px -1px 0 #DEDEDE;
+              -moz-box-shadow: 0px 1px 0 #DEDEDE, 0px -1px 0 #DEDEDE;
+            }
+
+            .select ul li.option:hover {
+              background-color: #B8B8B8;
+            }
+
+            .select ul li.option {
+              z-index: 1;
+              padding: 5px;
+              
+              list-style: none;
+            }
+
+            .select ul li:first-child {
+              display: block;
+            }
+
+            .select ul li {
+              cursor: default;
+            }
+
+
+       </style>   
+
+            {% if search_result %}
+                <div class="select">
+                    <p>Search Result:</p>
+                    <ul>
+                        {% for element in search_result %}
+                            <li value={{ element.id }} class="option">{{ element.name }} GWP: {{ element.carbon_footprint|stringformat:".2e" }}  </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            {% endif %}
+        {% endif %}
+
+
+  <script>
+      $('.select ul li.option').click(function () {
+        var url = $("#modal-form").attr("data-process-url");  // get the url of the `load_idemat_processs` view
+        var matchedEle = document.querySelectorAll(".modal.fade.show")[0].id; //find the div name of the modal
+        var modalwindow = document.getElementById(matchedEle)
+        var modalwindowcontent = modalwindow.getElementsByClassName("modal-content")[0];
+
+        var databaseId = 0;
+        var categoryId = 0
+        var groupId = 0;
+        var subgroupId = 0;
+        var processId = $(this).attr('value');  // get the selected process group ID from the HTML input
+
+        var quantity = $("#id_quantity").val();
+
+        var form = $('.js-object-update-form')
+        var search_text = $("#search_box").val();
+        const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+        var data_prep = {
+            'trigger_id': "option_submit",      // trigger id help to identify which action was trigerred in modal window
+            'database_id': databaseId,
+            'category_id': categoryId,
+            'group_id': groupId,
+            'subgroup_id': subgroupId,
+            'process_id': processId,
+            'quantity': quantity,
+            'search_text': search_text,
+        };
+        
+        $.ajax({                       // initialize an AJAX request
+            url: url,                    // set the url of the request (= localhost:8000/hr/ajax/load_idemat_processs/)
+            type: 'get',
+            headers: { 'X-CSRFToken': csrftoken },
+            data: data_prep,
+            success: function (data) {   // `data` is the return of the `load_parts` view function
+                $("#process_preview").html(data.html_process_preview); // update preview window for selected item
+
+
+                $("#id_lca_database_choice").html("");
+                $("#id_lca_database_choice").html(data.lca_databases);
+
+                $("#id_lca_category_choice").html("");
+                $("#id_lca_category_choice").html(data.lca_categories);
+
+                $("#id_lca_group_choice").html("");
+                $("#id_lca_group_choice").html(data.lca_groups);
+
+                $("#id_lca_subgroup_choice").html("");
+                $("#id_lca_subgroup_choice").html(data.lca_subgroups);
+
+                $("#id_lca_process_choice").html("");                
+                $("#id_lca_process_choice").html(data.lca_processes);
+      
+                document.querySelector('#submit_button').disabled =false
+
+                $('#id_lca_database_choice').attr("disabled", false);
+                $('#id_lca_category_choice').attr("disabled", false);              
+                $('#id_lca_process_choice').attr("disabled", false);
+                $('#id_lca_group_choice').attr("disabled", false);
+                $('#id_lca_subgroup_choice').attr("disabled", false);
+
+            }
+        });
+
+
+          })
+
+
+
+      $(function() {
+          $('#refresh_table').click(function() {
+                var url = $("#modal-form").attr("data-process-url");  // get the url of the `load_idemat_processs` view
+                var databaseId = $("#id_lca_database_choice").val();
+                var groupId = $("#id_lca_group_choice").val();
+                var subgroupId = $("#id_lca_subgroup_choice").val();
+                var processId = $("#id_lca_process_choice").val();  // get the selected process group ID from the HTML input
+                var quantity = $("#id_quantity").val();
+                var lca_step_id = $('.js-object-update-form').data().parameter2
+                var form = $('.js-object-update-form')
+                var search_text = $("#search_box").val();
+                $.ajax({                       // initialize an AJAX request
+                url: url,                    // set the url of the request (= localhost:8000/hr/ajax/load_idemat_processs/)
+                    data: {
+                    'trigger_id': "refresh_table",      // trigger id help to identify which action was trigerred in modal window
+                    'lca_step_id': lca_step_id,
+                    'database_id': databaseId,
+                    'group_id': groupId,
+                    'subgroup_id': subgroupId,
+                    'process_id': processId,
+                    'quantity': quantity,
+                    'search_text': search_text,
+                },
+                    success: function (data) {   // `data` is the return of the `load_parts` view function
+                    $("#process_preview").html(data.html_process_preview); // update preview window for selected item
+                    }
+                });
+          });
+        });
+
+  </script>

@@ -1,0 +1,211 @@
+<div class="container-fluid my-1">
+    <div class="row">
+        <style>
+            #chart-wrapper {
+                display: inline-block;
+                position: relative;
+                width: 100%;
+                height: 25rem;
+            }
+            #chart-wrapper-horizontal {
+                display: inline-block;
+                position: relative;
+                width: 100%;
+            }
+            .chart_legend {
+        width:100%;
+        font-size: 11px;
+        text-align:right;
+        margin-bottom: 5px;
+        border-bottom-width: 10px;
+        border-bottom-style: solid;
+        border-color: white;
+        padding-bottom: 5px;
+    }
+
+        </style>
+
+        {% comment %} DOUGHNUT LEFT CONCEPT {% endcomment %}
+        <div class="col-md-12 d-flex align-items-stretch">
+            <div class="card  mx-1 my-1" style="width: 100%;">
+                <div class="card-body" id="pie-chart-emision-left_concept">
+                    <div row style="margin-bottom: 30px">
+                        <strong>{{analysis_left.primary_property.verbose_name}} </br>
+                            distribution among parts [{{analysis_left.primary_property.unit}}] </strong> </br>
+
+                    </div>
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="row">
+
+                                            <div class="col-md-6">
+                                                <div class="chart-container" style="position: relative; width: 100%; height: 20rem">
+                                                    <canvas id="chart_parts_property_left"></canvas>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6" >
+                                                <strong>Name: {{analysis_left.name}}</strong>
+                                                Total Amount: {{ left_total_property|floatformat:weight_decimals }} [{{analysis_left.primary_property.unit}}]
+
+                                            <table class="chart_legend">
+                                                <thead>
+                                                    <tr>
+                                                        <th>     </th>
+                                                        <th>Name</th>
+                                                        <th>{{analysis_left.primary_property.unit}}</th>
+                                                        <th>Total {{analysis_left.primary_property.unit}}</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    {% for key, value in data_parts_property_left.items %}
+                                                        <tr style ="text-align:right;">
+                                                            <td style = "background-color: {{value.color}}; color: {{value.color}}">{{value.color}}</td>
+                                                            <td>{{key}}</td>
+                                                            <td>{{value.value_single|floatformat:weight_decimals}}</td>
+                                                            <td>{{value.value_total|floatformat:weight_decimals}}</td>
+                                                        </tr>
+                                                    {% endfor %}
+                                                </tbody>
+                                            </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card-footer">
+                    <div class="container-fluid my-3">
+                        <div class="row">
+                            <div class="col-md-6 text-center">
+                                <form>
+                                    <button type="button" class="btn btn-warning btn-sm js-vehicle-update " data-url="{% url 'vehicle_update' vehicle.UUID%}" disabled>Get Table Data</button>
+                                </form>
+                            </div>
+                            <div class="col-md-6 text-center">
+                                <form>
+                                    <button id="left" onclick="download('pie-chart-emision-left_concept')" type="button"  class="btn btn-warning btn-sm" data-url=# >Save As Png</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        {#Lower horizontal diagram#}
+            <div class="col-md-12 text-center d-flex align-items-stretch">
+                <div class="card  mx-1 my-1" style="width: 100%;">
+                    <div class="card-body" id="bar-chart-emision-parts-horizontal">
+                        <strong>CO2 distribution among parts [kg] </strong>
+                        <div class="container-fluid my-1">
+                            <div class="row">
+                                <div class="col-md-12 text-center d-flex align-items-stretch">
+                                    <div id="chart-wrapper-horizontal">
+                                        <canvas id="chart_processes_property_left"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card-footer">
+                        <div class="container-fluid my-3">
+                            <div class="row">
+                                <div class="col-md-6 text-center">
+                                    <form>
+                                        <button type="button" class="btn btn-warning btn-sm js-vehicle-update " data-url="#" disabled>Get Table Data</button>
+                                    </form>
+                                </div>
+                                <div class="col-md-6 text-center">
+                                    <form>
+                                        <button onclick="download('bar-chart-emision-parts-horizontal')" type="button"  class="btn btn-warning btn-sm" data-url=# >Save As Png</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    //Configuration of midlle bar diagram comparing Total amount of CO2 of both concepts
+
+    var config_parts_property_left = {
+          type: 'doughnut',
+
+            data: {{ data_parts_property_left_json|safe }},
+          options: {
+                layout: {
+                    padding:2
+                    },
+            title: {
+                display: true,
+                text: 'Weight distribution [g]'
+            },
+                plugins: {
+                legend: {
+                    display: false,
+                  position: "bottom",
+                  align: "middle",
+                    labels: {
+                        color: 'rgb(255, 99, 132)'
+                    }
+                }
+            },
+          }
+        };
+
+    var config_parts_processes_property_left = {
+        type: 'bar',
+        data: {{ data_parts_processes_property_left_json|safe }},
+        options: {
+                layout: {
+                    padding:2
+                    },
+            indexAxis: 'y',
+            responsive: true,
+            maintainAspectRatio: false,
+            barThickness: 20,  // number (pixels) or 'flex'
+            plugins: {
+                legend: {
+                    display: false,
+                    position: "bottom",
+                    align: "middle",
+                    }
+            },
+            title: {
+                display: true,
+                text: 'Total weight [g]'
+                },
+               scales: {
+                            x: {
+                                stacked: true,
+                        	    reverse: true,
+                                max: {{ max_CO2_part|safe }},
+
+                            },
+                            y: {
+                                stacked: true,
+                                position: 'left',
+
+                            },
+                        }
+        }
+        };
+
+  //first row property distribution by parts
+      var ctx_parts_property_left = document.getElementById('chart_parts_property_left').getContext('2d');
+      window.myPie3 = new Chart(ctx_parts_property_left, config_parts_property_left);
+
+
+      var ctx_processes_property_left = document.getElementById('chart_processes_property_left').getContext('2d');
+      window.myBar2 = new Chart(ctx_processes_property_left, config_parts_processes_property_left);
+
+</script>
+
+

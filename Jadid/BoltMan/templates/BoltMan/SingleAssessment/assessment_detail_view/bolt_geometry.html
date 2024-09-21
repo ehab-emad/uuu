@@ -1,0 +1,95 @@
+
+
+<style>
+    .form-container {
+        max-width: 600px;
+        margin: 50px auto;
+        padding: 20px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        background-color: #f8f9fa;
+    }
+
+    .form-group {
+        margin-bottom: 1.5rem; /* Increase spacing between form groups */
+    }
+
+    .submit-btn {
+        background-color: #FFD700; /* Yellow color */
+        color: #000;
+        padding: 10px 20px;
+    }
+
+    .form-row {
+        margin-bottom: 1.5rem; /* Add spacing between the two columns */
+    }
+</style>
+
+{% load widget_tweaks %}
+<div class="form-container" id="spatial_position">
+    <form method="post">
+        {% csrf_token %}
+        <div class="form-row" >
+            <!-- First Column: Positioning Fields -->
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="id_mthread">Metric Thread</label>
+                    {{ form_boltgeometry.mthread|add_class:"form-control"}}
+                    <span class="text-danger">{{ form_boltgeometry.mthread.errors|striptags }}</span>
+                </div>
+
+                <div class="form-group">
+                    <label for="id_material">material</label>
+                    {{ form_boltgeometry.material|add_class:"form-control"}}
+                    <span class="text-danger">{{ form_boltgeometry.material.errors|striptags }}</span>
+                </div>
+
+                <div class="form-group">
+                    <label for="id_thread_metric">thread_metric</label>
+                    {{ form_boltgeometry.thread_metric|add_class:"form-control"}}
+                    <span class="text-danger">{{ form_boltgeometry.thread_metric.errors|striptags }}</span>
+                </div>
+                <div class="form-group">
+                    <label for="id_thread_right_hand">thread_right_hand</label>
+                    {{ form_boltgeometry.thread_right_hand|add_class:"form-control"}}
+                    <span class="text-danger">{{ form_boltgeometry.thread_right_hand.errors|striptags }}</span>
+                </div>
+                <div class="form-group">
+                    <label for="id_norm">norm</label>
+                    {{ form_boltgeometry.norm|add_class:"form-control"}}
+                    <span class="text-danger">{{ form_boltgeometry.norm.errors|striptags }}</span>
+                </div>
+            </div>
+
+
+            <!-- Second Column: Orientation Field -->
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="id_headdiameter">headdiameter</label>
+                    {{ form_boltgeometry.headdiameter|add_class:"form-control"}}
+                    <span class="text-danger">{{ form_boltgeometry.headdiameter.errors|striptags }}</span>
+                </div>
+                <div class="form-group">
+                    <label for="id_total_length">total_length</label>
+                    {{ form_boltgeometry.total_length|add_class:"form-control"}}
+                    <span class="text-danger">{{ form_boltgeometry.total_length.errors|striptags }}</span>
+                </div>
+                <div class="form-group">
+                    <label for="id_shank_length">shank_length</label>
+                    {{ form_boltgeometry.shank_length|add_class:"form-control"}}
+                    <span class="text-danger">{{ form_boltgeometry.shank_length.errors|striptags }}</span>
+                </div>
+                <div class="form-group">
+                    <label for="id_total_length">total_length</label>
+                    {{ form_boltgeometry.total_length|add_class:"form-control"}}
+                    <span class="text-danger">{{ form_boltgeometry.total_length.errors|striptags }}</span>
+                </div>                 
+            </div>   
+        </div>
+
+        <!-- Right-aligned Submit Button -->
+        <div class="form-group text-right">
+            <button type="submit" class="btn btn-warning submit-btn" name="action" value ="bolt_geometry_update">Submit</button>
+        </div>
+    </form>
+</div>

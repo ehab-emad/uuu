@@ -1,0 +1,117 @@
+
+<style>
+    .form-container {
+        max-width: 600px;
+        margin: 50px auto;
+        padding: 20px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        background-color: #f8f9fa;
+    }
+
+    .form-group {
+        margin-bottom: 1.5rem; /* Increase spacing between form groups */
+    }
+
+    .submit-btn {
+        background-color: #FFD700; /* Yellow color */
+        color: #000;
+        padding: 10px 20px;
+    }
+
+    .form-row {
+        margin-bottom: 1.5rem; /* Add spacing between the two columns */
+    }
+</style>
+{% load widget_tweaks %}
+<div class="container" id="requirements">
+    <form method="post">
+        {% csrf_token %}
+        <div class="row" >
+            <!-- First Column: Positioning Fields -->
+            <div class="col-md-6">
+                <div class="col-md-12 border-bottom" style="margin-top:10px">    
+                    <h5> <b> Washer Head  </b></h5>                                                                                              
+                </div>   
+                <div class="form-group">
+                    <label for="{{ form_spatial_position.washer_type.id_for_label }}">{{ form_washer_head.washer_type.label }}</label>
+                    {{ form_washer_head.washer_type|add_class:"form-control"}}
+                    <span class="text-danger">{{ form_washer_head.washer_type.errors|striptags }}</span>
+                </div>
+                <div class="form-group">
+                    <label for="{{ form_spatial_position.materialeaf.id_for_label }}">{{ form_washer_head.material.label }}</label>
+                    {{ form_washer_head.material|add_class:"form-control"}}
+                    <span class="text-danger">{{ form_washer_head.material.errors|striptags }}</span>
+                </div>
+                <div class="form-group">
+                    <label for="{{ form_spatial_position.thickness.id_for_label }}">{{ form_washer_head.thickness.label }}</label>
+                    {{ form_washer_head.thickness|add_class:"form-control"}}
+                    <span class="text-danger">{{ form_washer_head.thickness.errors|striptags }}</span>
+                </div>
+                <div class="form-group">
+                    <label for="{{ form_spatial_position.odiameter.id_for_label }}">{{ form_washer_head.odiameter.label }}</label>
+                    {{ form_washer_head.odiameter|add_class:"form-control"}}
+                    <span class="text-danger">{{ form_washer_head.odiameter.errors|striptags }}</span>
+                </div>   
+                <div class="form-group">
+                    <label for="{{ form_spatial_position.idiameter.id_for_label }}">{{ form_washer_head.idiameter.label }}</label>
+                    {{ form_washer_head.idiameter|add_class:"form-control"}}
+                    <span class="text-danger">{{ form_washer_head.idiameter.errors|striptags }}</span>
+                </div>        
+                <div class="form-group">
+                    <label for="{{ form_spatial_position.elc.id_for_label }}">{{ form_washer_head.norm.label }}</label>
+                    {{ form_washer_head.norm|add_class:"form-control"}}
+                    <span class="text-danger">{{ form_washer_head.norm.errors|striptags }}</span>
+                </div>                                          
+            
+                <!-- Right-aligned Submit Button -->
+                <div class="form-group text-right">
+                    <button type="submit" class="btn btn-warning submit-btn" name="action" value ="washer_head_update">Submit</button>
+                </div>
+            </div>
+
+            <!-- First Column: Positioning Fields -->
+            <div class="col-md-6">
+
+                <div class="col-md-12 border-bottom" style="margin-top:10px">    
+                    <h5> <b> Washer Nut  </b></h5>                                                                                              
+                </div>   
+                <div class="form-group">
+                    <label for="{{ form_spatial_position.washer_type.id_for_label }}">{{ form_washer_head.washer_type.label }}</label>
+                    {{ form_washer_head.washer_type|add_class:"form-control"}}
+                    <span class="text-danger">{{ form_washer_head.washer_type.errors|striptags }}</span>
+                </div>
+                <div class="form-group">
+                    <label for="{{ form_spatial_position.materialeaf.id_for_label }}">{{ form_washer_head.material.label }}</label>
+                    {{ form_washer_head.material|add_class:"form-control"}}
+                    <span class="text-danger">{{ form_washer_head.material.errors|striptags }}</span>
+                </div>
+                <div class="form-group">
+                    <label for="{{ form_spatial_position.thickness.id_for_label }}">{{ form_washer_head.thickness.label }}</label>
+                    {{ form_washer_head.thickness|add_class:"form-control"}}
+                    <span class="text-danger">{{ form_washer_head.thickness.errors|striptags }}</span>
+                </div>
+                <div class="form-group">
+                    <label for="{{ form_spatial_position.odiameter.id_for_label }}">{{ form_washer_head.odiameter.label }}</label>
+                    {{ form_washer_head.odiameter|add_class:"form-control"}}
+                    <span class="text-danger">{{ form_washer_head.odiameter.errors|striptags }}</span>
+                </div>   
+                <div class="form-group">
+                    <label for="{{ form_spatial_position.idiameter.id_for_label }}">{{ form_washer_head.idiameter.label }}</label>
+                    {{ form_washer_head.idiameter|add_class:"form-control"}}
+                    <span class="text-danger">{{ form_washer_head.idiameter.errors|striptags }}</span>
+                </div>        
+                <div class="form-group">
+                    <label for="{{ form_spatial_position.elc.id_for_label }}">{{ form_washer_head.norm.label }}</label>
+                    {{ form_washer_head.norm|add_class:"form-control"}}
+                    <span class="text-danger">{{ form_washer_head.norm.errors|striptags }}</span>
+                </div>                                       
+            
+                <!-- Right-aligned Submit Button -->
+                <div class="form-group text-right">
+                    <button type="submit" class="btn btn-warning submit-btn" name="action" value ="washer_nut_update">Submit</button>
+                </div>
+            </div>            
+        </div>
+    </form>
+</div>

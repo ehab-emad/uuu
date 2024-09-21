@@ -1,0 +1,74 @@
+<div class="container-fluid materials-container">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="row-no-gutters">
+                {% if error_message %}
+                <p><strong>{{ error_message }}</strong></p>
+                {% endif %}
+            <div class="table-responsive w-100 d-block d-md-table">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>Norm:</th>
+                            <th>Name:</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                            {% if object %}
+                            <tr>
+                                <td>[EDAG]:</td>
+                                <td>{{ object.name }}</td>
+                            </tr>
+                            <tr>
+                                <td>[AISI]:</td>
+                                <td>{{ object.aisi }}</td>
+                            </tr>
+                            <tr>
+                                <td>[DIN]:</td>
+                                <td>{{ object.din }}</td>
+                            </tr>
+                            <tr>
+                                <td>[BS]:</td>
+                                <td>{{ object.bs }}</td>
+                            </tr>
+                            <tr>
+                                <td>[AF]:</td>
+                                <td>{{ object.af }}</td>
+                            </tr>
+                            <tr>
+                                <td>[UNI]:</td>
+                                <td>{{ object.uni }}</td>
+                            </tr>
+                            <tr>
+                                <td>[UNE]:</td>
+                                <td>{{ object.une }}</td>
+                            </tr>
+                            <tr>
+                                <td>[JIS]:</td>
+                                <td>{{ object.jis }}</td>
+                            </tr>
+                            <tr>
+                                <td>[CSN]:</td>
+                                <td>{{ object.csn }}</td>
+                            </tr>
+                            <tr>
+                                <td>[Alt. Name 1]:</td>
+                                <td>{{ object.name_1 }}</td>
+                            </tr>
+                            <tr>
+                                <td>[Alt. Name 2]:</td>
+                                <td>{{ object.name_2 }}</td>
+                            </tr>
+                            <tr>
+                                <td>[Alt. Name 3]:</td>
+                                <td>{{ object.name_2 }}</td>
+                            </tr>
+                        {% endif %}
+                    </tbody>
+                </table>
+                <button type="button" class="btn btn-warning btn-sm js-boltmaterial-update " data-url=#> Edit </button>
+            </div>
+            </div>
+        </div>
+    </div>
+</div>    

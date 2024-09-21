@@ -1,0 +1,108 @@
+{% load widget_tweaks %}
+
+
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="row">
+                <div class="col-md-4">
+                    <h3> Analysis Vehicle</h3>
+                    <div class="form-group{% if field.errors %} has-error{% endif %}">
+
+                        <label for="id_vehicle_name">Name</label>
+                        {{ form.vehicle_name|add_class:"form-control"}}
+                        <span class="text-danger">{{ form.vehicle_owner.errors|striptags }}</span>
+
+                        <label for="id_vehicle_owner">Owner</label>
+                        {{ form.vehicle_owner|add_class:"form-control"}}
+                        <span class="text-danger">{{ form.vehicle_owner.errors|striptags }}</span>
+
+                        <label for="id_notes">Notes</label>
+                        {{ form.notes|add_class:"form-control"}}
+                        <span class="text-danger">{{ form.unit.errors|striptags }}</span>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <h3> Primary energy source</h3>
+                    <div class="form-group{% if field.errors %} has-error{% endif %}">
+                        <label for="id_energysource_1">Energy Type</label>
+                        {{ form.energysource_1|add_class:"form-control"}}
+                        <span class="text-danger">{{ form.energysource_1.errors|striptags }}</span>
+
+                        <label for="id_estimated_fuel_consumption_source_1">Estimated fuel consumption [l/100km]</label>
+                        {{ form.estimated_fuel_consumption_source_1|add_class:"form-control"}}
+                        <span class="text-danger" id="errortext_estimated_fuel_consumption_source_1">{{ form.estimated_fuel_consumption_source_1.errors|striptags }}</span>
+
+                        <label for="id_capacity_source_1">Capacity [l]</label>
+                        {{ form.capacity_source_1|add_class:"form-control"}}
+                        <span class="text-danger" id="errortext_capacity_source_1">{{ form.capacity_source_1.errors|striptags }}</span>
+
+                        <label for="id_estimated_energy_consumption_source_1">Estimated energy consumption [kWh/100km]</label>
+                        {{ form.estimated_energy_consumption_source_1|add_class:"form-control"}}
+                        <span class="text-danger" id="errortext_estimated_energy_consumption_source_1">{{ form.estimated_energy_consumption_source_1.errors|striptags }}</span>
+
+                        <label for="id_battery_type_source_1">Battery Type [-]</label>
+                        {{ form.battery_type_source_1|add_class:"form-control"}}
+                        <span class="text-danger" id="errortext_battery_type_source_1">{{ form.battery_type_source_1.errors|striptags }}</span>
+
+                        <label for="id_battery_capacity_source_1">Battery Capacity [kWh]</label>
+                        {{ form.battery_capacity_source_1|add_class:"form-control"}}
+                        <span class="text-danger" id="errortext_battery_capacity_source_1">{{ form.battery_capacity_source_1.errors|striptags }}</span>
+
+                        <label for="id_battery_weight_source_1">Battery Weight [kg]</label>
+                        {{ form.battery_weight_source_1|add_class:"form-control"}}
+                        <span class="text-danger" id="errortext_battery_weight_source_1">{{ form.battery_weight_source_1.errors|striptags }}</span>
+
+                        <label for="id_utilisation_ratio_source_1">Utilisation [-] (0-100%)</label>
+                        {{ form.utilisation_ratio_source_1|add_class:"form-control"}}
+                        <span class="text-danger">{{ form.utilisation_ratio_source_1.errors|striptags }}</span>
+
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <h3> Secondary energy source</h3>
+                    <div class="form-group{% if field.errors %} has-error{% endif %}">
+                        <label for="id_energysource_2">Energy Type</label>
+                        {{ form.energysource_2|add_class:"form-control"}}
+                        <span class="text-danger">{{ form.energysource_2.errors|striptags }}</span>
+
+                        <label for="id_estimated_fuel_consumption_source_2">Estimated fuel consumption [l/100km]</label>
+                        {{ form.estimated_fuel_consumption_source_2|add_class:"form-control"}}
+                        <span class="text-danger" id="errortext_estimated_fuel_consumption_source_2">{{ form.estimated_fuel_consumption_source_2.errors|striptags }}</span>
+
+                        <label for="id_capacity_source_2">Capacity [l]</label>
+                        {{ form.capacity_source_2|add_class:"form-control"}}
+                        <span class="text-danger" id="errortext_capacity_source_2">{{ form.capacity_source_2.errors|striptags }}</span>
+
+                        <label for="id_estimated_energy_consumption_source_2">Estimated energy consumption [kWh/100km]</label>
+                        {{ form.estimated_energy_consumption_source_2|add_class:"form-control"}}
+                        <span class="text-danger" id="errortext_estimated_energy_consumption_source_2">{{ form.estimated_energy_consumption_source_2.errors|striptags }}</span>
+
+                        <label for="id_battery_type_source_2">Batter Type [-]</label>
+                        {{ form.battery_type_source_2|add_class:"form-control"}}
+                        <span class="text-danger" id="errortext_battery_type_source_2">{{ form.battery_type_source_2.errors|striptags }}</span>
+
+                        <label for="id_battery_capacity_source_2">Battery Capacity [kWh]</label>
+                        {{ form.battery_capacity_source_2|add_class:"form-control"}}
+                        <span class="text-danger" id="errortext_battery_capacity_source_2">{{ form.battery_capacity_source_2.errors|striptags }}</span>
+
+
+                        <label for="id_battery_weight_source_2">Battery Weight [kg]</label>
+                        {{ form.battery_weight_source_2|add_class:"form-control"}}
+                        <span class="text-danger" id="errortext_battery_weight_source_2">{{ form.battery_weight_source_2.errors|striptags }}</span>
+
+                        <label for="id_utilisation_ratio_source_2">Utilisation [-] (100%-UtilisationPrimarySource)</label>
+                        {{ form.utilisation_ratio_source_2|add_class:"form-control"}}
+                        <span class="text-danger">{{ form.utilisation_ratio_source_2.errors|striptags }}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+

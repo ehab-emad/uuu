@@ -1,0 +1,28 @@
+{% load static %}
+
+
+<div class="card  mx-1 my-3 w-100">
+    <div class="card-body">
+
+        <img class="card-img-top" src="{% static '/website/images/Material_Icon.png' %}" alt="Material image not available1">
+
+    </div>
+    <div class="card-footer">
+        <h5 class="card-title">{{ material.name }}</h5>
+    </div>
+    <div class="container-fluid" id="materials-container">
+        <div class="row">
+
+                <button type="button" class="btn btn-warning btn-sm btn-block js-vehicle-update " data-url=#> {#"{% url 'MatMan:material_delete' material.id %}">#}
+                    Edit
+                </button>
+
+                <button type="button" class="btn btn-danger btn-sm btn-block js-vehicle-delete " data-url=#> {#"{% url 'MatMan:material_delete' material.id %}">#}
+                    Delete
+                </button>
+
+        </div>
+    </div>
+</div>
+
+

@@ -1,0 +1,66 @@
+
+{% load widget_tweaks %}
+
+
+
+<form method="post" action="{% url 'EcoMan:analysis_update' form.instance.pk %}" class="js-object-update-form" novalidate>
+  {% csrf_token %}
+        <div class="modal-header bg-warning text-white">
+          <h5 class="modal-title font-weight-bold text-black">Edit Assessment Header Data</h5>
+              <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            {% include 'modals/analysis/modal_template_two_column_update_form.html' %}
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          <button type="submit" class="btn btn-primary">Update</button>
+        </div>
+</form>
+
+<script>
+    $(document).ready(function(){
+      $('[data-toggle="popover"]').popover();
+    });
+</script>
+
+<script>
+
+          var checkbox1 = document.getElementById('id_is_automotive');
+          var otherCheckboxes = [
+              document.getElementById('id_include_circularity'),
+              document.getElementById('id_include_utilisation'),
+          ];
+
+
+            // Function to initialize checkbox states
+            function initializeCheckboxes() {
+                if (!checkbox1.checked) {
+                    otherCheckboxes.forEach(checkbox => {
+                        checkbox.checked = false;
+                        checkbox.disabled = true;
+                        checkbox.parentElement.classList.add('disabled');
+                    });
+                }
+            }
+            // Initialize checkboxes on page load
+            initializeCheckboxes();
+            checkbox1.addEventListener('change', function() {
+                if (checkbox1.checked) {
+                    otherCheckboxes.forEach(checkbox => {
+                        checkbox.checked = false;
+                        checkbox.disabled = false; // Enable other checkboxes
+                        checkbox.parentElement.classList.remove('disabled'); // Remove disabled class
+                    });
+                } else {
+                    otherCheckboxes.forEach(checkbox => {
+                        checkbox.disabled = true; // Disable other checkboxes
+                        checkbox.checked = false; // Uncheck other checkboxes
+                        checkbox.parentElement.classList.add('disabled'); // Add disabled class
+                    });
+                }
+          });
+
+</script>

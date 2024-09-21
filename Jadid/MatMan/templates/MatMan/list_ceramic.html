@@ -1,0 +1,57 @@
+{% extends 'MatMan/base.html' %}
+{% block Cards %}
+<div class="container-fluid parts-container">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="row-no-gutters">
+                {% if error_message %}
+                <p><strong>{{ error_message }}</strong></p>
+                {% endif %}
+                <div class="table-responsive w-100 d-block d-md-table">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>ID:</th>
+                                <th>Name:</th>
+                                <th>Owner:</th>
+                                <th>Creation date:</th>
+                                <th>Last changed:</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% if objects %}
+                            {% for object in objects %}
+                            <tr>
+                                <td>{{ object.id }}</td>
+                                <td>{{ object.name }}</td>
+                                <td>{{ object.owner }}</td>
+                                <td>{{ object.created_at }}</td>
+                                <td>{{ object.updated_at }}</td>
+                                <td>
+                                    {% include 'MatMan/list_buttons.html' %}
+                                </td>
+                            </tr>
+                            {% endfor %}
+                            {% else %}
+
+                            <tr>
+                                <th>Table is empty</th>
+                            </tr>
+                            {% endif %}
+
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+
+
+
+
+
+    </div>
+</div>
+
+{% endblock Cards%}                   

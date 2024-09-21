@@ -1,0 +1,66 @@
+{% extends 'ConceptMan/base.html' %}
+
+{% load static %}
+
+{% block Apps %}
+<div class="container-fluid" id="vehicles-container">
+    <div class="row">
+        <div class="col-md-10 border-right">
+            <div class="row">
+                {% if vehicles %}
+                {% for vehicle in vehicles %}
+                <div class="card  mx-3 my-3" style="width: 18rem;">
+                    <div class="card-body">
+                        {% if vehicle.logo == 'Default Vehicle Logo' %}
+                            <img class="card-img-top" src="{% static '/website/images/Vehicle_Icon.png' %}"  alt="Vehicle image not available1">
+                        {% else %}
+                            <img class="card-img-top" src="{{ vehicle.logo }}" alt="Vehicle image not available">
+                        {% endif %}
+                    </div>
+
+                    <div class="card-footer">
+                        <strong> Vehicle </strong>
+                       
+                        <br>Name: <br> {{ vehicle.name }} <br>
+
+
+                        Vehicle Project: <br> {{ vehicle.project.name }} <br>
+
+
+                        <div class="container-fluid my-3" >
+                            <div class="row">
+                                <div class="col-md-4 text-center">
+                                        <form>
+                                            <a href="{% url 'ConceptMan:index_concept' vehicle.id %}" class="btn btn-info btn-sm">Concepts</a>
+                                        </form>
+                                </div>
+                                <div class="col-md-4 text-center">
+                                        <form>
+                                            <button type="button" class="btn btn-warning btn-sm js-vehicle-update " data-url="{% url 'vehicle_update' vehicle.id %}">Edit</button>
+                                        </form>
+
+                                </div>
+                                <div class="col-md-4 text-center">
+                                        <form>
+                                            <button type="button" class="btn btn-danger btn-sm js-vehicle-delete " data-url="{% url 'vehicle_delete' vehicle.id %}">Delete</button>
+                                        </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+                {% endif %}
+
+            </div>
+        </div>
+
+        <div class="col-md-2">
+            <div class="row">
+
+                    {% include "website/current_project.html" %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock Apps %}

@@ -1,0 +1,50 @@
+
+{% load widget_tweaks %}
+<style type="text/css">
+  div.card.playground {
+    border-radius: 7px;
+    box-shadow: 0 3px 3px rgba(0,0,0,.08), 0 0 3px rgba(50,50,0,.05);
+    padding-right: 0px;
+    padding-left: 0px;
+    padding-top: 0px;
+    margin-top: 10px;
+    background-color: rgba(240, 240, 240, 1)
+  }
+
+  div.card.playground:hover{
+    transform: none !important;
+    transition: none !important;
+    box-shadow: 0 5px 5px rgba(0,0,0,.7), 0 0 5px rgba(50,50,0,.7);
+    padding-right: 0px;
+    padding-left: 0px;
+    padding-top: 0px;
+    margin-top: 10px;
+  }
+</style>
+<form method="post" id="#modal-form" action="{% url 'CatiaFramework:workflow_stage_action_create_modal' form.instance.parent_stage.UUID %}" class="js-object-create-form"  novalidate>
+    
+  {% csrf_token %}
+  <div class="modal-header bg-warning text-white">
+    <h5 class="modal-title font-weight-bold text-black">New Action</h5>
+    <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+  </div> 
+      <div class="modal-body">
+        <div class="container-fluid">
+            {{ form.target_category_uuid|add_class:"form-control"}}
+            <span class="text-danger">{{ form.target_category_uuid.errors|striptags }}</span>
+            <div id="category-container-modal">
+              {% include 'modals/workflow_action/cards_category_group_children.html' %}
+            </div>               
+        </div>  
+          {% include 'modals/workflow_action/modal_template_stage_two_column_create_form.html' %}
+      </div>         
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="submit" class="btn btn-primary">Add to database</button>
+      </div>
+    </div>
+  </div>
+</form>
+

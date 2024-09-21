@@ -1,0 +1,657 @@
+{% extends 'NormMan/base.html' %}
+{% load widget_tweaks %}
+{% load static %}
+{% block Breadcrumb %}
+{% csrf_token %}
+
+{% endblock Breadcrumb %}
+
+{% block Cards %}
+<style type="text/css">
+    div.card.playground {
+        border-radius: 7px;
+        box-shadow: 0 3px 3px rgba(0,0,0,.08), 0 0 3px rgba(50,50,0,.05);
+        padding-right: 0px;
+        padding-left: 0px;
+        padding-top: 0px;
+        margin-top: 10px;
+        background-color: rgba(240, 240, 240, 1)
+    }
+
+    div.card.playground:hover{
+        transform: none !important;
+        transition: none !important;
+        box-shadow: 0 5px 5px rgba(0,0,0,.7), 0 0 5px rgba(50,50,0,.7);
+        padding-right: 0px;
+        padding-left: 0px;
+        padding-top: 0px;
+        margin-top: 10px;
+    }
+    .bgEDAGBraun{
+        background-color: rgb(184, 172, 165);
+    }
+    .bgEDAGBeige{
+        background-color: rgb(216, 207, 201);
+    }
+    .bgEDAGGrau{
+        background-color: rgb(208, 216, 223);
+    }
+    .bgEDAGHellgrau{
+        background-color: rgb(228, 229, 230);
+    }
+
+    .bgSuperHellgrau{
+        background-color: rgb(240, 240, 240);
+    }
+    .bgDebianRed{
+        background-color: #D71946;
+    }
+
+    /* #modules {
+  padding: 20px;
+  background: #eee;
+  margin-bottom: 20px;
+  z-index: 1;
+  border-radius: 10px;
+}
+
+#dropzone {
+  padding: 20px;
+  background: #eee;
+  min-height: 100px;
+  margin-bottom: 20px;
+  z-index: 0;
+  border-radius: 10px;
+}
+
+.active {
+  outline: 1px solid red;
+}
+
+.hover {
+  outline: 1px solid blue;
+}
+
+.drop-item {
+  cursor: pointer;
+  margin-bottom: 10px;
+  background-color: rgb(255, 255, 255);
+  padding: 5px 10px;
+  border-radisu: 3px;
+  border: 1px solid rgb(204, 204, 204);
+  position: relative;
+}
+
+.drop-item .remove {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+} */
+
+
+</style>
+
+<!-- <div class="container">    
+  
+    <div class="row">
+      <div class="col-sm-6">
+        <div id="modules">
+          <p class="drag"><a class="btn btn-default">Text</a></p>
+  
+          <p class="drag"><a class="btn btn-default">Textarea</a></p>
+  
+          <p class="drag"><a class="btn btn-default">Number</a></p>
+        </div>
+      </div>
+      <div class="col-sm-6">
+        <div id="dropzone"></div>
+        <button class="btn btn-primary pull-right">Save</button>
+    </div>
+  
+    </div>
+  </div> -->
+
+
+
+
+<div class="container-fluid ">
+        <div class="row">
+            <div class="col-md-3 ">
+                <div class="container-fluid m-0 p-0" id="actions-container">
+                    <div class="card animationoff my-1">
+                        <div class="card-body"  >                    
+                            <h3>Workflow:</h3>
+                                <div class="row" style="overflow-block:auto; min-height:20rem">     
+                                    <div id="jstree_workflow" style="width:100%">    </div>  
+                                </div>                                                    
+                        </div>
+                    </div>   
+                </div>  
+               
+                <div class="container-fluid m-0 p-0" id="details">
+                    <div class="card animationoff my-1">
+                        <div class="card-body " >                    
+                            <h3> Step Instructions:</h3>
+                                Click tree to see details
+                                                 
+                        </div>
+                    </div>   
+                </div> 
+            </div>        
+
+            <div class="col-md-9 align-items-stretch">
+
+
+                <div class="container-fluid m-0 p-0" id="actions">
+                    <div class="card animationoff my-1">
+                        <div class="card-body " >  
+                            <h3> Actions: </h3>
+            {% comment %} this content will be dynamic based on Workflow meta.json  {% endcomment %}                                               
+                        </div>
+                    </div>                   
+
+
+
+
+            </div>     
+
+                <div class="container-fluid m-0 p-0" id="step_details">
+                    <div class="card animationoff my-1">
+                        <div class="card-body " >  
+                            <h3> Objects: </h3>
+            {% comment %} this content will be dynamic based on Workflow meta.json  {% endcomment %}                                               
+                        </div>
+                    </div>                   
+                </div>
+            </div>                                       
+        </div>
+
+         {% include 'NormMan/toaster.html'%}
+</div>
+
+<script  type=text/javascript>
+    $('.drag').draggable({ 
+      appendTo: 'body',
+      helper: 'clone'
+    });
+    
+    $('#dropzone').droppable({
+      activeClass: 'active',
+      hoverClass: 'hover',
+      accept: ":not(.ui-sortable-helper)", // Reject clones generated by sortable
+      drop: function (e, ui) {
+        var $el = $('<div class="drop-item"><details><summary>' + ui.draggable.text() + '</summary><div><label>More Data</label><input type="text" /></div></details></div>');
+        $el.append($('<button type="button" class="btn btn-default btn-xs remove"><span class="glyphicon glyphicon-trash"></span></button>').click(function () { $(this).parent().detach(); }));
+        $(this).append($el);
+      }
+    }).sortable({
+      items: '.drop-item',
+      sort: function() {
+        // gets added unintentionally by droppable interacting with sortable
+        // using connectWithSortable fixes this, but doesn't allow you to customize active/hoverClass options
+        $( this ).removeClass( "active" );
+      }
+    });
+    </script>
+
+<script type="text/javascript">
+
+      $(function () { 
+        
+        $('#jstree_workflow').jstree(
+            {
+                'core': {
+                    "themes": {
+                        "variant": "large",
+                        "stripes" : true
+                    },
+                    'data': {{json_tree|safe}}
+                },
+                "plugins": ["wholerow", "search", "unique"]
+            }
+         );
+
+
+        });
+
+        $('#jstree_workflow').on("select_node.jstree", function (e, data) { 
+            var o_data ={}
+            var workflow_dict = data.node['original'];
+            o_data['command'] = "jstree_select"
+            o_data['trigger_id'] = workflow_dict['id']
+            o_data['session_id'] = sessionStorage.getItem("tool_session")
+            o_data['session_type'] = sessionStorage.getItem("session_type")            
+            o_data['master_id'] = "{{master_id | safe}}"             
+
+            Object.assign(o_data, workflow_dict);
+            
+            const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+            var url = "{% url 'NormMan:load_workflow_details' %}";
+            $.ajax({                       // initialize an AJAX request
+              type:'POST',
+              headers: { 'X-CSRFToken': csrftoken },
+              url: url, //$(this).data('url'), 
+              dataType: 'json',                  
+              data: o_data,
+                success: function (data) {   // `data` is the return of the `load_parts` view function
+                  $("#actions").html() ;
+                  $("#actions").html(data.html_object_actions) ;                  
+                  $("#step_details").html() ;
+                  $("#step_details").html(data.html_object_details) ;    
+                  $("#details").html() ;
+                  $("#details").html(data.html_workflow_details) ;
+                  $("#norm_parts_hits").html() ;
+                  $("#norm_parts_hits").html('1: Norm Parts; hits: ' + data.norm_parts_hits) ;
+                  
+
+              } 
+            });
+        });
+
+
+        document.addEventListener('DOMContentLoaded', function () 
+        {
+            sessionStorage.setItem("session_id", '{{current_session_id}}');
+            sessionStorage.setItem("session_type", 'workflow');
+          }
+        );
+
+
+</script>
+   
+
+<script type=text/javascript>    
+        function position(e) {
+            var myObjects = new THREE.Object3D();
+            var mesh_shared_object = new THREE.Object3D();            
+            var schrink = false
+            var scene = new THREE.Scene();
+            var canvas, canvass, raycaster,  camera, render, mousePosition, loader, mesh, front_rim, rear_rim, components; 
+            var selectedObjects = [];
+            var highlightedObjects = [];         
+            var outlinePass;
+            const originalMaterials = {};
+
+            // Necessary for camera/plane rotation
+            var degree = Math.PI/180;
+
+            // Setup
+            canvass = e;
+            canvas_id = 'canvas_' + e.id
+            canvas = document.getElementById(canvas_id)
+            if (canvas !=  null){return};
+            var clock = new THREE.Clock();
+
+            camera = new THREE.PerspectiveCamera(75, 1, 0.6, 100000);
+            renderer = new THREE.WebGLRenderer({ antialias: true,  alpha: true  });
+            rayCaster = new THREE.Raycaster();
+            mousePosition = new THREE.Vector2();
+
+            //renderer.setSize(16 * 35, 16 * 35);
+            renderer.setSize($(canvass).width(), $(canvass).width());
+            renderer.autoClear = false;
+            renderer.setClearColor(0x000000, 0.0);
+            renderer.setPixelRatio( window.devicePixelRatio *2 );
+            renderer.useLegacyLights = true;
+            renderer.toneMapping = THREE.ACESFilmicToneMapping;     
+            renderer.toneMappingExposure = 0.2;      
+            renderer.domElement.id = 'canvas_' + e.id;
+
+
+            compose = new THREE.EffectComposer(renderer);
+            renderPass = new THREE.RenderPass(scene, camera);          
+            canvasPosition = canvass.getBoundingClientRect();
+            outlinePass_selected = new THREE.OutlinePass(new THREE.Vector2(canvasPosition.width,canvasPosition.height),scene,camera);
+            outlinePass_selected.renderToScreen = true;
+            outlinePass_selected.selectedObjects = highlightedObjects;
+            outlinePass_highlighted = new THREE.OutlinePass(new THREE.Vector2(canvasPosition.width,canvasPosition.height),scene,camera);
+            outlinePass_highlighted.renderToScreen = true;
+            outlinePass_highlighted.selectedObjects = selectedObjects;   
+            compose.addPass(renderPass);
+            compose.addPass(outlinePass_selected);
+            compose.addPass(outlinePass_highlighted);
+
+            var params_magenta = {
+                edgeStrength: 3.0,
+                edgeGlow: 1,
+                edgeThickness: 1.0,
+                pulsePeriod: 0,
+                usePatternTexture: false
+            };
+
+            outlinePass_selected.edgeStrength = params_magenta.edgeStrength;
+            outlinePass_selected.edgeGlow = params_magenta.edgeGlow;
+            outlinePass_selected.visibleEdgeColor.set(0xffffff);
+            outlinePass_selected.hiddenEdgeColor.set(0xff00ff);
+
+            var params_orange = {
+                edgeStrength: 3.0,
+                edgeGlow: 1,
+                edgeThickness: 1.0,
+                pulsePeriod: 3,
+                usePatternTexture: false
+            };
+
+            outlinePass_highlighted.edgeStrength = params_orange.edgeStrength;
+            outlinePass_highlighted.edgeGlow = params_orange.edgeGlow;
+            outlinePass_highlighted.visibleEdgeColor.set(0xffbc40);
+            outlinePass_highlighted.hiddenEdgeColor.set(0xffa500);
+
+
+
+            // Resize after viewport-size-change
+            window.addEventListener("resize", function () {
+                canvasPosition = canvass.getBoundingClientRect();
+                var width = canvasPosition.width;
+                var height = width;//canvasPosition.height;
+                renderer.setSize(width, height);
+                camera.aspect = width / height;
+                camera.updateProjectionMatrix();
+            });
+
+            // ASCII file - STL Import
+
+            const promise_array =[]
+            const models = []
+            // progressBarContainer.style.display = 'none';
+            console.log(renderer.domElement)
+            canvass.appendChild(renderer.domElement);  
+
+            // ground
+            var planeGround = new THREE.PlaneGeometry( 1000000, 1000000, 150, 150 );
+            planeGround.translate( 2000.0, 0.0, -360 ); 
+            const meshGround = new THREE.Mesh( planeGround, new THREE.MeshPhongMaterial( { color: 0xFFFFFF} ) );
+            meshGround.receiveShadow = true;
+            meshGround.castShadow = true;
+            //scene.add( meshGround );
+
+            const grid = new THREE.GridHelper( 20000, 20, 0x000000, 0x000000 );
+            grid.name = "Grid_Helper_X"
+            grid.rotation.x = - Math.PI / 2;
+            grid.material.opacity = 0.7;
+            grid.material.transparent = true;
+            // scene.add( grid );
+
+            const grid_y = new THREE.GridHelper( 20000, 20, 0x000000, 0x000000 );
+            grid_y.name = "Grid_Helper_Y"
+            grid_y.rotation.y = - Math.PI / 2;
+            grid_y.material.opacity = 0.7;
+            grid_y.material.transparent = true;
+            // scene.add( grid_y );
+
+            const grid_z = new THREE.GridHelper( 20000, 20, 0x000000, 0x000000 );
+            grid_z.name = "Grid_Helper_Z"
+            grid_z.rotation.z = - Math.PI / 2;
+            grid_z.material.opacity = 0.7;
+            grid_z.material.transparent = true;
+            // scene.add( grid_z );
+
+            // Axis System construction
+            const sphere_radius = 1500;
+            const axis_length = 2500;
+            const arrow_length = 500;
+            const arrow_radius = arrow_length / 2;
+            const cylinder_radius = 150;
+            const resoluiton = 32;
+            const sphere_material = new THREE.MeshPhongMaterial( { color: 0xFFFFFF } );
+            const axis_system_material = new THREE.MeshPhongMaterial( {color: 0x000000} );
+            const sphere_geometry = new THREE.SphereGeometry(sphere_radius, resoluiton, 16 ); 
+            const cone_geometry = new THREE.ConeGeometry( arrow_radius, arrow_length, resoluiton ); 
+            const cylinder_geometry = new THREE.CylinderGeometry(cylinder_radius, cylinder_radius, axis_length, resoluiton ); 
+
+            sphere_geometry.translate( 0.0, 0.0, 0.0);              
+            const sphere = new THREE.Mesh( sphere_geometry, sphere_material ); 
+            scene.add( sphere );
+
+            cone_geometry.translate(0, axis_length, 0);
+            const cone_y = new THREE.Mesh(cone_geometry.clone(), axis_system_material );             
+            cone_geometry.rotateZ(-Math.PI / 2);
+            const cone_x = new THREE.Mesh(cone_geometry.clone(), axis_system_material ); 
+            cone_geometry.rotateY(-Math.PI / 2);
+            const cone_z  = new THREE.Mesh(cone_geometry.clone(), axis_system_material );             
+            scene.add( cone_x ); scene.add( cone_y ); scene.add( cone_z );
+            
+            cylinder_geometry.translate(0, axis_length / 2, 0);
+            const cylinder_x = new THREE.Mesh( cylinder_geometry.clone(), axis_system_material ); 
+            cylinder_geometry.rotateZ(-Math.PI / 2);
+            const cylinder_y = new THREE.Mesh( cylinder_geometry.clone(), axis_system_material ); 
+            cylinder_geometry.rotateY(-Math.PI / 2);
+            const cylinder_z = new THREE.Mesh( cylinder_geometry.clone(), axis_system_material );             
+            scene.add( cylinder_x ); scene.add( cylinder_y ); scene.add( cylinder_z );
+
+
+            // Camera positioning
+            camera_origin = new THREE.Vector3(2500, 2500, 3500);
+            camera.position.set(camera_origin.x, camera_origin.y, camera_origin.z);
+            camera.lookAt(0, 0, 0); camera.up.set(0, 0, 1);
+            // Adding controls
+            controls = new THREE.OrbitControls(camera, renderer.domElement);
+            controls.target.set(0, 0, 0);
+            // controls.maxPolarAngle = Math.PI / 2;
+            controls.update();
+
+
+            // Ambient light (necessary for Phong/Lambert-materials, not for Basic)
+            var ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
+            ambientLight.castShadow = true;
+            scene.fog = new THREE.Fog( 0xa0a0a0, 5000, 20000 );
+            hemilight = new THREE.HemisphereLight( 0xffffbb, 0x080820, 1 );
+            hemilight.castShadow = true;
+            scene.add(hemilight);
+            scene.add(ambientLight);
+
+            const dirLight = new THREE.DirectionalLight( 0xefc070, 5 );
+            dirLight.position.set( 0, 200, 10000 );
+            dirLight.castShadow = true;
+            dirLight.shadow.camera.top = 180;
+            dirLight.shadow.camera.bottom = - 100;
+            dirLight.shadow.camera.left = - 120;
+            dirLight.shadow.camera.right = 120;
+            scene.add( dirLight );
+
+            var sky = new THREE.Sky()
+            sky.scale.setScalar(100000)
+
+            // scene.add(sky)
+            sun = new THREE.Vector3();
+            var uniforms = sky.material.uniforms;
+            uniforms[ "turbidity" ].value = 10
+            uniforms[ "rayleigh" ].value = 2
+            uniforms[ "mieCoefficient" ].value = .005
+            uniforms[ "mieDirectionalG" ].value = .9
+            uniforms[ "luminance" ].value = 1        
+            const phi = ( 90 - 40 )*3.14/180;
+            const theta = ( 30 )*3.14/180;
+
+            sun.setFromSphericalCoords( 1, phi, theta );
+
+            uniforms[ 'sunPosition' ].value.copy( sun );
+
+            renderer.toneMappingExposure = 0.5;   
+
+
+            var startTime, endTime;
+            function start() {
+                startTime = new Date();
+            };
+            start();
+
+            function end() {
+                endTime = new Date();
+                var timeDiff = endTime - startTime; //in ms
+
+                var ms = Math.round(timeDiff);
+                return ms
+                }    
+            // Draw scene
+            abs_rotation = 0           
+            var render = function () {
+                // it is a spherical movement with fix Z coordinate,
+                // but camera has to rotate along Z axis so as the focus point 
+                // is always in the middle
+
+
+                if (schrink == true){
+
+                        scale = myObjects.scale
+                        setTimeout(function() {
+                            myObjects.scale.set(scale.x-0.03, scale.x-0.03, scale.x-0.03)   
+                          }, 50);
+
+                }
+
+
+                const t = end()/500;
+
+                max_angle = 3.14
+                rot_increment = Math.sin(t / 4)* 3.14 
+                abs_rotation = abs_rotation + rot_increment
+                //sconsole.log(abs_rotation)
+                max_angle = 3.14               
+
+                if(rear_rim && front_rim){
+
+                    rear_rim.rotation.x = 0
+                    rear_rim.rotation.y = 3.14 * Math.sin(t / 4)
+                    rear_rim.rotation.z = 0
+
+                    front_rim.rotation.x = 0
+                    front_rim.rotation.y = 3.14 * Math.sin(t / 4)
+                    front_rim.rotation.z = 0
+                }
+                // scene.getObjectByName('Grid_Helper', true).translateX(-Math.cos(t /4 ) * 3.14 * 2.27815792)
+            };
+            // Run game loop (render,repeat)
+            var GameLoop = function () {
+                var delta = clock.getDelta();
+                requestAnimationFrame(GameLoop);
+                //renderer.render(scene, camera);
+                render();
+                compose.render(delta);
+                controls.update(delta);
+            };
+
+            var clicked_pos_x, clicked_pos_y 
+            canvass.addEventListener('mousedown', function(event) {
+                event.preventDefault();
+                canvasPosition = canvass.getBoundingClientRect();
+                clicked_pos_x = ((event.clientX - canvasPosition.left) / canvasPosition.width) * 2 - 1;
+                clicked_pos_y = -((event.clientY - canvasPosition.top) / canvasPosition.height) * 2 + 1;
+                rayCaster.setFromCamera(mousePosition, camera);
+                var stlobjecttocheck = scene.children
+                var intersects = rayCaster.intersectObjects(stlobjecttocheck, true);               
+                if (intersects.length == 0) {
+                    for ( obj of myObjects.children) {
+                        // for all mesh objects in scene
+                        if(obj.type === 'Mesh'){
+                            obj.material = null;
+                            obj.material = originalMaterials[obj.name]
+                        }
+                    };                   
+                    highlightedObjects.pop(0);
+                }
+            });
+
+            // Listen for mouse moves
+            canvass.addEventListener('mouseup', function(event) {
+
+                event.preventDefault();
+                canvasPosition = canvass.getBoundingClientRect();
+                mousePosition.x = ((event.clientX - canvasPosition.left) / canvasPosition.width) * 2 - 1;
+                mousePosition.y = -((event.clientY - canvasPosition.top) / canvasPosition.height) * 2 + 1;
+
+                if (Math.abs(clicked_pos_x- mousePosition.x) >0.05) {console.log(Math.abs(clicked_pos_x- mousePosition.x));  return; } 
+                if (Math.abs(clicked_pos_y- mousePosition.y) >0.05) {console.log(Math.abs(clicked_pos_y- mousePosition.y)); return; } 
+
+                console.log("X:" + mousePosition.x);        
+                console.log("Y:" + mousePosition.y);               
+                rayCaster.setFromCamera(mousePosition, camera);
+                var stlobjecttocheck = myObjects.children
+                var intersects = rayCaster.intersectObjects(stlobjecttocheck, true);
+
+            });
+            canvass.addEventListener('mousemove', function(event) {
+                // on mouse move, we can then get mouse camera position to be able to establish 
+                // relative position of a moving object so as to relocate positioning object
+                // it will look like something like that
+                rel_position = new THREE.Vector3(camera.position.x -camera_origin.x, camera.position.y -camera_origin.y, camera.position.z -camera_origin.z)
+                console.log("Changes in values are: X:%s Y:%s Z:%s", rel_position.x, rel_position.y, rel_position.z)
+
+                console.log(canvass)
+
+                event.preventDefault();
+                canvasPosition = canvass.getBoundingClientRect();
+                mousePosition.x = ((event.clientX - canvasPosition.left) / canvasPosition.width) * 2 - 1;
+                mousePosition.y = -((event.clientY - canvasPosition.top) / canvasPosition.height) * 2 + 1;
+                rayCaster.setFromCamera(mousePosition, camera);
+                var stlobjecttocheck = myObjects.children
+                var intersects = rayCaster.intersectObjects(stlobjecttocheck, true);
+
+                    if(intersects.length > 0 ) {
+                            highlightedObjects.pop(0); 
+                    };
+                    if(intersects.length == 0 ) {
+
+                        highlightedObjects.pop(0); 
+                };
+                if (intersects.length > 0) {
+                    if(intersects[0].object !=selectedObjects[0]){
+                        highlightedObjects.push(intersects[0].object);
+                    }                
+                }
+
+            });
+
+            GameLoop();
+        
+        } ;
+</script>
+{% endblock Cards%}  
+
+
+{% block ManagementCards %}
+{% load static %}
+{% if user.is_authenticated %}
+    <div class="card mx-3 my-3">
+        <div class="card-body">
+            <strong> #Workflow Session </strong>
+            <div class="col-md-9 mx-auto">
+                <img class="card-img-top img-fluid" src="{% static '/website/images/Edit_Icon.png' %}" alt="Workflow session">
+            </div>
+        </div>
+        <div class="card-footer">
+            <strong>Name:</strong> <br>
+            {% if current_session.name %}
+                {{ current_session.name }}
+            {% else %}
+                Anonymous
+            {% endif %}
+            <br/>
+    
+            {% if current_session.owner %}
+            <strong>Owner:</strong> <br>{{ current_session.owner.nickname }}
+            {% else %}
+            <strong>User:</strong> <br>Anonymous
+            {% endif %}
+    
+        </div>
+        <div class="container-fluid" id="objects-container">
+            <div class="row">
+                {% if current_session %}
+                    {% if user.projectuser.current_project.owner.username == current_session.owner.nickname %}
+                    <button type="button" class="btn btn-warning btn-sm btn-block js-object-update " id="#modal-window" data-url="{% url 'NormMan:shared_component_workflow_index_update' current_session_id %}">Edit</button>
+                    {% else %}
+                    <button type="button" class="btn btn-warning btn-sm btn-block js-object-update" id="#modal-window"
+                        data-url="" disabled>
+                        Edit
+                    </button>
+                    {% endif %}
+                    <a href="{% url 'NormMan:shared_component_workflow_index' master_id %}" class="btn btn-warning btn-sm btn-block" role="button" aria-pressed="true">Change Session</a>
+                {% else %}
+                    <p>No session selected</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+{% endif %}
+{% endblock ManagementCards %}

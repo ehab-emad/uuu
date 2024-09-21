@@ -1,0 +1,25 @@
+<form method="post" id="#modal-window-xl" class="js-object-delete-form">
+    {% csrf_token %}
+      <div class="modal-dialog modal-xl" role="document">
+        <div class="modal-content justify-content">
+          <div class="modal-header mx-5">
+                <h5 class="modal-title" id="exampleModalLongTitle"><b>Insufficient rights</b></h5>
+          </div>
+          <div class="modal-body">
+              <p class="lead mx-5">You have no right to access this resource:
+              <br> <strong>{{ shared_component.name }}</strong> 
+              <br>with ID:
+              <br> <strong>{{ shared_component.UUID }}</strong>
+              <br>that belongs to:
+              <br> <strong>{{ shared_component.owner.nickname }}</strong>
+              <br>with ID:
+              <br> <strong>{{ shared_component.owner.UUID }}</strong>
+              </p>
+          </div>
+          <div class="modal-footer mx-5">
+            <button type="button" class="btn btn-primary" data-dismiss="modal">Confirm</button>
+            <!-- <button type="submit" class="btn btn-danger">Accept</button> -->
+          </div>
+        </div>
+      </div>
+  </form>

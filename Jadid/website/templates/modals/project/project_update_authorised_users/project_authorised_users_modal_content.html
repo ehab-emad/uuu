@@ -1,0 +1,201 @@
+﻿{% load widget_tweaks %}
+{% load humanize %}
+<style>
+    #customers {
+      font-family: Arial, Helvetica, sans-serif;
+      border-collapse: collapse;
+      width: 100%;
+    }
+
+    #customers td, #customers th {
+      border: 1px solid #ddd;
+      padding: 8px;
+    }
+
+    #customers tr:nth-child(even){background-color: #f2f2f2;}
+
+    #customers tr:hover {background-color: #ddd;}
+
+    #customers th {
+      padding-top: 2px;
+      padding-bottom: 2px;
+      text-align: justify;
+      background-color: #04AA6D;
+      color: white;
+    }
+</style>
+    {% if authorised_users %}
+        <b>User with access: </b>
+        <table id="customers">
+            <thead>
+                <tr>
+                    <th >Name</th>                              
+                    <th >Remove (project owner cannot be removed)</th>
+
+                </tr>
+            </thead>
+            <tbody>
+                        {% for element in authorised_users.all %}
+
+                                <tr>
+                                  <td > {{ element.user.username }}</td>
+                                  <td><input type="checkbox" name="checkbox" value="{{ element.UUID }}"></td>                                    
+                                </tr>
+                        {% endfor %}
+            </tbody>
+        </table>
+
+            <button type = "button" class = "btn-secondary mr-auto" id="remove_selected" >Remove Selected</button>
+            <button type = "button" class = "btn-secondary mr-auto" id="select_all" >Select All</button>
+            <button type = "button" class = "btn-secondary mr-auto" id="deselect_all" >Deselect All</button>
+        {% else %}
+
+       <style>
+            .select ul li.option {
+              background-color: #DEDEDE;
+              box-shadow: 0px 1px 0 #DEDEDE, 0px -1px 0 #DEDEDE;
+              -webkit-box-shadow: 0px 1px 0 #DEDEDE, 0px -1px 0 #DEDEDE;
+              -moz-box-shadow: 0px 1px 0 #DEDEDE, 0px -1px 0 #DEDEDE;
+            }
+
+            .select ul li.option:hover {
+              background-color: #B8B8B8;
+            }
+
+            .select ul li.option {
+              z-index: 1;
+              padding: 5px;
+              
+              list-style: none;
+            }
+
+            .select ul li:first-child {
+              display: block;
+            }
+
+            .select ul li {
+              cursor: default;
+            }
+
+
+       </style>   
+
+            {% if search_result %}
+                <div class="select">
+                    <p>Search Result:</p>
+                    <ul>
+                        {% for element in search_result %}
+                            <li value={{ element.UUID }} class="option">{{ element.user.username }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            {% endif %}
+        {% endif %}
+
+
+  <script>
+      $('.select ul li.option').click(function () {
+        var url = $("#modal-form").attr("data-process-url");  // get the url of the `load_idemat_processs` view
+        var matchedEle = document.querySelectorAll(".modal.fade.show")[0].id; //find the div name of the modal
+        var modalwindow = document.getElementById(matchedEle)
+        var modalwindowcontent = modalwindow.getElementsByClassName("modal-content")[0];
+
+        var projectUserId = $(this).attr('value');  // get the selected process group ID from the HTML input
+
+        var form = $('.js-object-update-form')
+        var search_text = $("#search_box").val();
+        const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+        var data_prep = {
+            'trigger_id': "option_submit",      // trigger id help to identify which action was trigerred in modal window
+            'project_user_id': projectUserId,
+        };
+        
+        $.ajax({                       // initialize an AJAX request
+            url: url,                    // set the url of the request (= localhost:8000/hr/ajax/load_idemat_processs/)
+            type: 'get',
+            headers: { 'X-CSRFToken': csrftoken },
+            data: data_prep,
+            success: function (data) {   // `data` is the return of the `load_parts` view function
+                $("#templates_preview").html(data.html_template_preview); // update preview window for selected item
+                $("#id_selected_project_user_id").val(data.selected_project_user_id)
+
+            }
+        });
+
+
+          })
+
+      $(function() {
+          $('#search_submit').click(function() {
+                var url = $("#modal-form").attr("data-process-url");  // get the url of the `load_idemat_processs` view
+                var matchedEle = document.querySelectorAll(".modal.fade.show")[0].id; //find the div name of the modal
+                var modalwindow = document.getElementById(matchedEle)
+                var modalwindowcontent = modalwindow.getElementsByClassName("modal-content")[0];
+
+                var form = $('.js-object-update-form')
+                var search_text = $("#id_search_field").val();
+
+                $.ajax({                       // initialize an AJAX request
+                url: url,                    // set the url of the request (= localhost:8000/hr/ajax/load_idemat_processs/)
+                    data: {
+                    'trigger_id': "search_submit",      // trigger id help to identify which action was trigerred in modal window
+                    'search_text': search_text,
+                },
+                    success: function (data) {   // `data` is the return of the `load_parts` view function
+                    $("#templates_preview").html(data.html_templates_preview);  // replace the contents of the city input with the data that came from the server
+                    }
+                });
+          });
+      });
+
+      $(function() {
+          $('#select_all').click(function() {
+            $('input[type="checkbox"]').prop('checked', true);
+          });
+        });
+      $(function() {
+          $('#deselect_all').click(function() {
+            $('input[type="checkbox"]').prop('checked', false);
+          });
+        });
+
+      $(function() {
+          $('#remove_selected').click(function() {
+            if (confirm('All items generated from selected users will be anonymous. Continue?')) {
+              var url = $("#modal-form").attr("data-process-url");  // get the url of the `load_idemat_processs` view
+              var matchedEle = document.querySelectorAll(".modal.fade.show")[0].id; //find the div name of the modal
+              var modalwindow = document.getElementById(matchedEle)
+              var modalwindowcontent = modalwindow.getElementsByClassName("modal-content")[0];
+  
+              var projectUserId = $(this).attr('value');  // get the selected process group ID from the HTML input
+  
+              var form = $('.js-object-update-form')
+              var data_array = new FormData(form.get(0)).getAll("checkbox");
+              var data = {};
+  
+              for(var i = 0; i < data_array.length; i++)
+              {
+                data["checkbox_" + i] = data_array[i];
+              }
+  
+              data["trigger_id"] = "remove_selected";
+              data["project_user_id"] = projectUserId;
+              const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;            
+              $.ajax({                       // initialize an AJAX request
+                url: url,                    // set the url of the request (= localhost:8000/hr/ajax/load_idemat_processs/)
+                type: 'get',
+                headers: { 'X-CSRFToken': csrftoken },
+                data: data,
+                success: function (data) {   // `data` is the return of the `load_parts` view function
+                    $("#templates_preview").html("");
+                    $("#templates_preview").html(data.html_templates_preview);                  
+                    // update preview window for selected it
+                }
+            });
+            } else {
+            }
+        });
+      });
+  </script>
+
+

@@ -1,0 +1,40 @@
+{% extends 'website/base.html' %}
+{% load static %}
+
+{% block AppIcon %}
+<a class="navbar-brand" href="{% url 'ConceptMan:index_vehicle' %}">
+    <span><img src="{% static 'ConceptMan/images/ConceptMan_Ico.png' %}" alt="Logo" ></span>
+    ConceptMan
+</a>
+{% endblock AppIcon %}
+
+
+{% block NavItems %}
+
+    <li class="nav-item dropdown active">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            New Database Item
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+
+            <a class="dropdown-item js-vehicle-create" href="#" data-url="{% url 'vehicle_create' %}">Vehicle </a>
+            <a class="dropdown-item js-part-create" href="#" data-url="{% url 'ConceptMan:part_create' %}">Part </a>
+            <a class="dropdown-item js-concept-create" href="#" data-url="{% url 'ConceptMan:concept_create' %}">Concept </a>
+
+        </div>
+    </li>
+    <li class="nav-item dropdown active">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            New Parameter Item
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+
+            <a class="dropdown-item js-boltcase-create" href="#" data-url=#>Manufacturing Process </a>
+
+
+        </div>
+    </li>
+
+{% endblock NavItems %}
+
+

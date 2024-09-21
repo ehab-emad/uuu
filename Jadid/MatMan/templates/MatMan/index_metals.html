@@ -1,0 +1,41 @@
+{% extends 'MatMan/base.html' %}
+{% load static %}
+
+{% block Cards %}
+
+<div class="container-fluid ">
+    <div class="row">
+        <div class="col-md-10 border-right">
+            <div class="row">
+                <div class="card  mx-3 my-3" style="width: 12rem;">
+                    <img class="card-img-top" src="{% static 'MatMan/images/Ferrous_Ico.png' %}" alt="Card image cap">
+                    <div class="card-body d-flex flex-column">
+                        <h5 class="card-title">Ferrous</h5>
+                        <p class="card-text">Cast Irons<br>Carbon Steels<br>Alloy Steels<br>Stainless Steels</p>
+                        <div class="container-fluid" style="margin-top: auto;">
+                            <div class="row">
+                                <a href="{% url 'MatMan:list_metalferrous'%}" class="btn btn-warning btn-lg btn-block" role="button" aria-disabled="true">View</a>
+                                <a href="#" class="btn btn-info btn-lg btn-block" role="button" aria-disabled="true">Info</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card  mx-3 my-3" style="width: 12rem;">
+                    <img class="card-img-top" src="{% static 'MatMan/images/NonFerrous_Ico.png' %}" alt="Card image cap">
+                    <div class="card-body d-flex flex-column">
+                        <h5 class="card-title">Non Ferrous</h5>
+                        <p class="card-text">Aluminium<br>Brass<br>Bronze<br>Copper<br>Magnesium<br>Titanium</p>
+                        <div class="container-fluid" style="margin-top: auto;">
+                            <div class="row">
+                                <a href="{% url 'MatMan:list_metalnonferrous'%}" class="btn btn-warning btn-lg btn-block " role="button" aria-disabled="true">View</a>
+                                <a href="#" class="btn btn-info btn-lg btn-block" role="button" aria-disabled="true">Info</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock Cards %}

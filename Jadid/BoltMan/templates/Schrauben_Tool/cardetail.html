@@ -1,0 +1,98 @@
+{% extends 'website/base.html' %}
+{% block title %}{{ album }}{% endblock %}
+{% block albums_active %}active{% endblock %}
+
+{% block body %}
+
+
+
+<div class="container-fluid">
+	<div class="row">
+		<div class="col-md-12">
+			<div class="row">
+				<div class="col-md-2">
+                    <!-- Car Card -->
+                    <div class="card" style="width: 18rem;">
+                        <img class="card-img-top img-responsive" src="{{ car.logo }}" alt="Card image cap">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ car.name }}</h5>
+                            <p class="card-text">{{ car.project }}</p>
+                            <p><small> PM: {{ car.project.project_manager }}</small></p>
+                        </div>
+                    </div>
+				</div>
+				<div class="col-md-10">
+					<div class="row">
+						<div class="col-md-12">
+                            <!-- Tabs-->
+                            <ul class="nav nav-tabs">
+                            <li class="nav-item">
+                                <a class="nav-link active" href="#">Bolt cases</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#">Bolt instances</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#">Parts</a>
+                            </li>
+
+                            </ul>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-12">
+                            <div class="panel panel-default">
+                                <div class="panel-body">
+
+                                    <h3>All Bolt Cases</h3>
+
+                                    {% if error_message %}
+                                        <p><strong>{{ error_message }}</strong></p>
+                                    {% endif %}
+
+                                    <table class="table">
+                                        <thead>
+                                        <tr>
+                                            <th>Name</th>
+                                            <th>Status</th>
+                                            <th>Action</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        {% for bolt_case_instance in car.bolt_case_instance_set.all%}
+
+                                            <tr>
+                                                <td>{{ bolt_case_instance.name }}</td>
+                                                <td>{{ bolt_case_instance.status }}</td>
+                                                                                <td>
+                                                    <form action="{% url 'BoltMan:cardetailview' car.id %}" method="post" style="display: inline;">
+                                                        {% csrf_token %}
+                                                        <input type="hidden" name="bolt_case_instance_id" value="{{ bolt_case_instance.id }}" />
+                                                        <button type="submit" class="btn btn-danger btn-xs">
+                                                            <span class="glyphicon glyphicon-remove"></span>&nbsp; Delete
+                                                        </button>
+                                                    </form>
+                                                </td>
+                                            </tr>
+                                        {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>                 
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+
+
+
+
+
+
+
+{% endblock %}

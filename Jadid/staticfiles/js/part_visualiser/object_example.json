@@ -1,0 +1,15 @@
+{
+    "Point1": {
+        "type": "point",
+        "position": [0, 0, 0]
+    },
+    "Line1": {
+        "type": "line",
+        "start_point": [0, 0, 0],
+        "end_point": [100, 100, 100]
+    },
+    "Wire1": {
+        "type": "wire",
+        "vertices": [0, 0, 0, 100, 100, 100, 0, 0, 100]
+    }
+}

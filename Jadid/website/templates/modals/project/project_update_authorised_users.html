@@ -1,0 +1,65 @@
+
+{% load widget_tweaks %}
+{% csrf_token %}
+<form method="post" 
+          id="modal-form" 
+          action="{% url 'project_update_authorised_users'  form.instance.pk %}" 
+          class="js-object-update-form" 
+        
+          data-process-url="{% url 'load_project_users' %}">
+
+
+  <div class="modal-content">
+    <div class="modal-header bg-warning text-white">
+
+          <h5 class="modal-title" id="exampleModalLongTitle"><b>Project Rights</b></h5>
+
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button> 
+    </div>
+    <div class="modal-body" >
+<div class="col-md-12">
+      <div class="row">
+            <div class="col-md-4 border-right">
+            {% if 'user-professional' in request.session.groups %}
+                {% include 'modals/project/project_update_authorised_users/project_user_selection_form.html' %}
+            {% else %} 
+               <div class="alert alert-warning" role="alert">It is not possible for a free account to add a user to the project.</div>
+            {% endif %}
+            </div>
+            <div class="col-md-8">
+              <label for="id_name">Project Name</label>
+              {{ form.name|add_class:"form-control"}}
+              <span class="text-danger">{{ form.name.errors|striptags }}</span>
+
+              <label for="id_project_manager">Project Manager</label>
+              {{ form.project_manager|add_class:"form-control"}}
+              <span class="text-danger">{{ form.project_manager.errors|striptags }}</span>
+
+              <label for="id_network_number">Network Number</label>
+              {{ form.network_number|add_class:"form-control"}}
+              <span class="text-danger">{{ form.network_number.errors|striptags }}</span>
+
+              <div class="container-fluid" id="search_form">
+                  <div class="container-fluid" id="templates_preview">
+                      {% include 'modals/project/project_update_authorised_users/project_authorised_users_modal_content.html' %} 
+                  </div>
+              </div>
+            </div>
+        </div>
+    </div>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+    </div>
+  </div>
+</form>
+
+
+
+
+
+
+
+

@@ -1,0 +1,270 @@
+{% extends 'website/base.html' %}
+
+{% block body %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.5/jspdf.min.js"></script>
+  <script>
+    window.jsPDF = window.jspdf.jsPDF;
+    
+    $(function () {
+      $("#accordion-basic, #accordion-text, #accordion-graphic, #accordion-font").accordion({
+        autoHeight: false,
+        navigation: true
+      });
+      $("#tabs").tabs();
+      $(".button").button();
+    });
+  </script>
+
+        <div class="card" style="width: 18rem;">
+            <img class="card-img-top img-responsive" src="{{ boltcase.logo }}" alt="No image available">
+            <div class="card-body">
+                <h5 class="card-title">{{ boltcase.name }}</h5>
+                <p class="card-text">{{ car.project }}</p>
+                <a href="{% url 'BoltMan:boltcase-detailview' boltcase.id %}" class="btn btn-primary">Show details</a>
+                <a href="{% url 'BoltMan:boltcase-detailview' boltcase.id %}" class="btn btn-success">Print</a>
+            </div>
+        </div>
+		<p>Caution: Bolt case can have impact on following vehicles:</p>
+				{% for vehicle in vehicles %}
+				<p> {{ vehicle.name }}</p>
+			{% endfor %}
+
+
+
+<form method="post" action="#" id="printJS-145orm">	
+	<page size="A4" layout="portrait">
+			<div class="container-fluid">
+				<div class="row">
+					<div class="col-md-12">
+						<div class="page-header">
+							<h3>
+								Edag Boltman <small>Bolt case protocol</small>
+							</h3>
+						</div>
+						<div class="row">
+							<div class="col-md-6">
+								<p>
+									Input parameter and boundary conditions
+								</p>
+
+								<table class="table table-sm">
+								<thead class="thead-dark">
+									<tr>
+									<th scope="col">Bolt</th>
+									<th scope="col"></th>
+									<th scope="col"></th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr>
+									<td>Thread diameter	</td>
+									<td></td>
+									<td>[mm]</td>	
+									</tr>
+									<tr>
+									<td>Thread pitch</td>
+									<td></td>
+									<td>[mm]</td>
+									</tr>
+									<tr>
+									<td>Material property class</td>
+									<td></td>
+									<td>[-]</td>
+									</tr>
+									<tr>
+									<td>friction thread</td>
+									<td></td>
+									<td>[-]</td>
+									</tr>
+									<tr>
+									<td>friction bolt head</td>
+									<td></td>
+									<td>[-]</td>
+									</tr>
+								</tbody>
+								</table>
+
+								<table class="table table-sm">
+								<thead class="thead-light">
+									<tr>
+									<th scope="col">Joint details</th>
+									<th scope="col"></th>
+									<th scope="col"></th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr>
+									<td>clamped friction</td>
+									<td></td>
+									<td>[-]</td>
+									</tr>
+
+									<tr>
+									<td>Tensile strength thread material</td>
+									<td></td>
+									<td>[Mpa]</td>
+									</tr>
+
+								</tbody>
+
+								</table>
+								<table class="table table-sm">
+								<thead class="thead-light">
+									<tr>
+									<th scope="col">Load</th>
+									<th scope="col"></th>
+									<th scope="col"></th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr>
+									<td>External Axial Force</td>
+									<td></td>
+									<td>[kN]</td>
+									</tr>
+
+									<tr>
+									<td>External Shear Force</td>
+									<td></td>
+									<td>[kN]</td>
+									</tr>
+
+								</tbody>
+								</table>
+
+								<table class="table table-sm">
+								<thead class="thead-light">
+									<tr>
+									<th scope="col">Preload</th>
+									<th scope="col"></th>
+									<th scope="col"></th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr>
+									<td>required preload force</td>
+									<td></td>
+									<td>[kN]</td>
+									</tr>
+
+									<tr>
+									<td>Minimum preload</td>
+									<td></td>
+									<td>[kN]</td>
+									</tr>
+
+									<tr>
+									<td>Maximum preload</td>
+									<td></td>
+									<td>[kN]</td>
+									</tr>
+								</tbody>
+								</table>
+
+
+
+
+								</div>	
+									<div class="col-md-6">
+									<p>
+
+									</p>
+									<div class="card" style="width: 18rem;">
+								<img class="card-img-top img-responsive" src="{{ boltcase.logo }}" alt="No image available">
+								<div class="card-body">
+									<h5 class="card-title">{{ boltcase.name }}</h5>
+									<p class="card-text">{{ car.project }}</p>
+
+
+								</div>
+							</div>
+								<table class="table table-sm">
+								<thead class="thead-light">
+									<tr>
+									<th scope="col">Tightening procedure</th>
+									<th scope="col"></th>
+									<th scope="col"></th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr>
+									<td>Description</td>
+									<td></td>
+									<td>[-]</td>
+									</tr>
+
+									<tr>
+									<td>Tightening factor</td>
+									<td></td>
+									<td>[-]</td>
+									</tr>
+
+									<tr>
+									<td>Tightening torque</td>
+									<td></td>
+									<td>[Nm]</td>
+									</tr>
+								</tbody>
+								</table>
+
+
+								<dl>
+									<dt>
+										Description lists
+									</dt>
+									<dd>
+										A description list is perfect for defining terms.
+									</dd>
+									<dt>
+										Euismod
+									</dt>
+									<dd>
+										Vestibulum id ligula porta felis euismod semper eget lacinia odio sem nec elit.
+									</dd>
+									<dd>
+										Donec id elit non mi porta gravida at eget metus.
+									</dd>
+									<dt>
+										Malesuada porta
+									</dt>
+									<dd>
+										Etiam porta sem malesuada magna mollis euismod.
+									</dd>
+									<dt>
+										Felis euismod semper eget lacinia
+									</dt>
+									<dd>
+										Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.
+									</dd>
+								</dl>
+							</div>
+						</div>
+					</div>
+				</div>	
+			</div>	
+		{% csrf_token %}
+	</page>
+</form>
+
+
+
+
+    <style>
+            page {
+            background: white;
+            display: block;
+            margin: 0 auto;
+            margin-bottom: 0.5cm;
+            box-shadow: 0 0 0.5cm rgba(0,0,0,0.5);
+            }
+
+            page[size="A4"][layout="portrait"] {
+            width: 29.7cm;
+            height: 21cm;  
+            }
+    </style>
+
+
+
+{% endblock %}

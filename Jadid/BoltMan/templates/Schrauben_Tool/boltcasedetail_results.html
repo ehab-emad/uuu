@@ -1,0 +1,82 @@
+<div class="container-fluid" id="parts-container">
+    <div class="row-no-gutters">
+        <div class="col-md-12">
+        <div class="table-hover">        
+            <table class="table w-full">
+                <thead>
+                <tr>
+                    <th>Parameter name:</th>  
+                    <th>Symbol:</th>					                                                                                  
+                    <th>Value:</th>
+                                                                             
+                </tr>
+                </thead>
+                <tbody>                                                                           
+                    <tr>
+                            <td>Joint coefficient:</td>
+                            <td>w</td>							
+                            <td>{{ bolt_case.w }}</td>  
+                    </tr>
+					<tr>
+                            <td>Number of clamped parts:</td>
+                            <td>nop</td>							
+                            <td>{{ bolt_case.nop }}</td>  
+                    </tr>
+					<tr>
+                            <td>Substitutional Cone angle:</td>
+                            <td>tan_phi</td>							
+                            <td>{{ bolt_case.tan_phi }}</td>  
+                    </tr>	
+					<tr>
+                            <td>Clamping Length:</td>
+                            <td>l_K</td>							
+                            <td>{{ bolt_case.l_K }}</td>  
+                    </tr>
+					<tr>
+                            <td>Elastic  resilience  of  the  clamped  parts:</td>
+                            <td>delta_p_total</td>							
+                            <td>{{ bolt_case.delta_p_total }}</td>  
+                    </tr>
+                    <tr>
+                            <td>Same E Modulus for clamped  parts:</td>
+                            <td>sem</td>							
+                            <td>{{ bolt_case.sem }}</td>  
+                    </tr>
+                    <tr>
+                            <td>Resilience of the bolt:</td>
+                            <td>delta_S</td>							
+                            <td>{{ bolt_case.delta_S }}</td>  
+                    </tr>
+                    <tr>
+                            <td>Load Factor General:</td>
+                            <td>load_factor</td>							
+                            <td>{{ bolt_case.load_factor }}</td>  
+                    </tr>
+
+
+                </tbody>
+            </table>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="row">
+                        <div class="col-md-2">
+                            <h3 class="align-middle">
+                                Description:
+                            </h3>
+                        </div>   
+                        <div class="col-md-8" >
+
+                            <p class="align-middle">
+                                Only for debugging purposes
+                            </p>  
+
+                        </div>   
+           
+                    </div>
+                </div>
+            </div>      
+        </div>
+    </div>
+</div>
+

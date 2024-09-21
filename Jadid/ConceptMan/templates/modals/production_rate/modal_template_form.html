@@ -1,0 +1,78 @@
+{% load widget_tweaks %}
+
+
+{% load static %}
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="row">
+                <div class="col-md-4">
+                    <h3> Header Data</h3>
+                    <div class="form-group {% if field.errors %} has-error{% endif %}">
+
+                        <label for="id_id">ID</label>
+                        {{ form.id|add_class:"form-control"}}
+                        <span class="text-danger">{{ form.id.errors|striptags }}</span>
+
+                        <label for="id_updated_at">Last updated</label>
+                        {{ form.updated_at|add_class:"form-control"}}
+                        <span class="text-danger">{{ form.unit.errors|striptags }}</span>
+
+                        <label for="id_notes_at">Notes</label>
+                        {{ form.notes|add_class:"form-control"}}
+                        <span class="text-danger">{{ form.unit.errors|striptags }}</span>
+
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <h3> Model Parameters</h3>
+
+                        <label for="id_production_time">Production Time (years)</label>
+                        {{ form.production_time|add_class:"form-control"}}
+                        <span class="text-danger">{{ form.production_time.errors|striptags }}</span>
+
+                        <label for="id_production_rate_start">Production Rate Start (u1)</label>
+                        {{ form.production_rate_start|add_class:"form-control"}}
+                        <span class="text-danger">{{ form.production_rate_start.errors|striptags }}</span>
+
+                        <label for="id_production_rate_end">Production Rate End (u2)</label>
+                        {{ form.production_rate_end|add_class:"form-control"}}
+                        <span class="text-danger">{{ form.production_rate_end.errors|striptags }}</span>
+
+                        <label for="id_production_rate_extremum_x">Year of Min Max Production Rate (uext_x)</label>
+                        {{ form.production_rate_extremum_x|add_class:"form-control"}}
+                        <span class="text-danger">{{ form.production_rate_extremum_x.errors|striptags }}</span>
+
+                        <label for="id_production_rate_extremum_y">Production Rate Extremum (uext_y)</label>
+                        {{ form.production_rate_extremum_y|add_class:"form-control"}}
+                        <span class="text-danger">{{ form.production_rate_extremum_y.errors|striptags }}</span>
+
+
+                </div>
+                <div class="col-md-4">
+                    <h3> Model</h3>
+
+
+                     <div class="form-group{% if field.errors %} has-error{% endif %}">
+                        <label for="id_approximation_model">Approximation model</label>
+                        {{ form.approximation_model|add_class:"form-control"}}
+                        <span class="text-danger">{{ form.approximation_model.errors|striptags }}</span>
+                    </div>
+                        <div class="image" >
+                            {% if form.initial.approximation_model == 'FLAT' %}
+                            <img class="card-img-top" id="approximation_model_image" src="{% static '/website/images/Production_Model_Flat.png' %}" alt="Model image not available">
+                            {% endif %}
+                           {% if form.initial.approximation_model == 'LINEAR' %}
+                            <img class="card-img-top" id="approximation_model_image" src="{% static '/website/images/Production_Model_Linear.png' %}" alt="Model image not available">
+                              {% endif %}     
+                           {% if form.initial.approximation_model == 'QUADRATIC' %}
+                            <img class="card-img-top" id="approximation_model_image" src="{% static '/website/images/Production_Model_Quadratic.png' %}" alt="Model image not available">
+                            {% endif %}
+
+                         </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

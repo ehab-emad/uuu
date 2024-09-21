@@ -1,0 +1,470 @@
+{% extends 'website/base.html' %}
+{% load static %}
+
+{% block AppIcon %}
+<a class="navbar-brand" href="{% url 'CatiaFramework:index' %}">
+    <span><img src="{% static 'CatiaFramework/images/CatiaFramework.png' %}"alt="Logo" ></span>
+    CatiaFramework
+</a>
+{% endblock AppIcon %}
+
+
+
+{% block NavItems %}
+
+<div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+        <li class="nav-item active">
+            {% if 'user-professional' in request.session.groups %}
+            <a class="nav-link js-object-create" id="#modal-window-xl" href="#" data-url="{% url 'project_create' %}"> Add new project </a>
+            {% else %}
+            <a class="nav-link disabled js-object-create" href="#"> Add new project </a>
+            {% endif %}
+        </li>
+        <li class="nav-item active">
+            <a class="nav-link js-object-create" id="#modal-window-xl" href="#" data-url="{% url 'CatiaFramework:workflow_create_modal' redirect='True' %}">Add new Workflow </a>        
+        </li>
+        <li class="nav-item dropdown active">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Staff things 
+            </a>
+            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                <a class="dropdown-item" href="{% url 'CatiaFramework:upload_file'%}">Test file upload</a>
+                <a class="dropdown-item" href="{% url 'CatiaFramework:vb_project_import'%}">Import VB.Net Project</a>
+            </div>
+
+        </li>
+
+
+    </ul>
+</div>    
+
+{% endblock NavItems %}
+
+{% block Apps %}
+
+
+<div class="container-fluid" id="objects-container">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="row">
+                <div class="col-md-10">
+                    <div class="row">
+                        <div class="col-md-12">
+                            {% block Cards %}
+                            {% endblock Cards %}
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-2">
+                        {% block ManagementCards %}
+                        {% endblock ManagementCards %}
+                        {% include "CatiaFramework/workflow/current_session.html" %}  
+                        {% include "website/current_project.html" %}       
+ 
+                        <div class="card mx-3 my-3" id="framework_status">
+                            {% include "website/current_framework_session.html" %}
+                        </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script type=text/javascript> 
+    console.log("Sanity check from room.js.");
+    var id = "{{ request.user.username | safe }}"
+    let chatSocket = null;
+
+    function connect() {
+        const protocol = window.location.protocol.includes('https') ? 'wss': 'ws'
+        chatSocket = new WebSocket(`${protocol}://${window.location.host}/ws/framework/${id}/`);
+    
+        chatSocket.onopen = function(e) {
+            console.log("Successfully connected to the WebSocket.");
+        }
+    
+        chatSocket.onclose = function(e) {
+            console.log("WebSocket connection closed unexpectedly. Trying to reconnect in 2s...");
+            setTimeout(function() {
+                console.log("Reconnecting...");
+                connect();
+            }, 2000);
+        };
+
+        chatSocket.onerror = function(err) {
+            console.log("WebSocket encountered an error: " + err.message);
+            console.log("Closing the socket.");
+            chatSocket.close();
+        };
+    
+        chatSocket.onmessage = function(e) {
+            const data = JSON.parse(e.data);
+            if ('type' && 'message' in data){
+                if( data['type'] == 'framework_command'){
+                    var message = JSON.parse(data['message'])
+                    if('command' in message) {
+                
+                        const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+                        switch(message['command']){
+                            case 'data_exchange':
+                                // This is gonna be used for code exchange - for framework custom builds.
+                                break;
+                            case 'framework_execution_status_update': //source is framework
+                             
+                                var currentdate = new Date(); 
+                                var datetime = currentdate.getHours() + ":"  + currentdate.getMinutes() + ":" + currentdate.getSeconds();
+                                var target = null;
+                                var icon = null;
+                                switch (message['exec_status']) {
+                                    case 'COMPLETED':                                            
+                                        icon = "{% static '/CatiaFramework/Status_Icons/Status_Completed_icon.png' %}"; break;
+                                    case 'FAILED':
+                                        icon = "{% static '/CatiaFramework/Status_Icons/Status_Failed_icon.png' %}"; break;
+                                    case 'INPROGRESS':
+                                        icon = "{% static '/CatiaFramework/Status_Icons/Status_In_Progress_icon.png' %}"; break;
+                                    case 'PENDING':
+                                        icon = "{% static '/CatiaFramework/Status_Icons/Status_Pending_icon.png' %}"; break;
+                                    case 'CANCELLED':
+                                        icon = "{% static '/CatiaFramework/Status_Icons/Status_Cancelled_icon.png' %}"; break;
+                                    case 'CAUTION':
+                                        icon = "{% static '/CatiaFramework/Status_Icons/Status_Caution_icon.png' %}"; break;
+                                    case 'UNKNOWN':
+                                        icon = "{% static '/CatiaFramework/Status_Icons/Status_Unknown_icon.png' %}"; break;
+                                    case 'WAITING':
+                                        icon = "{% static '/CatiaFramework/Status_Icons/Status_Unknown_icon.png' %}"; break;
+                                    default:
+                                        icon = "{% static '/CatiaFramework/Status_Icons/Status_Waiting_icon.png' %}"; break;
+                                }  
+                                if($('#toaster').find("#toast_zero")[0].className.includes("show")){ 
+                                    if($('#toaster').find("#toast_one")[0].className.includes("show")){target = "#toast_zero"} else {target = "#toast_one"}
+                                } else {
+                                    target = "#toast_zero"
+                                }
+                                $('#toaster').find(target).find('#time_stamp')[0].innerHTML = datetime;
+                                $('#toaster').find(target).find('#content_text')[0].innerHTML = "<img src='" + icon + "' width='25' height='25' class='rounded mr-2' alt='...'>" + message['exec_message'];
+                                $('#toaster').find(target).toast('show');                            
+
+                                break;
+                            case 'framework_status_update_available':                           
+                                var url = "{% url 'CatiaFramework:load_framework_status' %}";
+                                var o_data = { 
+                                    "trigger_id": "framework_status_update_available",
+                                    "user_id": message['user'], 
+                                    "session_id": sessionStorage.getItem("session_id"),                     
+                                }
+                                $.ajax({
+                                    type:'POST',
+                                    headers: { 'X-CSRFToken': csrftoken },
+                                    url: url,
+                                    dataType: 'json',                  
+                                    data: o_data,                            
+                                    success: function (data) {  
+                                        $("#framework_status").html() ;
+                                        $("#framework_status").html(data['html_framework_details']) ;     
+                                        updateDivContentAndCheckSessionStorage();     
+                                        openAccordionFromSessionStorage();                            
+                                    }
+                                });
+                                
+                                break;
+
+                            case 'workflow_session_status_update_available':
+                                
+                                // Temporary addition of toasters
+                                if('exec_status' in message){
+                                    if(message['exec_status']){
+                                        var currentdate = new Date(); 
+                                        var datetime = currentdate.getHours() + ":"  + currentdate.getMinutes() + ":" + currentdate.getSeconds();
+                                        var target = null;
+                                        var icon = null;                               
+                                        switch (message['exec_status']) {
+                                            case 'COMPLETED':                                            
+                                                icon = "{% static '/CatiaFramework/Status_Icons/Status_Completed_icon.png' %}"; break;
+                                            case 'FAILED':
+                                                icon = "{% static '/CatiaFramework/Status_Icons/Status_Failed_icon.png' %}"; break;
+                                            case 'INPROGRESS':
+                                                icon = "{% static '/CatiaFramework/Status_Icons/Status_In_Progress_icon.png' %}"; break;
+                                            case 'PENDING':
+                                                icon = "{% static '/CatiaFramework/Status_Icons/Status_Pending_icon.png' %}"; break;
+                                            case 'CANCELLED':
+                                                icon = "{% static '/CatiaFramework/Status_Icons/Status_Cancelled_icon.png' %}"; break;
+                                            case 'CAUTION':
+                                                icon = "{% static '/CatiaFramework/Status_Icons/Status_Caution_icon.png' %}"; break;
+                                            case 'UNKNOWN':
+                                                icon = "{% static '/CatiaFramework/Status_Icons/Status_Unknown_icon.png' %}"; break;
+                                            case 'WAITING':
+                                                icon = "{% static '/CatiaFramework/Status_Icons/Status_Unknown_icon.png' %}"; break;
+                                            default:
+                                                icon = "{% static '/CatiaFramework/Status_Icons/Status_Waiting_icon.png' %}"; break;
+                                        }  
+                                        
+                                        //save action UUID and status in browser session storage
+                                        sessionStorage.setItem('action_uuid_' +  message['method_id'], message['exec_status'].toLowerCase());
+                                
+                                        // Call the function to update the div content and check session storage
+                                        updateDivContentAndCheckSessionStorage();
+                                        openAccordionFromSessionStorage();
+
+                                        if($('#toaster').find("#toast_zero")[0].className.includes("show")){ 
+                                            if($('#toaster').find("#toast_one")[0].className.includes("show")){target = "#toast_zero"} else {target = "#toast_one"}
+                                        } else {
+                                            target = "#toast_zero"
+                                        }
+                                        $('#toaster').find(target).find('#time_stamp')[0].innerHTML = datetime;
+                                        $('#toaster').find(target).find('#content_text')[0].innerHTML = "<img src='" + icon + "' width='25' height='25' class='rounded mr-2' alt='...'>" + message['exec_message'];
+                                        $('#toaster').find(target).toast('show');
+                                    }
+                                }
+                                var url = "{% url 'CatiaFramework:load_workflow_session_details' %}";
+                                var o_data = { 
+                                        "user": message["user"],
+                                        "command": "workflow_session_status_update_available",
+                                        "trigger_id": message['trigger_id'],
+                                        "method_id": message["method_id"],
+                                        "workflow_id": message["workflow_id"],
+                                        "session_id": message['session_id'],
+                                        "stage_id": message['stage_id']                                        
+                                    }
+                                $.ajax({
+                                    type:'POST',
+                                    headers: { 'X-CSRFToken': csrftoken },
+                                    url: url, //$(this).data('url'), 
+                                    dataType: 'json',                  
+                                    data: o_data,                            
+                                    success: function (data) {  
+                                        $("#actions").html() ;
+                                        $("#actions").html(data.html_object_actions) ;                  
+                                        $("#step_details").html() ;
+                                        $("#step_details").html(data.html_object_details) ;    
+                                        $("#objects").html() ;
+                                        $("#objects").html(data.html_workflow_object) ;
+
+                                        // Mark active objects instances
+                                        // Get all div elements with the class "clickable"
+                                        // let clickableDivs = document.getElementsByClassName("clickable-instance");
+                                        // // Iterate through each div and remove the "selected" class
+                                        // for (let i = 0; i < clickableDivs.length; i++) {
+                                        //     let element =  clickableDivs[i].getAttribute("is_active").toLowerCase()
+                                        //         if (element === "true") {
+                                        //             clickableDivs[i].classList.add("selected"); 
+                                        //         }
+                                        //     }
+                                            
+                                            
+
+                                            // Get all div elements with the class "clickable"
+                                            let clickableDivs = document.getElementsByClassName("clickable-instance");
+                                            // Iterate through each div and remove the "selected" class
+                                            for (let i = 0; i < clickableDivs.length; i++) {
+                                                if (clickableDivs[i].getAttribute("is_active") === "True") {
+                                                    clickableDivs[i].checked = true;                                
+                                            }
+                                            else{
+                                                clickableDivs[i].checked = false;
+                                            }
+                                            }
+
+                                            updateDivContentAndCheckSessionStorage();
+                                            openAccordionFromSessionStorage();
+                                        }
+                                        
+                                    
+                                });
+                                break;
+                            case 'reload_data_after_selection':
+                                var url = "{% url 'CatiaFramework:load_workflow_session_details' %}";
+                                var o_data = { 
+                                    "user": message["user"],
+                                    "command": "reload_data_after_selection",
+                                    "trigger_id": message['trigger_id'],
+                                    "method_id": message["method_id"],
+                                    "master_id": message["workflow_id"],
+                                    "session_id": message['session_id']
+                                    }
+                                $.ajax({
+                                    type:'POST',
+                                    headers: { 'X-CSRFToken': csrftoken },
+                                    url: url,
+                                    dataType: 'json',                  
+                                    data: o_data,                            
+                                    success: function (data) {  
+                                        $("#actions").html() ;
+                                        $("#actions").html(data.html_object_actions) ;                  
+                                        $("#step_details").html() ;
+                                        $("#step_details").html(data.html_object_details) ;    
+                                        $("#details").html() ;
+                                        $("#details").html(data.html_workflow_details) ;
+                                        updateDivContentAndCheckSessionStorage();
+                                        openAccordionFromSessionStorage();
+                                    }
+                                });
+                                break;
+                            default:
+                                break;
+                        }
+                    } 
+                }
+            }
+        }
+    }
+    connect();
+
+/**
+ * Function to update the classes of elements based on session storage values.
+ * This function does not take any arguments and assumes that the AJAX request
+ * has already been made and the HTML content has been updated.
+ */
+ function updateDivContentAndCheckSessionStorage() {
+    const sessionKeys = Object.keys(sessionStorage);
+
+    sessionKeys.forEach(key => {
+        if (key.startsWith('action_uuid_')) {
+            // Remove the 'action_uuid_' prefix from the key
+            const strippedKey = key.replace('action_uuid_', '');
+            // Get the Value from session storage
+            const newStatus = sessionStorage.getItem(key);
+            // Update classes by the stripped key (UUID)
+            updateClassesByUUID(strippedKey, newStatus);
+            updateTextContentBasedOnStatus(strippedKey, newStatus);
+
+        }
+    });
+}
+
+
+
+/**
+ * Update classes of elements based on UUID values.
+ * @param {string} uuidValue - The value associated with the key.
+ */
+function updateClassesByUUID(strippedKey, newStatus) {
+    // Query elements by UUID_action attribute and object_action_card class
+    const elements = document.querySelectorAll(`div[UUID_action="${strippedKey}"].object_action_card`);
+    elements.forEach(element => {
+        // Example: Replace the last class with a new class
+        const classList = element.classList;
+        if (classList.length > 0) {
+            // Remove the last class
+            const lastClass = classList[classList.length - 1];
+            element.classList.remove(lastClass);
+        }
+        // Add a new class
+        element.classList.add(newStatus);
+
+        console.log(`Class of div with UUID_action="${strippedKey}" replaced with '${newStatus}'`);
+    });
+}
+
+/**
+ * Update text content of the div with attribute UUID_action based on the provided UUID and status.
+ * @param {string} targetUUID - The UUID to match with UUID_action attribute.
+ * @param {string} newTextStatus - The new text content to set.
+ */
+ function updateTextContentBasedOnStatus(targetUUID, newTextStatus) {
+    // Find the div elements with attribute UUID_action
+    const divsWithUUID = document.querySelectorAll(`div[UUID_action="${targetUUID}"]`);
+
+    // Iterate through each matching div
+    divsWithUUID.forEach(div => {
+        // Find the <strong> element with id 'statusText' within the current div
+        const statusTextElement = div.querySelector('#statusText');
+
+        // Update text content if the element is found
+        if (statusTextElement) {
+            statusTextElement.textContent = newTextStatus;
+        } else {
+            console.error('Element with id "statusText" not found within the current div');
+        }
+    });
+};
+
+function openAccordionFromSessionStorage() {
+    // Get the current session UUID from the URL
+    var currentSessionUUID = getSessionUUIDFromURL();
+    if (!currentSessionUUID) {
+        console.error('No session UUID found in the URL.');
+        return;
+    }
+
+    // Get all collapses
+    var collapses = document.querySelectorAll('[id^="collapse"]');
+
+    // Iterate over collapses and check if they should be shown
+    collapses.forEach(function(obj) {
+        var collapseName = obj.id;
+        var sessionStorageKey = collapseName + ' ' + 'session_' + currentSessionUUID;
+        var isShown = sessionStorage.getItem(sessionStorageKey);
+
+        if (isShown === "shown") {
+            obj.classList.add('show');
+        } else {
+            obj.classList.remove('show');
+        }
+    });
+}
+
+    function openAccordionFromUUID(UUID) {
+        var collapses = document.querySelectorAll('[id^="collapse"]');
+        // If there's only one collapsible, show it by default
+        if (collapses.length === 1) {
+            collapses[0].classList.add('show');
+            return;
+        }
+        // Remove 'show' class from all collapses
+        collapses.forEach(function(obj) {
+            obj.classList.remove('show');
+        });
+
+        // Add 'show' class to the target collapse
+        var targetCollapse = document.getElementById('collapse_' + UUID);
+        if (targetCollapse) {
+            targetCollapse.classList.add('show');
+        }
+    }
+
+    $(document).on('shown.bs.collapse', function() {
+    var id = arguments[0].target.id;
+    setSessionStorage(id, 'shown');
+    })
+    $(document).on('hidden.bs.collapse', function() {
+        var id = arguments[0].target.id;
+        setSessionStorage(id, 'hidden');
+    })
+
+function setSessionStorage(collapse_name, collapse_status) {
+    var collapse_elem = document.getElementById(collapse_name)
+
+    if (collapse_status == "shown") {
+        sessionStorage.setItem(collapse_name + ' ' + 'session_' + getSessionUUIDFromURL(), "shown" );
+    }
+    else {
+        sessionStorage.setItem(collapse_name + ' ' + 'session_' + getSessionUUIDFromURL(),"hidden" );
+    }
+}
+
+
+function getSessionUUIDFromURL() {
+    // Get the current URL
+    var url = window.location.href;
+
+    // Define a regular expression to match the session UUID
+    var regex = /session_([0-9a-fA-F-]+)/;
+
+    // Execute the regex on the URL
+    var match = url.match(regex);
+
+    // If a match is found, return the session UUID
+    if (match) {
+        return match[1];
+    } else {
+        // If no match is found, return null
+        return null;
+    }
+}
+</script>
+
+{% endblock Apps %}
+
+

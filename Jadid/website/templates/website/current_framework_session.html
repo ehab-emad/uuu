@@ -1,0 +1,43 @@
+{% load static %}
+{% if user.is_authenticated %}                                   
+        <div class="card  mx-1 my-3 w-100">
+            <strong>  #Framework Status </strong> 
+            <img class="card-img-top" src="{% static '/website/images/favicon.png' %}" alt="Image not available">
+        </div>
+        <div class="card-footer" style="font-size: 12px; height:100%">
+            <div class="d-flex flex-row justify-content">
+                {% if  user.projectuser.framework_connected == True %}
+                    <i class="fas fa-link"></i> 
+                    <p style="color:green; margin-left: 1rem"><b>Framework Connected</b></p>
+                {% else %}
+                    <i class="fas fa-link-slash"></i>
+                    <p style="color:red; margin-left: 1rem"><b>Framework Disconnected</b></p>
+                {% endif %}
+            </div>
+            <div class="d-flex flex-row justify-content">
+                {% if  user.projectuser.catia_connected == True %}
+                    <i class="fas fa-link"></i>
+                    <p style="color:green; margin-left: 1rem"><b>Catia Connected</b></p>
+                {% else %}
+                    <i class="fas fa-link-slash"></i>
+                    <p style="color:red; margin-left: 1rem"><b>Catia Disconnected</b></p>
+                {% endif %}                            
+            </div>
+            <div class="d-flex flex-row justify-content">
+                {% if  user.projectuser.framework_update == False and user.projectuser.framework_connected == True %}
+                    <i class="fas fa-link"></i>
+                    <p style="color:green; margin-left: 1rem"><b>Up-to-date</b></p>                    
+                {% elif user.projectuser.framework_update == True or user.projectuser.framework_connected == False %}
+                    <i class="fas fa-link-slash"></i>
+                    <p style="color:red; margin-left: 1rem"><b>Out-of-date</b></p>                  
+                {% endif %}   
+            </div>
+        </div>
+        <div class="container-fluid" id="objects-container">
+            <div class="row">
+                <!-- <button data-url="{% url 'NormMan:framework_download_modal' %}" class="btn btn-block btn-success btn-sm " role="button" aria-pressed="true"> Update</button> -->
+                <button type="button" class="btn btn-warning btn-sm btn-block js-object-update" id="#modal-window-xl" data-url="{% url 'NormMan:framework_download_modal' %}">Update</button>
+            </div>
+        </div>  
+        <!-- <button type="button" id="#modal-window-xl" class="btn btn-warning btn-sm js-object-update " data-url="{% url 'NormMan:framework_download_modal' %}"></button> -->        
+{% endif %}

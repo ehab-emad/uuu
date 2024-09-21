@@ -1,0 +1,77 @@
+{% load static %}
+{% load widget_tweaks %}
+{% load filters %}
+           
+        <label >Target Category UUID (select from cards below):</label>       
+        {{ html_dynamic_breadcrumb | safe }}
+            <div class="row m-1">
+                {% if category_groups %}
+                    {% for object in category_groups %}
+                            <div class="card mx-2" style="width: 4rem;  cursor: pointer" >
+                                <div class="d-flex align-items-center">                 
+                                    <div class="card-body p-0" >
+                                        {% if object.logo %}
+                                            <img class="card-img-top" src="{{object.logo.url}}" alt="No Logo"style="height:50px;  object-fit: contain;"/>
+                                        {% else %}
+                                            {% if object.normparts_shared_components|check_project_instances:request > 0  %} 
+                                                <img class="card-img-top" src="{% static '/website/images/Norm_Part.png' %}" style="height:50px;  object-fit: contain;"/>
+                                                <div class="card-img-overlay m-1 p-0" >
+                                                    <h5 class="card-title">{{ object.normparts_shared_components|check_project_instances:request }}</h5>
+                                                </div>
+                                            {% else %}  
+                                                <img class="card-img-top" src="{% static '/website/images/Norm_Part.png' %}" style="height:50px;  opacity:0.2; object-fit: contain;"/>
+                                            {% endif %}                                                
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                <div class="card-footer p-1 " style="font-size: 8px; height:100%">
+                                    {{ object.name }}                              
+                                </div>
+                                 <a  class="stretched-link category_group_modal" value="{{ object.pk}}" data-url="{% url 'NormMan:load_content_shared_component_norm_parts_modal' %}">  </a>
+                            </div>             
+                    {% endfor %}
+                {% else %}   
+                <div class="card animationoff  mx-2 my-1" style="width: 4rem;" >
+                    <div class="d-flex align-items-center">                 
+                        <div class="card-body p-0" >
+                            {% if category_group.logo %}
+                            <img class="card-img-top" src="{{category_group.logo.url}}" alt="Analysis image not available"style="height:30px;  object-fit: contain;"/>
+                            {% else %}
+                            <img class="card-img-top" src="{% static '/website/images/Norm_Part.png' %}" style="height:30px;  object-fit: contain;"/>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="card-footer p-1 " style="font-size: 8px; height:100%">
+                        {{ category_group.name }} </br> (bottom category)                            
+                    </div>
+                </div>                                               
+                {% endif %}
+            </div>
+
+
+
+<script type=text/javascript>   
+
+        $(".category_group_modal").click(function(){
+
+          category_id = $(this).attr('value');
+
+                      $.ajax({                       // initialize an AJAX request
+                        type:'GET',
+                        url: $(this).data('url'),                   
+                        data: {
+                        'trigger_id': "switch_category",      // trigger id help to identify which action was trigerred in modal window
+                        'category_id': category_id,
+                      },
+                          success: function (data) {   // `data` is the return of the `load_parts` view function
+
+                            //update category selection box 
+                            $("#category-container-modal").html(data.html_category_groups);
+                            $("#normparts-container-modal").html(data.html_norm_parts_collector);
+                            $("#id_target_category_uuid").attr("value" , category_id)
+
+                        }
+                      });
+        });
+
+</script>

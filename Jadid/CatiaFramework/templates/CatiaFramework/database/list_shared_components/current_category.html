@@ -1,0 +1,34 @@
+{% load static %}
+
+
+<div class="card  mx-1 my-1" >
+    <div class="card-body">
+        {% if category_group.logo %}
+        <img class="card-img-top" src="{{category_group.logo.url}}" alt="No Logo"style="height:50px;  object-fit: contain;"/>
+        {% else %}
+            {% if category_group.dotnet_components.count > 0  %} 
+                <img class="card-img-top" src="{% static '/website/images/Norm_Part.png' %}" style="height:50px;  object-fit: contain;"/>
+                <div class="card-img-overlay m-1 p-0" >
+                    <h5 class="card-title">{{ category_group.dotnet_components.count }}</h5>
+                </div>
+            {% else %}  
+                <img class="card-img-top" src="{% static '/website/images/Norm_Part.png' %}" style="height:50px;  opacity:0.2; object-fit: contain;"/>
+            {% endif %}                                                
+        {% endif %}
+    </div>
+    <div class="card-footer">
+        <h5 class="card-title">{{ category_group.name }}</h5>
+    </div>
+    <div class="container-fluid" id="parts-container">
+        <div class="row">
+
+                <button type="button" class="btn btn-warning btn-sm btn-block js-part-update " data-url=# disabled>
+                    Edit
+                </button>
+
+
+        </div>
+    </div>
+</div>
+
+

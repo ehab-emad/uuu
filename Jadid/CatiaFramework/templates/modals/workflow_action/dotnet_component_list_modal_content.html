@@ -1,0 +1,57 @@
+﻿{% load widget_tweaks %}
+{% load humanize %}
+{% load static %}
+<style>
+
+</style> 
+
+
+  <b>Available DotNet Components: </b>
+
+  <div class="list-group overflow-auto" style="max-height: 500px">
+    {% if dotnet_components %}
+        {% for element in dotnet_components.all %}
+            <div class="list-group-item list-group-item-action my-1 py-1 clickable-component" UUID_folder= "{{ category_group.UUID }}" UUID_component= "{{ element.UUID }}" >
+                <div class="row my-0 py-0">  
+                    <div class="col-md-1 center-block align-self-center">               
+                            <img  src="{% static '/CatiaFramework/images/workflow.png' %}" alt="Default" style="max-width: 50px;">                                                                                                                             
+                    </div>             
+                    <div class='col-md-8 align-self-center' style="font-size: 12px;">                                         
+                        {{ element.name }} <br>
+                        {{ element.UUID }}                                                                                                                          
+                    </div>
+                    <div class='col-md-3 align-self-center' style="font-size: 10px;">                                         
+                      {{ element.type }} <br>
+                      {{ element.access_modifier }}                                                                                                                          
+                  </div>
+                </div>                                                
+            </div>
+        {% endfor %}
+    {% endif %}
+</div>
+
+<script>
+  $('.clickable-component').click(function () {
+    var component_id = $(this).attr('UUID_component'); 
+    var folder_id = $(this).attr('UUID_folder');      
+    const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+    var data_prep = {
+        'trigger_id': "component_selection",      // trigger id help to identify which action was trigerred in modal window
+        'component_id': component_id,
+        'folder_id': folder_id,
+    };   
+    $.ajax({                       // initialize an AJAX request
+      async: true, 
+        url:  "{% url 'CatiaFramework:load_content_action_create_modal' %}",                    // set the url of the request (= localhost:8000/hr/ajax/load_idemat_processs/)
+        type: 'get',
+        headers: { 'X-CSRFToken': csrftoken },
+        data: data_prep,
+        success: function (data) {   // `data` is the return of the `load_parts` view function
+          $("#dotnet_components").html(); // update preview window for selected item
+          $("#dotnet_components").html(data.html_dotnet_component); // update preview window for selected item
+        }
+    });
+    })
+</script>
+
+

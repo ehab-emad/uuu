@@ -1,0 +1,30 @@
+{% load static %}
+
+
+<div class="card  mx-3 my-3" style="width: 12rem;">
+    <div class="card-body">
+        {% if vehicle.logo == 'Default Vehicle Logo' %}
+        <img class="card-img-top" src="{% static '/website/images/Vehicle_Icon.png' %}" alt="Vehicle image not available1">
+        {% else %}
+        <img class="card-img-top" src="{{ vehicle.logo }}" alt="Vehicle image not available">
+        {% endif %}
+    </div>
+    <div class="card-footer">
+        <h5 class="card-title">{{ vehicle.name }}</h5>
+    </div>
+    <div class="container-fluid" id="vehicles-container">
+        <div class="row">
+
+         <button type="button" class="btn btn-warning btn-sm btn-block js-vehicle-update " data-url="{% url 'vehicle_update' vehicle.id %}">
+                    Edit
+                </button>
+
+         <button type="button" class="btn btn-danger btn-sm btn-block js-vehicle-delete " data-url="{% url 'vehicle_delete' vehicle.id %}">
+                    Delete
+                </button>
+
+        </div>
+    </div>
+</div>
+
+

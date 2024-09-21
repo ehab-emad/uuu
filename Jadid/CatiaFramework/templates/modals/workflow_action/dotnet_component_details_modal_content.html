@@ -1,0 +1,83 @@
+﻿
+ {% load static %}
+  {% block Apps %}
+  
+  <style>
+      pre.code {
+        white-space: pre-wrap;
+        counter-reset: listing;
+      }
+      
+      pre.code code {
+        counter-increment: listing;
+        display: flex;      /* Use "flex" instead of "flexbox" */
+        justify-content:flex-start;  /* Align content to the right */
+      }
+      
+      pre.code code::before {
+        content: counter(listing) ". ";
+        width: 8em;
+        padding-left: 1em;  /* Adjust padding to create space between number and code */
+        text-align: left;
+      }
+      
+      </style>
+
+  <div class="container-fluid" id="objects-container">
+    <div class="col-md-12 border-right">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="list-group-item list-group-item-secondary my-1" >
+                    <div class="container-fluid" id="objects-container">
+                        <div class="row">                                                
+                            <div class='col-md-12'>
+                                <b>VB.Net Component Details</b> <br>
+                                Object Keyword: {{dotnet_component.get_type_display}}<br>
+                                Object Name: {{dotnet_component.name}}     <br>                                                   
+                                Summary : {{dotnet_component.summary}}<br>
+                                UUID: {{dotnet_component.UUID}}<br>
+                            
+                                    Component Attributes:<br>
+                                {% if dotnet_component.access_modifier == ""  %}
+                                No modifiers
+                                {% else %}
+                                {{dotnet_component.access_modifier}} 
+                                {% endif %} 
+                                <button value="{{dotnet_component.UUID}}" id="get_component_uuid" class="btn btn-warning btn-block  btn-sm" onclick="updateFormText()" >
+                                    Get Framework Request
+                                </button>    
+                                <script>
+                                    function updateFormText() {
+                                        // Get the button's value (dotnet_component.UUID)
+                                        var buttonValue = document.getElementById('get_component_uuid').value;
+                                        event.preventDefault();
+                                        // Update the form text with the button's value
+                                        document.getElementById('id_framework_request').value = buttonValue;
+                                    }
+                                </script>                                   
+                            </div>               
+                        </div>   
+                    </div>                 
+                </div>                                     
+                <div class="list-group">
+                    <div href="#" class="list-group-item list-group-item-action my-1" >
+                        <div class="row">                
+                            <div class='col-md-10 w-auto ms-auto'> 
+                                Comment Section:                                
+                                    {% if dotnet_component.comment_section == "" %}
+                                        No modifiers
+                                    {% else %}                                                                                                                                                            
+                                        <pre class="code">    
+                                            {{dotnet_component.comment_section|safe}}         
+                                        </pre>                                                     
+                                        {% endif %}   
+                                </pre>                                                                                                                           
+                            </div>
+                        </div>                
+                    </div>                                  
+                </div>                                                        
+              </div>
+          </div>
+      </div>
+  </div>
+  {% endblock Apps %}

@@ -1,0 +1,145 @@
+{% extends 'MatMan/base.html' %}
+{% load static %}
+
+{% block Apps %}
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="row">
+                <div class="col-md-10">
+                    <div class="row">
+                                {% block Cards %}
+                                {% endblock Cards %}
+                        <div id="accordion" class="container-fluid">
+                            {#Step:1  Names------------------------------------------------------------------------------------------------------------ #}
+                            <div class="card mx-3 my-3">
+                                <div class="panel panel-default">
+                                    <div class="panel-body">
+                                        <div class="card-header" id="headingOne">
+                                            <h5 class="mb-0">
+                                                <button class="btn btn-link" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                                    Property group 1: Known as
+                                                </button>
+                                            </h5>
+                                        </div>
+                                        <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordion">
+                                            <div class="card-body">
+                                                <div class="panel panel-default">
+                                                    <div class="panel-body">
+                                                        {% include 'MatMan/materialdetail/materialdetail_name.html' %}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            {#Step:2  Mechanical properties------------------------------------------------------------------------------------------------------------ #}
+                            <div class="card mx-3 my-3">
+                                <div class="panel panel-default">
+                                    <div class="panel-body">
+                                        <div class="card-header" id="headingTwo">
+                                            <h5 class="mb-0">
+                                                <button class="btn btn-link" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
+                                                    Property group 2: Mechanical
+                                                </button>
+                                            </h5>
+                                        </div>
+                                        <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
+                                            <div class="card-body">
+                                                <div class="panel panel-default">
+                                                    <div class="panel-body">
+                                                        {% include 'MatMan/materialdetail/materialdetail_mechanical.html' %}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            {#Step:4 Manufacturing properties------------------------------------------------------------------------------------------------------------ #}
+                            <div class="card mx-3 my-3">
+                                <div class="panel panel-default">
+                                    <div class="panel-body">
+                                        <div class="card-header" id="headingThree">
+                                            <h5 class="mb-0">
+                                                <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                                                    Property group 3: Manufacturing
+                                                </button>
+                                            </h5>
+                                        </div>
+                                        <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordion">
+                                            <div class="card-body">
+                                                <div class="panel panel-default">
+                                                    <div class="panel-body">
+                                                        {% include 'MatMan/materialdetail/materialdetail_manufacturing.html' %}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            {#Step:4 Acoustical properties------------------------------------------------------------------------------------------------------------ #}
+                            <div class="card mx-3 my-3">
+                                <div class="panel panel-default">
+                                    <div class="panel-body">
+                                        <div class="card-header" id="headingFour">
+                                            <h5 class="mb-0">
+                                                <button class="btn btn-link" data-toggle="collapse" data-target="#collapseFour" aria-expanded="true" aria-controls="collapseFour">
+                                                    Property group 4: Acoustical
+                                                </button>
+                                            </h5>
+                                        </div>
+                                        <div id="collapseFour" class="collapse" aria-labelledby="headingFour" data-parent="#accordion">
+                                            <div class="card-body">
+                                                <div class="panel panel-default">
+                                                    <div class="panel-body">
+                                                        {% include 'MatMan/materialdetail/materialdetail_acoustical.html' %}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            {#Step:5 Lifecycle Analysis------------------------------------------------------------------------------------------------------------ #}
+                            <div class="card mx-3 my-3">
+                                <div class="panel panel-default">
+                                    <div class="panel-body">
+                                        <div class="card-header" id="headingFive">
+                                            <h5 class="mb-0">
+                                                <button class="btn btn-link" data-toggle="collapse" data-target="#collapseFive" aria-expanded="true" aria-controls="collapseFive">
+                                                    Property group 5: Lifecycle Analysis
+                                                </button>
+                                            </h5>
+                                        </div>
+                                        <div id="collapseFive" class="collapse" aria-labelledby="headingFive" data-parent="#accordion">
+                                            <div class="card-body">
+                                                <div class="panel panel-default">
+                                                    <div class="panel-body">
+                                                        {% include 'MatMan/materialdetail/materialdetail_lifecycleanalysis.html' %}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            {% include "website/current_project.html" %}
+                            {% include "website/current_material.html" %}
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+
+
+{% endblock Apps %}

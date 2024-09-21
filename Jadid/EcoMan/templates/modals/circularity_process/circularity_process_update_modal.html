@@ -1,0 +1,32 @@
+
+
+<form method="post" id="#modal-window-lg" action="{% url 'EcoMan:circularity_process_update' form.instance.pk %}" class="js-object-update-form">
+    {% csrf_token %}
+
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle"><b>Update Circularity Process</b></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                {% include 'modals/modal_template_form.html' %}
+            </div>
+            <div class="modal-footer">
+                <a class="btn btn-danger mr-auto disables" href=#
+                    onclick="return confirm('Do you really want to delete the process?');">
+                    <i class="fas fa-trash-alt"></i> Delete
+                </a>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="fas fa-ban"></i> Cancel</button>
+                <button type="submit" class="btn btn-warning" ><i class="fas fa-database"></i> Update Process</button>
+            </div>
+        </div>
+    </div>
+
+</form>
+{% load widget_tweaks %}
+
+
+
